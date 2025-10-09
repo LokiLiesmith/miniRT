@@ -1,2 +1,0 @@
-Goal:
-parse the input file and fill out our scene struct

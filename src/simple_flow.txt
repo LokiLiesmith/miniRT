@@ -5,5 +5,20 @@ exit events and cleanup
 
 
 division: 
-1. parsing and mlx setup
-2. math and rendering
+1. parsing and mlx setup	body
+2. math and rendering		soul
+
+----------------------------------------------------------------------------------------------
+
+
+math:
+	-vector functions, intersections, light things?
+
+parse:
+	-parse the input file and fill out our scene struct
+
+render:
+	-raytrace, color stuff(packing into 32 or whatever it was) and display?
+
+utils:
+	-error handling, garbage collector? 1 : cleanup
