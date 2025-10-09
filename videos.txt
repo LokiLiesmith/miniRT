@@ -3,3 +3,5 @@ Helpful Videos:
 https://www.youtube.com/watch?v=gsZiJeaMO48&t=1415s
 
 https://www.youtube.com/watch?v=ezXGTRSx1g8&t=1s
+
+MLX42 guide (sort of): https://github.com/codam-coding-college/MLX42/tree/master/docs

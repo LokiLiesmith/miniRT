@@ -1,10 +1,15 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
+#include "MLX42/MLX42.h"
+
+# define WIDTH 800
+# define HEIGHT 800
 
 typedef struct s_rt
 {
-	t_scene	scene;			
-	t_mlx	mlx;		//mlxthings	
+	// t_scene	scene;			
+	mlx_t		*mlx;
+	mlx_image_t	*img;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;
@@ -24,9 +29,9 @@ typedef enum e_objtype
 }	t_objtype;
 
 //to figure out
-typedef struct s_sphere;
-typedef struct s_plane;
-typedef struct s_cylinder;
+// typedef struct s_sphere;
+// typedef struct s_plane;
+// typedef struct s_cylinder;
 
 typedef struct s_object
 {
@@ -96,19 +101,6 @@ typedef	struct s_scene
 	t_object	*objects;//linked list of objects, enum for different handling?
 }	t_scene;
 
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-//								MLX											//
-
-typedef struct s_mlx
-{
-	void	*mlx;
-	void	*win;
-	t_img	img;
-}	t_mlx;
 
 
 
