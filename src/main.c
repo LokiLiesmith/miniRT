@@ -17,7 +17,7 @@
 int main(int ac, char **av)
 {
 	if (ac != 2)
-		return (printf("Usage: './miniRT scene_file.sm'"), 1);
+		return (printf("Usage: './miniRT scene_file.rt'"), 1);
 	printf("main online: %s\n", av[1]);
 	return (0);
 }

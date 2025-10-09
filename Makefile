@@ -1,7 +1,7 @@
 LIBFT_PATH	:= include/libft
 LIBFT_LIB	:= $(LIBFT_PATH)/libft.a
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -I include
+CFLAGS		:= -Wall -Wextra -Werror -lm -I include
 
 SRC_COMMON	:= src/main.c
 SRC			:= $(SRC_COMMON)
