@@ -1,0 +1,9 @@
+parse the scenefile -> init_mlx and img buffer ->
+calculate each pixel (ray direction, closest intersection light, write the final color into the img buffer?)
+display image in window ->
+exit events and cleanup
+
+
+division: 
+1. parsing and mlx setup
+2. math and rendering
