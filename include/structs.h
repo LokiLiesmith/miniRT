@@ -5,9 +5,12 @@ typedef struct s_rt
 {
 	t_scene	scene;			
 	t_mlx	mlx;		//mlxthings	
-	t_gc	gc;			//gc-list?
+	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -24,6 +27,17 @@ typedef enum e_objtype
 typedef struct s_sphere;
 typedef struct s_plane;
 typedef struct s_cylinder;
+
+typedef struct s_object
+{
+	t_objtype		type;
+	void			*data;//points to the structs above
+	struct s_object	*next;
+}	t_object;
+
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -44,9 +58,12 @@ typedef struct s_color
 
 typedef struct s_ray
 {
-	origin point with 3 coords;
-	direction; scalar?
+	// origin point with 3 coords;
+	// direction; scalar?;
 }	t_ray;
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,6 +71,23 @@ typedef struct s_ray
 
 
 //TODO define each element they give us according to pdf
+
+typedef struct s_ambient
+{
+
+}	t_ambient;
+
+typedef struct s_camera
+{
+
+}	t_camera;
+
+typedef struct s_light
+{
+
+}	t_light;
+
+
 typedef	struct s_scene
 {
 	t_ambient	ambient;//A
@@ -61,6 +95,21 @@ typedef	struct s_scene
 	t_light		light;//L
 	t_object	*objects;//linked list of objects, enum for different handling?
 }	t_scene;
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//								MLX											//
+
+typedef struct s_mlx
+{
+	void	*mlx;
+	void	*win;
+	t_img	img;
+}	t_mlx;
+
 
 
 #endif
