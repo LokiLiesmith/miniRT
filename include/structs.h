@@ -61,10 +61,14 @@ typedef struct s_color
 	int	b;
 }	t_color;
 
+//P(t)=O+t⋅D // t is the distance traveled on the ray from the source?
 typedef struct s_ray
 {
+	t_vec3	origin;
+	t_vec3	dir;
 	// origin point with 3 coords;
-	// direction; scalar?;
+	// direction;
+	// scalar?;
 }	t_ray;
 
 

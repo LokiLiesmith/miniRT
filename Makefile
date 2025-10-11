@@ -5,6 +5,12 @@ LIBMLX		:= $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror -Wunreachable-code -Ofast -I include -I $(MLX_DIR)/include
 
+# pick which test to build: make T=parser (defaults ot minishell)
+# or you can make run-parser
+T ?= miniRT
+UC_T := $(shell echo $(T) | tr '[:lower:]' '[:upper:]')
+
+
 # Detect OS and set appropriate flags
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
@@ -14,13 +20,34 @@ ifeq ($(UNAME_S),Darwin)
     LINK_FLAGS := -ldl -lglfw -pthread -lm -framework Cocoa -framework OpenGL -framework IOKit
 endif
 
-SRC_COMMON	:= src/main.c
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+# ========= Sources per target =========
+# add more SRC files or directories
+# x_text.c has the int main() - we get rid of them after merging and keep the rest of the .cs
+# for now there's no need for common (I just copy the main you made into my test.c)
+
+SRC_MINIRT := src/main.c
+SRC_MATH    := src/math/math_test.c
+SRC_PARSE	:= src/parse/parse_test.c
+SRC_RENDER	:= src/render/render_test.c
+SRC_UTILS	:= src/utils/utils_test.c
+# SRC_COMMON	:= src/main.c
 SRC			:= $(SRC_COMMON)
+SELECTED_SRC := $(SRC_$(UC_T)) $(SRC_COMMON)
 
 OBJDIR		:= obj
 BINDIR		:= bin
-NAME		:= miniRT
-OBJ			:= $(SRC:src/%.c=$(OBJDIR)/%.o)
+
+NAME		:= $(T)
+OBJ			:= $(SELECTED_SRC:src/%.c=$(OBJDIR)/%.o)
+
+
+#error if T doesn't match any SRC_*
+ifeq ($(strip $(SELECTED_SRC)),)
+$(error Unknown T='$(T)'. Valid options: miniRT parse math render utils)
+endif
 
 
 all: $(BINDIR)/$(NAME)
@@ -50,6 +77,13 @@ $(OBJDIR):
 $(BINDIR):
 	@mkdir -p $(BINDIR)
 
+# ========= BUILD AND RUN ======
+# ex:	make run-math
+# or:	make T=math
+# program expects a name of a testfile to run
+run-%:
+	@$(MAKE) T=$* && ./bin/$* /test_scenes/test.rt
+
 
 # ========= Clean =========
 clean:
@@ -62,6 +96,7 @@ fclean: clean
 	@$(MAKE) -s -C $(LIBFT_PATH) fclean
 	@rm -rf $(BINDIR)
 # 	@echo "bin/ removed"
+	@rm -rf $(MLX_DIR)/build
 
 re: fclean all
 

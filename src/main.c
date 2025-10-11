@@ -1,6 +1,5 @@
 #include "mini_rt.h"
 
-
 // int main(int ac, char **av)
 // {
 // 	if (ac != 2)
@@ -19,7 +18,7 @@ int main(int ac, char **av)
 	t_rt rt;
 
 	if (ac != 2)
-		return (printf("Usage: './miniRT scene_file.rt'"), 1);
+		return (printf("Usage: './miniRT scene_file.rt'\n"), 1);
 	printf("main online: %s\n", av[1]);
 
 	// mlx things
