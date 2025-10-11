@@ -18,8 +18,8 @@ int main(int ac, char **av)
 {
 	t_rt rt;
 
-	if (ac != 2)
-		return (printf("Usage: './miniRT scene_file.rt'"), 1);
+	if (check_input(ac, av) != 0)
+		return (1);
 	printf("main online: %s\n", av[1]);
 
 	// mlx things
