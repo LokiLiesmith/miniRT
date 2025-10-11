@@ -28,7 +28,7 @@ endif
 # x_text.c has the int main() - we get rid of them after merging and keep the rest of the .cs
 # for now there's no need for common (I just copy the main you made into my test.c)
 
-SRC_MINIRT := src/main.c
+SRC_MINIRT := src/main.c src/mlx/mlx_hooks.c
 SRC_MATH    := src/math/math_test.c
 SRC_PARSE	:= src/parse/parse_test.c
 SRC_RENDER	:= src/render/render_test.c
