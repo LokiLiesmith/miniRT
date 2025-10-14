@@ -7,38 +7,12 @@
 
 typedef struct s_rt
 {
-	// t_scene	scene;			
+	// t_scene		*scene;			
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-//								OBJECTS										//
-
-typedef enum e_objtype
-{
-	SPHERE,
-	PLANE,
-	CYLINDER
-}	t_objtype;
-
-//to figure out
-// typedef struct s_sphere;
-// typedef struct s_plane;
-// typedef struct s_cylinder;
-
-typedef struct s_object
-{
-	t_objtype		type;
-	void			*data;//points to the structs above
-	struct s_object	*next;
-}	t_object;
 
 
 
@@ -66,10 +40,39 @@ typedef struct s_ray
 {
 	t_vec3	origin;
 	t_vec3	dir;
-	// origin point with 3 coords;
-	// direction;
-	// scalar?;
 }	t_ray;
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//								OBJECTS										//
+
+typedef enum e_objtype
+{
+	SPHERE,
+	PLANE,
+	CYLINDER
+}	t_objtype;
+
+
+typedef struct	s_sphere
+{
+	t_vec3	s;
+	int		r;
+}	t_sphere;
+
+// typedef struct s_plane;
+// typedef struct s_cylinder;
+
+typedef struct s_object
+{
+	t_objtype		type;
+	void			*data;//points to the structs above
+	struct s_object	*next;
+}	t_object;
+
 
 
 
