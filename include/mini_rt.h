@@ -1,8 +1,29 @@
-#ifndef MINI_RT_H
-#define MINI_RT_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mini_rt.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
+/*   Updated: 2025/10/14 22:13:47 by mrazem           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "structs.h"
+#ifndef MINI_RT_H
+# define MINI_RT_H
+
+# include "structs.h"
 # include <stdio.h>
+# include <math.h>
+
+//MATH
+double	vec_dot(t_vec3 a, t_vec3 b);
+// t_vec3	vec_cross(t_vec3 a, t_vec3 b); TODO
+t_vec3	vec_subtract(t_vec3 a, t_vec3 b);
+double	vec_len(t_vec3 v);
+t_vec3	vec_normalize(t_vec3 v);
+
 
 
 // MLX
@@ -12,7 +33,7 @@ void	close_hook(void *param);
 
 // UTILS
 //math_utils.c
-void print_vec3(t_vec3 v);
+void	print_vec3(t_vec3 v);
 
 
 #endif

@@ -1,66 +1,78 @@
 #include "mini_rt.h"
 
 
-static void set_pixel(mlx_image_t *img, int x, int y, uint32_t color)
+static void	set_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 {
-	int i;
+	int	i;
 
 	i = (y * img->width + x) * 4;
 
 	if ( x < 0 || x >= (int)img->width || y < 0 || y >= (int)img->height)
 		return ;//so we dont go out of bounds
 	//pixel = RRGGBBAA
-	img->pixels[i + 0] = (color >> 24) & 0xFF;//R
-	img->pixels[i + 1] = (color >> 16) & 0xFF;//G
-	img->pixels[i + 2] = (color >> 8) & 0xFF;//B
-	img->pixels[i + 3] = color & 0xFF;//A
-
+	img->pixels[i + 0] = (color >> 24) & 0xFF;	//R
+	img->pixels[i + 1] = (color >> 16) & 0xFF;	//G
+	img->pixels[i + 2] = (color >> 8) & 0xFF;	//B
+	img->pixels[i + 3] = color & 0xFF;			//A
 }
 
-static uint32_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+static uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	uint32_t color;
+	uint32_t	color;
 
 	color = r << 24 | g << 16 | b << 8 | a;
-	return color;
+	return (color);
 }
 
-static t_ray	generate_ray(t_vec3 origin, int x, int y)
+static t_ray generate_ray(t_vec3 origin, int x, int y)
 {
-	t_ray	ray;
+    t_ray	ray;
+	float	scale;
 
-	ray.dir.x = x;
-	ray.dir.y = y;
-	ray.dir.z = 0;
-	ray.origin.x = origin.x;
-	ray.origin.y = origin.y;
-	ray.origin.z = origin.z;
+	scale = 0.005;
+    ray.dir.x = (x - WIDTH  / 2) * scale;
+    ray.dir.y = (HEIGHT / 2 - y) * scale;
+    ray.dir.z = 1;
 
-	return (ray);
+    // ray.dir = vec_normalize(ray.dir);
+
+    ray.origin = origin;
+    return ray;
 }
 
+
+
+// D^2 * x^2 + 2 * D (C - S) * t + (C - S)^2 - r^2 = 0;
+// D = ray direction	ray.direction
+// C = Camera(origin)	ray.origin
+// S = Sphere Center	sphere.s
+// r = Sphere radius	sphere.r
 int	check_intersection(t_ray ray, t_sphere sphere)
 {
-	float	D;
-	4D^2(C-S)^2  -  4D^2(C-S) 
-	if D < 0 no hits;
-	
-	return (0)
+	t_vec3	CS = vec_subtract(ray.origin, sphere.s);
+	float	a = vec_dot(ray.dir, ray.dir);
+	float	b = 2 * vec_dot(ray.dir, CS);
+	float	c = vec_dot(CS, CS) - (sphere.r * sphere.r);
+
+	float	discriminant = b * b - (4 * a * c);
+	if (discriminant < 0)
+		return (0);
+	return (1);
 }
 
-void render(t_rt *rt)
+void	render(t_rt *rt)
 {
 	int			x;
-	int 		y;
+	int			y;
 	t_ray		ray;
 	// uint32_t	color;
-	t_vec3		origin = {0,0,-20};
+	t_vec3		origin = {0, 0, -20};
 	t_sphere	sphere;
 
-	sphere.r = 20;
+	sphere.r = 10;
 	sphere.s.x = 0;
 	sphere.s.y = 0;
-	sphere.s.z = 20;
+	sphere.s.z = 0;
 	
 	y = 0;
 	while (y < HEIGHT)
@@ -69,10 +81,14 @@ void render(t_rt *rt)
 		while (x < WIDTH)
 		{
 			ray = generate_ray(origin, x, y);
-			if (!check_intersection(ray, sphere))
-				set_pixel(rt->img, x, y, rgba(0, 255, 255 , 255));
-
-			// print_vec3(ray.dir);
+			float hit = check_intersection(ray, sphere);
+			if (hit)
+			{
+				print_vec3(ray.dir);
+				set_pixel(rt->img, x, y, rgba(0, 255, 255, 255));
+			}
+			else
+				set_pixel(rt->img, x, y, rgba(255, 255, 255, 255));
 			// print_vec3(ray.origin);
 			// color = trace_ray(ray, scene);
 			x++;
@@ -81,14 +97,7 @@ void render(t_rt *rt)
 	}
 }
 
-
-
-
-
-
-
-
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_rt rt;
 
