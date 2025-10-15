@@ -27,7 +27,10 @@ static uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 static t_ray generate_ray(t_vec3 origin, int x, int y)
 {
     t_ray	ray;
-	double	fov = 150.0;
+	// double	fov = 150.0;
+	// double	fov = 90.0;
+	double	fov = 70.0;
+	// double	fov = 30.0;
 	double	scale = tan((fov * 0.5) * (M_PI/180.0));
 	double	aspect_ratio = WIDTH/HEIGHT;
 //normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
@@ -75,8 +78,8 @@ void	render(t_rt *rt)
 	t_sphere	sphere;
 
 	sphere.r = 5;
-	sphere.s.x = 0;
-	sphere.s.y = 0;
+	sphere.s.x = 7;
+	sphere.s.y = 2;
 	sphere.s.z = 0;
 	
 	y = 0;
