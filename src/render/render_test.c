@@ -27,17 +27,22 @@ static uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 static t_ray generate_ray(t_vec3 origin, int x, int y)
 {
     t_ray	ray;
-	float	scale;
+	double	fov = 150.0;
+	double	scale = tan((fov * 0.5) * (M_PI/180.0));
+	double	aspect_ratio = WIDTH/HEIGHT;
+//normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
+// 2x to stretch the new mapping so when I move -1 we have the interval set at [-1, 1];
+	double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
+	double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);//same shit but *-1 cuz y starts at the top on screen
 
-	scale = 0.005;
-    ray.dir.x = (x - WIDTH  / 2) * scale;
-    ray.dir.y = (HEIGHT / 2 - y) * scale;
-    ray.dir.z = 1;
+	ray.dir.x = u * scale * aspect_ratio;
+	ray.dir.y = v * scale;//scale is new max based on the FOV/2.. tan(FOV/2)
+	ray.dir.z = 1;
 
-    // ray.dir = vec_normalize(ray.dir);
+	ray.dir = vec_normalize(ray.dir);
 
-    ray.origin = origin;
-    return ray;
+	ray.origin = origin;
+	return (ray);
 }
 
 
@@ -69,7 +74,7 @@ void	render(t_rt *rt)
 	t_vec3		origin = {0, 0, -20};
 	t_sphere	sphere;
 
-	sphere.r = 10;
+	sphere.r = 5;
 	sphere.s.x = 0;
 	sphere.s.y = 0;
 	sphere.s.z = 0;

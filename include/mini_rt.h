@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/10/14 22:13:47 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/10/15 15:47:11 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include "structs.h"
 # include <stdio.h>
 # include <math.h>
+
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+# endif
 
 //MATH
 double	vec_dot(t_vec3 a, t_vec3 b);
