@@ -27,10 +27,7 @@ static t_ray generate_ray(t_rt *rt, int x, int y)
 // static t_ray generate_ray(t_vec3 origin, int x, int y)
 {
     t_ray	ray;
-	// double	fov = 150.0;
-	// double	fov = 90.0;
 	double	fov = rt->scene.camera.fov;
-	// double	fov = 30.0;
 	double	scale = tan((fov * 0.5) * (M_PI/180.0));
 	double	aspect_ratio = WIDTH/HEIGHT;
 //normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
@@ -55,17 +52,18 @@ static t_ray generate_ray(t_rt *rt, int x, int y)
 // C = Camera(origin)	ray.origin
 // S = Sphere Center	sphere.s
 // r = Sphere radius	sphere.r
-int	check_intersection(t_ray ray, t_sphere sphere)
+double	check_intersection(t_ray ray, t_sphere sphere)
 {
 	t_vec3	CS = vec_subtract(ray.origin, sphere.s);
-	float	a = vec_dot(ray.dir, ray.dir);
-	float	b = 2 * vec_dot(ray.dir, CS);
-	float	c = vec_dot(CS, CS) - (sphere.r * sphere.r);
+	double	a = vec_dot(ray.dir, ray.dir);
+	double	b = 2 * vec_dot(ray.dir, CS);
+	double	c = vec_dot(CS, CS) - (sphere.r * sphere.r);
 
-	float	discriminant = b * b - (4 * a * c);
+	double	discriminant = b * b - (4 * a * c);
 	if (discriminant < 0)
 		return (0);
-	return (1);
+	else
+		return ((-1 * b - sqrt(discriminant)) / (2 * a));
 }
 
 void	render(t_rt *rt)
@@ -89,7 +87,7 @@ void	render(t_rt *rt)
 		while (x < WIDTH)
 		{
 			ray = generate_ray(rt, x, y);
-			double hit = check_intersection(ray, sphere);
+			double	hit = check_intersection(ray, sphere);
 			if (hit)
 			{
 				// print_vec3(ray.dir);
