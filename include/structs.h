@@ -1,20 +1,10 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
-#include "MLX42/MLX42.h"
+
+# include "MLX42/MLX42.h"
 
 # define WIDTH 800
 # define HEIGHT 800
-
-typedef struct s_rt
-{
-	// t_scene		*scene;			
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-	// t_gc	gc;			//gc-list? TODO import from minishell
-
-}	t_rt;
-
-
 
 
 
@@ -23,9 +13,9 @@ typedef struct s_rt
 //								MATH_THINGS									//
 typedef struct s_vec3
 {
-	double x;
-	double y;
-	double z;
+	double	x;
+	double	y;
+	double	z;
 }	t_vec3;
 
 typedef struct s_color
@@ -35,7 +25,6 @@ typedef struct s_color
 	int	b;
 }	t_color;
 
-//P(t)=O+t⋅D // t is the distance traveled on the ray from the source?
 typedef struct s_ray
 {
 	t_vec3	origin;
@@ -57,7 +46,7 @@ typedef enum e_objtype
 }	t_objtype;
 
 
-typedef struct	s_sphere
+typedef struct s_sphere
 {
 	t_vec3	s;
 	int		r;
@@ -91,7 +80,9 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-
+	double	fov;//in degrees 70.00
+	t_vec3	pos;
+	t_vec3	dir;
 }	t_camera;
 
 typedef struct s_light
@@ -100,7 +91,7 @@ typedef struct s_light
 }	t_light;
 
 
-typedef	struct s_scene
+typedef struct s_scene
 {
 	t_ambient	ambient;//A
 	t_camera	camera;//C
@@ -109,6 +100,21 @@ typedef	struct s_scene
 }	t_scene;
 
 
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//								MAIN STRUCT									//
+
+typedef struct s_rt
+{
+	t_scene		scene;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	// t_gc	gc;			//gc-list? TODO import from minishell
+
+}	t_rt;
 
 
 #endif

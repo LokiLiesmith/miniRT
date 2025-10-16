@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/10/15 15:47:11 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/10/16 01:54:03 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "structs.h"
 # include <stdio.h>
 # include <math.h>
+# include <stdlib.h>
+# include "../include/libft/libft.h"
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -28,6 +30,8 @@ t_vec3	vec_subtract(t_vec3 a, t_vec3 b);
 double	vec_len(t_vec3 v);
 t_vec3	vec_normalize(t_vec3 v);
 
+//RENDER
+void	render(t_rt *rt);
 
 
 // MLX
@@ -38,6 +42,8 @@ void	close_hook(void *param);
 // UTILS
 //math_utils.c
 void	print_vec3(t_vec3 v);
+void	print_camera(t_camera cam);
+
 
 
 #endif

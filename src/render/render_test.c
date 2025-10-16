@@ -1,6 +1,5 @@
 #include "mini_rt.h"
 
-
 static void	set_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 {
 	int	i;
@@ -24,12 +23,13 @@ static uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 	return (color);
 }
 
-static t_ray generate_ray(t_vec3 origin, int x, int y)
+static t_ray generate_ray(t_rt *rt, int x, int y)
+// static t_ray generate_ray(t_vec3 origin, int x, int y)
 {
     t_ray	ray;
 	// double	fov = 150.0;
 	// double	fov = 90.0;
-	double	fov = 70.0;
+	double	fov = rt->scene.camera.fov;
 	// double	fov = 30.0;
 	double	scale = tan((fov * 0.5) * (M_PI/180.0));
 	double	aspect_ratio = WIDTH/HEIGHT;
@@ -44,7 +44,7 @@ static t_ray generate_ray(t_vec3 origin, int x, int y)
 
 	ray.dir = vec_normalize(ray.dir);
 
-	ray.origin = origin;
+	ray.origin = rt->scene.camera.pos;
 	return (ray);
 }
 
@@ -73,10 +73,10 @@ void	render(t_rt *rt)
 	int			x;
 	int			y;
 	t_ray		ray;
-	// uint32_t	color;
-	t_vec3		origin = {0, 0, -20};
+	// t_vec3		origin = rt->scene.camera.pos;
 	t_sphere	sphere;
 
+	print_camera(rt->scene.camera);
 	sphere.r = 5;
 	sphere.s.x = 7;
 	sphere.s.y = 2;
@@ -88,11 +88,11 @@ void	render(t_rt *rt)
 		x = 0;
 		while (x < WIDTH)
 		{
-			ray = generate_ray(origin, x, y);
-			float hit = check_intersection(ray, sphere);
+			ray = generate_ray(rt, x, y);
+			double hit = check_intersection(ray, sphere);
 			if (hit)
 			{
-				print_vec3(ray.dir);
+				// print_vec3(ray.dir);
 				set_pixel(rt->img, x, y, rgba(0, 255, 255, 255));
 			}
 			else
@@ -105,9 +105,23 @@ void	render(t_rt *rt)
 	}
 }
 
+static void	fake_parsing(t_rt *rt)
+{
+	rt->scene.camera.fov = 70.00;
+	rt->scene.camera.pos.x = 0;
+	rt->scene.camera.pos.y = 0;
+	rt->scene.camera.pos.z = 10;
+	rt->scene.camera.dir.x = 0;
+	rt->scene.camera.dir.y = 0;
+	rt->scene.camera.dir.z = 1;
+	print_camera(rt->scene.camera);
+
+	// rt->s
+}
+
 int	main(int ac, char **av)
 {
-	t_rt rt;
+	t_rt	rt;
 
 	if (ac != 2)
 		return (printf("Usage: './miniRT scene_file.rt'\n"), 1);
@@ -118,7 +132,11 @@ int	main(int ac, char **av)
 		return (printf("Failed to initialize MLX"), 1);
 	rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
 	if (!rt.img)
-			return (printf("Failed to create image"), 1);
+		return (printf("Failed to create image"), 1);
+	//TESTING///////////////////////////////////////////////////////////////
+	fake_parsing(&rt);//TESTING STRUCT
+	////////////////////////////////////////////////////////////////////////
+	
 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
 	render(&rt);
 	mlx_key_hook(rt.mlx, key_hook, &rt);

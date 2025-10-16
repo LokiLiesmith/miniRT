@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/11 20:15:11 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/16 01:31:51 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,9 @@
 // 	return (0);
 // }
 
-
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_rt rt;
+	t_rt	rt;
 
 	if (ac != 2)
 		return (printf("Usage: './miniRT scene_file.rt'\n"), 1);
@@ -39,7 +38,7 @@ int main(int ac, char **av)
 		return (printf("Failed to initialize MLX"), 1);
 	rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
 	if (!rt.img)
-			return (printf("Failed to create image"), 1);
+		return (printf("Failed to create image"), 1);
 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
 	mlx_key_hook(rt.mlx, key_hook, &rt);
 	mlx_close_hook(rt.mlx, close_hook, &rt);
