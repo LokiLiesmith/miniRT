@@ -31,6 +31,14 @@ typedef struct s_ray
 	t_vec3	dir;
 }	t_ray;
 
+typedef struct s_hit
+{
+	double	t;//distance from ray origin
+	t_vec3	point;//hit point vector
+	t_vec3	normal;//normal
+	//t_color color??
+}	t_hit;
+
 
 
 

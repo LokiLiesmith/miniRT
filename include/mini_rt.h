@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/10/16 01:54:03 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/10/23 13:27:20 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ double	vec_dot(t_vec3 a, t_vec3 b);
 t_vec3	vec_subtract(t_vec3 a, t_vec3 b);
 double	vec_len(t_vec3 v);
 t_vec3	vec_normalize(t_vec3 v);
+t_vec3	vec_add(t_vec3 a, t_vec3 b);
+t_vec3	vec_scale(t_vec3 v, double scale);
+
 
 //RENDER
 void	render(t_rt *rt);

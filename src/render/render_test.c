@@ -6,7 +6,7 @@ static void	set_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 
 	i = (y * img->width + x) * 4;
 
-	if ( x < 0 || x >= (int)img->width || y < 0 || y >= (int)img->height)
+	if (x < 0 || x >= (int)img->width || y < 0 || y >= (int)img->height)
 		return ;//so we dont go out of bounds
 	//pixel = RRGGBBAA
 	img->pixels[i + 0] = (color >> 24) & 0xFF;	//R
@@ -23,18 +23,27 @@ static uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 	return (color);
 }
 
-static t_ray generate_ray(t_rt *rt, int x, int y)
+static uint32_t	normal_to_color(t_vec3 normal)
+{
+    uint8_t r = (uint8_t)((normal.x + 1.0) * 0.5 * 255);
+    uint8_t g = (uint8_t)((normal.y + 1.0) * 0.5 * 255);
+    uint8_t b = (uint8_t)((normal.z + 1.0) * 0.5 * 255);
+    return rgba(r, g, b, 255);
+}
+
+
+static t_ray	generate_ray(t_rt *rt, int x, int y)
 // static t_ray generate_ray(t_vec3 origin, int x, int y)
 {
-    t_ray	ray;
+	t_ray	ray;
 	double	fov = rt->scene.camera.fov;
 	double	scale = tan((fov * 0.5) * (M_PI/180.0));
-	double	aspect_ratio = WIDTH/HEIGHT;
+	double	aspect_ratio = (double)WIDTH/(double)HEIGHT;
 //normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
 // 2x to stretch the new mapping so when I move -1 we have the interval set at [-1, 1];
 	double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
 	double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);//same shit but *-1 cuz y starts at the top on screen
-
+	
 	ray.dir.x = u * scale * aspect_ratio;
 	ray.dir.y = v * scale;//scale is new max based on the FOV/2.. tan(FOV/2)
 	ray.dir.z = 1;
@@ -52,18 +61,31 @@ static t_ray generate_ray(t_rt *rt, int x, int y)
 // C = Camera(origin)	ray.origin
 // S = Sphere Center	sphere.s
 // r = Sphere radius	sphere.r
-double	check_intersection(t_ray ray, t_sphere sphere)
+t_hit	check_intersection(t_ray ray, t_sphere sphere)
 {
+	t_hit	hit;
 	t_vec3	CS = vec_subtract(ray.origin, sphere.s);
 	double	a = vec_dot(ray.dir, ray.dir);
 	double	b = 2 * vec_dot(ray.dir, CS);
 	double	c = vec_dot(CS, CS) - (sphere.r * sphere.r);
 
 	double	discriminant = b * b - (4 * a * c);
+
 	if (discriminant < 0)
-		return (0);
-	else
-		return ((-1 * b - sqrt(discriminant)) / (2 * a));
+		{
+		hit.t = -1;
+		return (hit);
+		}
+	double t = (-b - sqrt(discriminant)) / (2 * a);
+	if (t <= 0)
+	{
+		hit.t = -1;
+		return (hit);
+	}
+	hit.t = t;
+	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
+	hit.normal = vec_normalize(vec_subtract(hit.point, sphere.s));
+	return (hit);
 }
 
 void	render(t_rt *rt)
@@ -76,9 +98,9 @@ void	render(t_rt *rt)
 
 	print_camera(rt->scene.camera);
 	sphere.r = 5;
-	sphere.s.x = 7;
-	sphere.s.y = 2;
-	sphere.s.z = 0;
+	sphere.s.x = 0;
+	sphere.s.y = 0;
+	sphere.s.z = 10;
 	
 	y = 0;
 	while (y < HEIGHT)
@@ -87,11 +109,20 @@ void	render(t_rt *rt)
 		while (x < WIDTH)
 		{
 			ray = generate_ray(rt, x, y);
-			double	hit = check_intersection(ray, sphere);
-			if (hit)
+			t_hit hit = check_intersection(ray, sphere);
+			if (hit.t > 0)
 			{
+
+				 if ((x == WIDTH / 2 && y == HEIGHT / 2) ||
+       				(x == WIDTH / 2 && y == HEIGHT / 3) ||
+        			(x == WIDTH / 3 && y == HEIGHT / 2))
+				{
+					printf("(%3d,%3d) normal = (%.2f, %.2f, %.2f)\n",
+						x, y, hit.normal.x, hit.normal.y, hit.normal.z);
+				}
+				uint32_t color = normal_to_color(hit.normal);
 				// print_vec3(ray.dir);
-				set_pixel(rt->img, x, y, rgba(0, 255, 255, 255));
+				set_pixel(rt->img, x, y, color);
 			}
 			else
 				set_pixel(rt->img, x, y, rgba(255, 255, 255, 255));
@@ -108,7 +139,7 @@ static void	fake_parsing(t_rt *rt)
 	rt->scene.camera.fov = 70.00;
 	rt->scene.camera.pos.x = 0;
 	rt->scene.camera.pos.y = 0;
-	rt->scene.camera.pos.z = 10;
+	rt->scene.camera.pos.z = -10;
 	rt->scene.camera.dir.x = 0;
 	rt->scene.camera.dir.y = 0;
 	rt->scene.camera.dir.z = 1;

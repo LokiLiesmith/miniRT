@@ -29,6 +29,27 @@ t_vec3	vec_subtract(t_vec3 a, t_vec3 b)
 	return (res);
 }
 
+t_vec3	vec_add(t_vec3 a, t_vec3 b)
+{
+	t_vec3	res;
+
+	res.x = a.x + b.x;
+	res.y = a.y + b.y;
+	res.z = a.z + b.z;
+	return (res);
+}
+
+t_vec3	vec_scale(t_vec3 v, double scale)
+{
+	t_vec3	res;
+
+	res.x = v.x * scale;
+	res.y = v.y * scale;
+	res.z = v.z * scale;
+
+	return (res);
+}
+
 t_vec3	vec_normalize(t_vec3 v)
 {
 	double	len;
