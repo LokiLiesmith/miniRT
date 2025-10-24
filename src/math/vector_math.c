@@ -59,3 +59,14 @@ t_vec3	vec_normalize(t_vec3 v)
 		return ((t_vec3){0, 0, 0});
 	return ((t_vec3){v.x / len, v.y / len, v.z / len});
 }
+
+t_vec3	vec_cross(t_vec3 a, t_vec3 b)
+{
+	t_vec3	res;
+
+	res.x = a.y * b.z - a.z * b.y;
+	res.y = a.z * b.x - a.x * b.z;
+	res.z = a.x * b.y - a.y * b.x;
+
+	return (res);
+}
