@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/23 16:45:02 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/25 21:15:42 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,16 @@
 // ◦ Elements defined by a capital letter can only be declared once in the scene.
 
 
-// can the .rt file have comments? beginning with #? should it be skipped?
-
-// Structure to track which unique elements are found,
-	// each one can appear only once
+// handle comments in the .rt file
+// check values (within limits or not)
 typedef struct s_found_elements
 {
 	int	ambient;
 	int	camera;
 	int	light;
+	int	sp_count;
+	int	pl_count;
+	int	cy_count;
 }		t_found_elements;
 
 int	is_line_empty_or_whitespace(const char *line)
@@ -68,23 +69,68 @@ int	check_type_identifier(char *line, t_found_elements *found)
 			found->light = 1;
 		return (0);
 	}
-	// Two character identifiers (pl, sp, cy)
 	if (line[0] && line[1])
 	{
-		if ((line[0] == 'p' && line[1] == 'l') || (line[0] == 's'
-				&& line[1] == 'p') || (line[0] == 'c' && line[1] == 'y'))
-			return (0);
+		if (line[0] == 'p' && line[1] == 'l')
+			return (found->pl_count++, 0);
+		else if (line[0] == 's' && line[1] == 'p')
+			return (found->sp_count++, 0);
+		else if (line[0] == 'c' && line[1] == 'y')
+			return (found->cy_count++, 0);
 	}
 	return (printf("Error\nInvalid type identifier: %.2s\n", line), 1);
 }
 
-// TODO: Implement this to check parameter counts
-int	validate_line_format(char *line)
+void	free_split(char **split_strs, int count)
 {
-	// Split line by whitespace and count parameters
-	// Check if count matches expected for the identifier
-	// A: 3 params, C: 4 params, L: 4 params, sp: 4, pl: 4, cy: 6
-	return (0); // placeholder
+	if (!split_strs)
+		return ;
+	while (count--)
+		free(split_strs[count]);
+	free(split_strs);
+}
+
+int	count_split(char **split_strs)
+{
+	int	count;
+
+	if (!split_strs)
+		return (-1);
+	count = 0;
+	while (array[count] != NULL)
+		count++;
+	return (count);
+}
+
+int	validate_line_format(char *line, t_found_elements *found)
+{
+	int		count;
+	char	**split_strs;
+	int		valid;
+
+	split_strs = ft_split(line.' ');
+	if (!split_strs)
+		return (printf("Error\nMemory allocation for ft_split failed\n"), 1);
+	count = count_split(split_strs);
+	free_split(split_strs);
+	if (count == -1)
+		return (printf("Error counting params\n"), 1);
+	valid = 0;
+	if (line[0] == 'A' && count == 3)
+		valid = 1;
+	else if (line[0] == 'C' && count == 4)
+		valid = 1;
+	else if (line[0] == 'L' && count == 3)
+		valid = 1;
+	else if (line[0] == 's' && line[1] == 'p' && count == 4)
+		valid = 1;
+	else if (line[0] == 'p' && line[1] == 'l' && count == 4)
+		valid = 1;
+	else if (line[0] == 'c' && line[1] == 'y' && count == 6)
+		valid = 1;
+	if (!valid)
+		return (printf("Error\nIncorrect no. of params for %.2s\n", line), 1);
+	return (0);
 }
 
 int	parse_scene_file(const char *filename)
@@ -97,9 +143,10 @@ int	parse_scene_file(const char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (perror("Error opening file"), 1);
-	found = (t_found_elements){0, 0, 0}; // Initialize to zero
+	found = (t_found_elements){0, 0, 0, 0, 0, 0};
 	found_valid_line = 0;
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		if (!is_line_empty_or_whitespace(line))
 		{
@@ -109,11 +156,17 @@ int	parse_scene_file(const char *filename)
 				close(fd);
 				return (1);
 			}
-			// TODO: Add validate_line_format(line) here
+			if (validate_line_format(line, &found) != 0)
+			{
+				free(line);
+				close(fd);
+				return (1);
+			}
 			// TODO: Add actual parsing of values here
 			found_valid_line = 1;
 		}
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	if (!found_valid_line)
@@ -131,16 +184,14 @@ int	parse_scene_file(const char *filename)
 
 int	check_input(int ac, char **av)
 {
-	int file_len;
-	char *temp;
+	int		file_len;
+	char	*temp;
 
 	if (ac != 2)
 		return (printf("Usage: './miniRT scene_file.rt'\n"), 1);
-
 	file_len = ft_strlen(av[1]);
 	if (file_len < 4)
 		return (printf("Error\nInvalid filename\n"), 1);
-
 	// Check if extension is correct
 	temp = ft_substr(av[1], file_len - 3, 3);
 	if (!temp)
@@ -151,9 +202,7 @@ int	check_input(int ac, char **av)
 		return (printf("Error\nInvalid file extension\n"), 1);
 	}
 	free(temp);
-
 	if (parse_scene_file(av[1]) != 0)
 		return (1);
-
 	return (0);
 }
