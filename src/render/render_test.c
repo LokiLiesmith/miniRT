@@ -183,7 +183,7 @@ uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light ligh
 
 	ambient = scene.ambient.brightness;
 	diffuse = light.brightness * fmax(0.0, vec_dot(N, L));
-	specular = light.brightness * pow(fmax(0.0, vec_dot(R, C)), 32.0);
+	specular = light.brightness * pow(fmax(0.0, vec_dot(R, C)), 64.0);
 	// combine + clamp
     intensity = ambient + diffuse + specular;
     if (intensity > 1.0)
