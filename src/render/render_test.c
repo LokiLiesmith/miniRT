@@ -23,7 +23,7 @@ static uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 	return (color);
 }
 
-static uint32_t	normal_to_color(t_vec3 normal)
+uint32_t	normal_to_color(t_vec3 normal)
 {
     uint8_t r = (uint8_t)((normal.x + 1.0) * 0.5 * 255);
     uint8_t g = (uint8_t)((normal.y + 1.0) * 0.5 * 255);
@@ -85,8 +85,10 @@ t_hit	check_intersection(t_ray ray, t_sphere sphere)
 	hit.t = t;
 	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
 	hit.normal = vec_normalize(vec_subtract(hit.point, sphere.s));
+	hit.color = sphere.color;
 	return (hit);
 }
+
 
 void	render(t_rt *rt)
 {
@@ -100,7 +102,10 @@ void	render(t_rt *rt)
 	sphere.r = 5;
 	sphere.s.x = 0;
 	sphere.s.y = 0;
-	sphere.s.z = 10;
+	sphere.s.z = 20;
+	sphere.color.r = 0;
+	sphere.color.g = 160;
+	sphere.color.b = 160;
 	
 	y = 0;
 	while (y < HEIGHT)
@@ -120,7 +125,8 @@ void	render(t_rt *rt)
 					printf("(%3d,%3d) normal = (%.2f, %.2f, %.2f)\n",
 						x, y, hit.normal.x, hit.normal.y, hit.normal.z);
 				}
-				uint32_t color = normal_to_color(hit.normal);
+				// uint32_t color = normal_to_color(hit.normal);
+				uint32_t color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
 				// print_vec3(ray.dir);
 				set_pixel(rt->img, x, y, color);
 			}
@@ -136,16 +142,73 @@ void	render(t_rt *rt)
 
 static void	fake_parsing(t_rt *rt)
 {
-	rt->scene.camera.fov = 70.00;
+//CAMERA
 	rt->scene.camera.pos.x = 0;
 	rt->scene.camera.pos.y = 0;
-	rt->scene.camera.pos.z = -10;
+	rt->scene.camera.pos.z = 0;
+	
+	rt->scene.camera.fov = 70.00;
+	
 	rt->scene.camera.dir.x = 0;
 	rt->scene.camera.dir.y = 0;
 	rt->scene.camera.dir.z = 1;
+//AMBIENT
+	rt->scene.ambient.brightness = 0.2;
+	rt->scene.ambient.color.r = 255;
+	rt->scene.ambient.color.g = 255;
+	rt->scene.ambient.color.b = 255;
+//LIGHT
+	rt->scene.light.pos.x = -50;
+	rt->scene.light.pos.y = 0;
+	rt->scene.light.pos.z = 20;
+	
+	rt->scene.light.brightness = 0.7;
+	
+	rt->scene.light.color.r = 255;
+	rt->scene.light.color.g = 255;
+	rt->scene.light.color.b = 255;
+
 	print_camera(rt->scene.camera);
 
 	// rt->s
+}
+// static uint32_t calculate_color(point)
+// {
+// 	i = Ispec + Ideff + Iambient;
+// 	Ispec = dot(reflect, ray_that_hit_the_point);
+// 	color = rgba(r * i, g * i, b * i, 255);
+// 	return color;
+// }
+
+uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light)
+{
+	t_vec3	N = vec_normalize(hit.normal);
+	t_vec3	L = vec_normalize(vec_subtract(light.pos, hit.point)); 
+	t_vec3	C = vec_normalize(vec_subtract(camera.pos, hit.point));
+	t_vec3	R = vec_reflect(N, vec_scale(L, -1.00));
+	
+	double	intensity;
+	double	specular;
+	double	diffuse;
+	double	ambient;
+
+	ambient = scene.ambient.brightness;
+	diffuse = light.brightness * fmax(0.0, vec_dot(N, L));
+	specular = light.brightness * pow(fmax(0.0, vec_dot(R, C)), 64.0);
+	intensity = specular + diffuse + ambient;
+
+	// combine + clamp
+    intensity = ambient + diffuse + specular;
+    if (intensity > 1.0)
+		intensity = 1.0;
+    if (intensity < 0.0)
+		intensity = 0.0;
+
+	uint8_t r = fmin(255.0, hit.color.r * intensity);
+	uint8_t g = fmin(255.0, hit.color.g * intensity);
+	uint8_t b = fmin(255.0, hit.color.b * intensity);
+
+	return (rgba(r, g, b, 255));
 }
 
 int	main(int ac, char **av)

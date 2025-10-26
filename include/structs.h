@@ -58,6 +58,7 @@ typedef struct s_sphere
 {
 	t_vec3	s;
 	int		r;
+	t_color	color;
 }	t_sphere;
 
 // typedef struct s_plane;
@@ -83,7 +84,8 @@ typedef struct s_object
 
 typedef struct s_ambient
 {
-
+	double	brightness;
+	t_color	color;
 }	t_ambient;
 
 typedef struct s_camera
@@ -95,7 +97,9 @@ typedef struct s_camera
 
 typedef struct s_light
 {
-
+	t_vec3	pos;
+	double	brightness;
+	t_color	color;
 }	t_light;
 
 

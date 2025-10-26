@@ -70,3 +70,13 @@ t_vec3	vec_cross(t_vec3 a, t_vec3 b)
 
 	return (res);
 }
+
+t_vec3	vec_reflect(t_vec3 ray_in, t_vec3 normal)
+{
+	t_vec3	ray_out;
+	double	dotLN;
+
+	dotLN = vec_dot(ray_in, normal);
+	ray_out = vec_subtract(ray_in, vec_scale(normal, ((double)2 * dotLN)));
+	return (ray_out);
+}
