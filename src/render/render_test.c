@@ -31,7 +31,6 @@ uint32_t	normal_to_color(t_vec3 normal)
     return rgba(r, g, b, 255);
 }
 
-
 static t_ray	generate_ray(t_rt *rt, int x, int y)
 // static t_ray generate_ray(t_vec3 origin, int x, int y)
 {
@@ -53,8 +52,6 @@ static t_ray	generate_ray(t_rt *rt, int x, int y)
 	ray.origin = rt->scene.camera.pos;
 	return (ray);
 }
-
-
 
 // D^2 * x^2 + 2 * D (C - S) * t + (C - S)^2 - r^2 = 0;
 // D = ray direction	ray.direction
@@ -117,14 +114,6 @@ void	render(t_rt *rt)
 			t_hit hit = check_intersection(ray, sphere);
 			if (hit.t > 0)
 			{
-
-				 if ((x == WIDTH / 2 && y == HEIGHT / 2) ||
-       				(x == WIDTH / 2 && y == HEIGHT / 3) ||
-        			(x == WIDTH / 3 && y == HEIGHT / 2))
-				{
-					printf("(%3d,%3d) normal = (%.2f, %.2f, %.2f)\n",
-						x, y, hit.normal.x, hit.normal.y, hit.normal.z);
-				}
 				// uint32_t color = normal_to_color(hit.normal);
 				uint32_t color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
 				// print_vec3(ray.dir);
@@ -160,7 +149,7 @@ static void	fake_parsing(t_rt *rt)
 //LIGHT
 	rt->scene.light.pos.x = -50;
 	rt->scene.light.pos.y = 0;
-	rt->scene.light.pos.z = 20;
+	rt->scene.light.pos.z = 5;
 	
 	rt->scene.light.brightness = 0.7;
 	
@@ -185,7 +174,7 @@ uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light ligh
 	t_vec3	N = vec_normalize(hit.normal);
 	t_vec3	L = vec_normalize(vec_subtract(light.pos, hit.point)); 
 	t_vec3	C = vec_normalize(vec_subtract(camera.pos, hit.point));
-	t_vec3	R = vec_reflect(N, vec_scale(L, -1.00));
+	t_vec3	R = vec_reflect(vec_scale(L, -1.0), N);
 	
 	double	intensity;
 	double	specular;
@@ -194,9 +183,7 @@ uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light ligh
 
 	ambient = scene.ambient.brightness;
 	diffuse = light.brightness * fmax(0.0, vec_dot(N, L));
-	specular = light.brightness * pow(fmax(0.0, vec_dot(R, C)), 64.0);
-	intensity = specular + diffuse + ambient;
-
+	specular = light.brightness * pow(fmax(0.0, vec_dot(R, C)), 32.0);
 	// combine + clamp
     intensity = ambient + diffuse + specular;
     if (intensity > 1.0)
