@@ -61,31 +61,23 @@ typedef struct s_ray
 ///////////////////////////////////////////////////////////////////////////////
 //								SCENE									//
 
-typedef struct s_xyz_coord
-{
-	double			x;
-	double			y;
-	double			z;
-}					t_xyz_coord;
-// thought this is better for naming? or should i just use the t_vec3 struct for xyz coordinates too?
-
 typedef struct s_ambient
 {
-	double			ratio;
-	t_color			a_col;
+	double			brightness;
+	t_color			color;
 }					t_ambient;
 
 typedef struct s_camera
 {
-	t_xyz_coord		c_pos;
-	t_vec3			c_vec;
-	double			fov;
+	t_vec3		pos;
+	t_vec3		dir;
+	double		fov; // in degrees, not radians
 
 }					t_camera;
 
 typedef struct s_light
 {
-	t_xyz_coord		l_pos;
+	t_vec3		pos;
 	double			brightness;
 }					t_light;
 
@@ -96,5 +88,18 @@ typedef struct s_scene
 	t_light			light;
 	t_object *objects; // linked list of objects, enum for different handling?
 }					t_scene;
+
+///////////////////////////////////////////////////////////////////////////////
+//								PARSING									//
+
+typedef struct s_found_elements
+{
+	int	ambient;
+	int	camera;
+	int	light;
+	int	sp_count;
+	int	pl_count;
+	int	cy_count;
+}		t_found_elements; // after final checks/debugging i think u can remove the object counts(?)
 
 #endif

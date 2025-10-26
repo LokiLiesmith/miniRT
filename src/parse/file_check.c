@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   file_check.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/25 21:15:42 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/26 18:57:40 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,8 @@
 // ◦ Each type of element can be set in any order in the file.
 // ◦ Elements defined by a capital letter can only be declared once in the scene.
 
-
 // handle comments in the .rt file
 // check values (within limits or not)
-typedef struct s_found_elements
-{
-	int	ambient;
-	int	camera;
-	int	light;
-	int	sp_count;
-	int	pl_count;
-	int	cy_count;
-}		t_found_elements;
 
 int	is_line_empty_or_whitespace(const char *line)
 {
@@ -81,12 +71,18 @@ int	check_type_identifier(char *line, t_found_elements *found)
 	return (printf("Error\nInvalid type identifier: %.2s\n", line), 1);
 }
 
-void	free_split(char **split_strs, int count)
+void	free_split(char **split_strs)
 {
+	int	i;
+
 	if (!split_strs)
 		return ;
-	while (count--)
-		free(split_strs[count]);
+	i = 0;
+	while (split_strs[i])
+	{
+		free(split_strs[i]);
+		i++;
+	}
 	free(split_strs);
 }
 
@@ -102,7 +98,7 @@ int	count_split(char **split_strs)
 	return (count);
 }
 
-int	validate_line_format(char *line, t_found_elements *found)
+int	check_line_format(char *line, t_found_elements *found)
 {
 	int		count;
 	char	**split_strs;
@@ -139,6 +135,7 @@ int	parse_scene_file(const char *filename)
 	char				*line;
 	int					found_valid_line;
 	t_found_elements	found;
+	t_scene				scene;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
@@ -150,19 +147,19 @@ int	parse_scene_file(const char *filename)
 	{
 		if (!is_line_empty_or_whitespace(line))
 		{
-			if (check_type_identifier(line, &found) != 0)
+			if (check_type_identifier(line, &found) != 0
+				|| check_line_format(line, &found) != 0)
 			{
 				free(line);
 				close(fd);
 				return (1);
 			}
-			if (validate_line_format(line, &found) != 0)
+			if (parse_elements(line, &scene) != 0)
 			{
 				free(line);
 				close(fd);
-				return (1);
+				return (printf("Error\nParseElements prob in %.2s\n", line), 1);
 			}
-			// TODO: Add actual parsing of values here
 			found_valid_line = 1;
 		}
 		free(line);

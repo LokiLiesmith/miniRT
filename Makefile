@@ -14,7 +14,7 @@ ifeq ($(UNAME_S),Darwin)
     LINK_FLAGS := -ldl -lglfw -pthread -lm -framework Cocoa -framework OpenGL -framework IOKit
 endif
 
-SRC_COMMON	:= src/main.c src/parse/file_check.c
+SRC_COMMON	:= src/main.c src/parse/file_check.c src/parse/element_parse.c
 SRC			:= $(SRC_COMMON)
 
 OBJDIR		:= obj
