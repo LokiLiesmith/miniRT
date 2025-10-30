@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 18:51:40 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 20:04:47 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/30 23:47:30 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	count_split(char **split_strs)
 	if (!split_strs)
 		return (-1);
 	count = 0;
-	while (array[count] != NULL)
+	while (split_strs[count] != NULL)
 		count++;
 	return (count);
 }
@@ -90,16 +90,34 @@ int parse_xyz(char *s, double xyz[3])
 	return (0);
 }
 
-int	parse_rgb(char *rgb_str, t_color *color)
+int	check_if_int(char *str)
+{
+	int	count;
+
+	if (!str || !str[0])
+		return (1);
+	count = 0;
+	if (str[0] == '-' || str[0] == '+')
+		count++;
+	if (!str[count])
+		return (1);
+	while (str[count] != '\0')
+	{
+		if (str[count] < '0' || str[count] > '9')
+			return (1);
+		count++;
+	}
+	return (0);
+}
+
+int	parse_rgb(char *rgb_str, t_color *color, int i)
 {
 	char	**rgb;
 	long	values[3];
-	int		i;
 
 	rgb = ft_split(rgb_str, ',');
 	if (!rgb)
 		return (printf("Error\nMemory allocation failed\n"), 1);
-	i = 0;
 	while (i < 3)
 	{
 		if (rgb[i] == NULL)

@@ -88,7 +88,7 @@ typedef struct s_ambient
 typedef struct s_camera
 {
 	t_vec3		pos;
-	t_vec3		dir;
+	t_vec3		vec;
 	double		fov;
 
 }					t_camera;
@@ -104,7 +104,7 @@ typedef struct s_scene
 	t_ambient		ambient;
 	t_camera		camera;
 	t_light			light;
-	t_object *objects;
+	t_object *objects; // linked list of all the objects
 }					t_scene;
 
 ///////////////////////////////////////////////////////////////////////////////

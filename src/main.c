@@ -13,11 +13,16 @@
 // 	return (0);
 // }
 
+// void	checkleaks(void)
+// {
+// 	system("leaks miniRT");
+// }
 
 int main(int ac, char **av)
 {
 	t_rt rt;
 
+	// atexit(&checkleaks);
 	if (check_input(ac, av) != 0)
 		return (1);
 	printf("main online: %s\n", av[1]);

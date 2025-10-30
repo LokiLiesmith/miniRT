@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msalangi <msalangi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:20:45 by msalangi          #+#    #+#             */
-/*   Updated: 2025/08/09 22:25:23 by msalangi         ###   ########.fr       */
+/*   Updated: 2025/10/31 00:50:00 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

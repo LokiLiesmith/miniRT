@@ -6,14 +6,16 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 20:08:56 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/31 00:50:17 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
 // handle comments in the .rt file
-// limits for cy height dia, sp dia, xyz coords?
+// limits for cy height dia, sp dia, xyz coords? (dia & height - i check if > 0)
+
+// free all the structs in the end? gc or ...?
 
 int	is_line_empty_or_whitespace(const char *line)
 {
@@ -87,6 +89,25 @@ int	check_line_format(char *line)
 	return (0);
 }
 
+void strip_newline(char *line)
+{
+	int i;
+	
+	if (!line)
+		return;
+	
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '\n' || line[i] == '\r')
+		{
+			line[i] = '\0';
+			break;
+		}
+		i++;
+	}
+}
+
 int	parse_scene_file(const char *filename)
 {
 	int					fd;
@@ -95,23 +116,22 @@ int	parse_scene_file(const char *filename)
 	t_found_elements	found;
 	t_scene				scene;
 
+	ft_memset(&scene, 0, sizeof(t_scene));
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (perror("Error opening file"), 1);
-	found = (t_found_elements){0, 0, 0, 0, 0, 0};
+	ft_memset(&found, 0, sizeof(t_found_elements));
 	found_valid_line = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
+		strip_newline(line);
 		if (!is_line_empty_or_whitespace(line))
 		{
-			if (check_type_identifier(line, &found) != 0
-				|| check_line_format(line) != 0)
-			{
-				free(line);
-				close(fd);
-				return (1);
-			}
+			if (check_type_identifier(line, &found) != 0)
+				return (free(line), close(fd), 1);
+			if (check_line_format(line) != 0)
+				return (free(line), close(fd), 1);
 			if (parse_elements(line, &scene) != 0)
 			{
 				free(line);

@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 21:33:22 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 20:12:22 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/30 23:13:31 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	parse_ambient(char **strs, t_ambient *ambient)
 	ambient->brightness = ft_atod(strs[1]);
 	if (ambient->brightness < 0.0 || ambient->brightness > 1.0)
 		return (printf("Error\nBrightness must be in range [0.0,1.0]\n"), 1);
-	if (parse_rgb(strs[2], &ambient->color) != 0)
+	if (parse_rgb(strs[2], &ambient->color, 0) != 0)
 		return (1);
 	return (0);
 }
@@ -47,12 +47,12 @@ int	parse_camera(char **strs, t_camera *camera)
     while (i < 3)
     {
         if (xyz[i] < -1 || xyz[i] > 1)
-            return (printf("Error\nC_dir values must be in range [-1,1]\n"), 1);
+            return (printf("Error\nC_vec values must be in range [-1,1]\n"), 1);
         i++;
     }
-    camera->dir.x = xyz[0];
-	camera->dir.y = xyz[1];
-	camera->dir.z = xyz[2];
+    camera->vec.x = xyz[0];
+	camera->vec.y = xyz[1];
+	camera->vec.z = xyz[2];
 	if (!is_valid_double(strs[3], 0))
 		return (printf("Error\nInvalid FOV\n"), 1);
 	camera->fov = ft_atod(strs[3]);
@@ -98,9 +98,9 @@ int	parse_elements(char *line, t_scene *scene)
 	else if (line[0] == 's' && line[1] == 'p')
 		result = parse_sp(split_strs, &scene->objects);
 	else if (line[0] == 'p' && line[1] == 'l')
-		result = parse_pl(split_strs, &scene->objects);
+		result = parse_pl(split_strs, &scene->objects, 0);
 	else if (line[0] == 'c' && line[1] == 'y')
-		result = parse_cy(split_strs, &scene->objects);
+		result = parse_cy(split_strs, &scene->objects, 0);
 	free_split(split_strs);
 	return (result);
 }
