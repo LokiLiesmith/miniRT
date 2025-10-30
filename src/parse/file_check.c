@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 13:53:44 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/30 18:48:37 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,33 +53,6 @@ int	check_type_identifier(char *line, t_found_elements *found)
 			return (found->cy_count++, 0);
 	}
 	return (printf("Error\nInvalid type identifier: %.2s\n", line), 1);
-}
-
-void	free_split(char **split_strs)
-{
-	int	i;
-
-	if (!split_strs)
-		return ;
-	i = 0;
-	while (split_strs[i])
-	{
-		free(split_strs[i]);
-		i++;
-	}
-	free(split_strs);
-}
-
-int	count_split(char **split_strs)
-{
-	int	count;
-
-	if (!split_strs)
-		return (-1);
-	count = 0;
-	while (array[count] != NULL)
-		count++;
-	return (count);
 }
 
 int	check_line_format(char *line, t_found_elements *found)
