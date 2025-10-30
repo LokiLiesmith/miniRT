@@ -6,13 +6,13 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 13:51:53 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 14:13:38 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/30 20:01:44 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-int	skip_whitespace_and_sign(char *str, int *sign)
+static int	skip_whitespace_and_sign(char *str, int *sign)
 {
 	int	i;
 
@@ -29,7 +29,7 @@ int	skip_whitespace_and_sign(char *str, int *sign)
 	return (i);
 }
 
-int	parse_integer_part(char *str, int *i)
+static int	parse_integer_part(char *str, int *i)
 {
 	int	integer;
 
@@ -42,7 +42,7 @@ int	parse_integer_part(char *str, int *i)
 	return (integer);
 }
 
-double	parse_decimal_part(char *str, int *i)
+static double	parse_decimal_part(char *str, int *i)
 {
 	double	decimal;
 	int		count;

@@ -6,66 +6,11 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 21:33:22 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 19:23:02 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/30 20:12:22 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
-
-int parse_xyz(char *s, double xyz[3])
-{
-	char **sub_strs;
-	sub_strs = ft_split(s, ',');
-	if (!sub_strs)
-		return (printf("Error\nft_split malloc fail in parse_xyz\n"), 1);
-	int i;
-	i = 0;
-	while (sub_strs[i] && i < 3)
-	{
-		if (!is_valid_double(sub_strs[i], 0))
-			return (free_split(sub_strs), printf("Error\nInvalid char for params\n"), 1);
-		xyz[i] = ft_atod(sub_strs[i]);
-		i++;
-	}
-	if (i != 3)
-		return (free_split(sub_strs), printf("Error\nLess than 3 values for coords/vec\n"), 1);
-	if (sub_strs[3] != NULL)
-		return (free_split(sub_strs), printf("Error\nMore than 3 values for coords/vec\n"), 1);
-	free_split(sub_strs);
-	return (0);
-}
-
-int	parse_rgb(char *rgb_str, t_color *color)
-{
-	char	**rgb;
-	long	values[3];
-	int		i;
-
-	rgb = ft_split(rgb_str, ',');
-	if (!rgb)
-		return (printf("Error\nMemory allocation failed\n"), 1);
-	i = 0;
-	while (i < 3)
-	{
-		if (rgb[i] == NULL)
-			return (free_split(rgb), printf("Error\nRGB must have 3 values\n"),
-				1);
-		if (check_if_int(rgb[i]) != 0)
-			return (free_split(rgb), printf("Error\nInvalid RGB format\n"), 1);
-		values[i] = ft_atol(rgb[i]);
-		if (values[i] < 0 || values[i] > 255)
-			return (free_split(rgb),
-				printf("Error\nRGB out of range [0-255]\n"), 1);
-		i++;
-	}
-	if (rgb[3] != NULL)
-		return (free_split(rgb), printf("Error\nToo many RGB values\n"), 1);
-	color->r = values[0];
-	color->g = values[1];
-	color->b = values[2];
-	free_split(rgb);
-	return (0);
-}
 
 // ambient lighting ratio in the range [0.0,1.0]: 0.2
 // R, G, B colors in the range [0-255]: 255, 255, 255
@@ -77,7 +22,7 @@ int	parse_ambient(char **strs, t_ambient *ambient)
 	ambient->brightness = ft_atod(strs[1]);
 	if (ambient->brightness < 0.0 || ambient->brightness > 1.0)
 		return (printf("Error\nBrightness must be in range [0.0,1.0]\n"), 1);
-	if (parse_rgb(strs[2], ambient->color) != 0)
+	if (parse_rgb(strs[2], &ambient->color) != 0)
 		return (1);
 	return (0);
 }
@@ -92,10 +37,10 @@ int	parse_camera(char **strs, t_camera *camera)
     double xyz[3];
 	if (parse_xyz(strs[1], xyz) != 0)
 		return (1);
-    camera->pos->x = xyz[0];
-	camera->pos->y = xyz[1];
-	camera->pos->z = xyz[2];
-	if (parse_c_dir(strs[2], xyz) != 0)
+    camera->pos.x = xyz[0];
+	camera->pos.y = xyz[1];
+	camera->pos.z = xyz[2];
+	if (parse_xyz(strs[2], xyz) != 0)
 		return (1);
     int i;
     i = 0;
@@ -105,9 +50,9 @@ int	parse_camera(char **strs, t_camera *camera)
             return (printf("Error\nC_dir values must be in range [-1,1]\n"), 1);
         i++;
     }
-    camera->dir->x = xyz[0];
-	camera->dir->y = xyz[1];
-	camera->dir->z = xyz[2];
+    camera->dir.x = xyz[0];
+	camera->dir.y = xyz[1];
+	camera->dir.z = xyz[2];
 	if (!is_valid_double(strs[3], 0))
 		return (printf("Error\nInvalid FOV\n"), 1);
 	camera->fov = ft_atod(strs[3]);
@@ -124,9 +69,9 @@ int	parse_light(char **strs, t_light *light)
 	double xyz[3];
 	if (parse_xyz(strs[1], xyz) != 0)
 		return (1);
-	light->pos->x = xyz[0];	
-	light->pos->y = xyz[1];
-	light->pos->z = xyz[2];	
+	light->pos.x = xyz[0];	
+	light->pos.y = xyz[1];
+	light->pos.z = xyz[2];	
 	if (!is_valid_double(strs[2], 0))
 		return (printf("Error\nInvalid L_brightness format\n"), 1);
 	light->brightness = ft_atod(strs[2]);

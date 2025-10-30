@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:23:17 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 19:36:57 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/30 21:10:40 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 // R,G,B colors in the range [0-255]: 10, 0, 255
 int	parse_sp(char **strs, t_object *objects)
 {
+    
 }
 
 // identifier: pl

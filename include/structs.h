@@ -15,6 +15,28 @@ typedef struct s_rt
 }					t_rt;
 
 ///////////////////////////////////////////////////////////////////////////////
+//								MATH_THINGS									//
+typedef struct s_vec3
+{
+	double			x;
+	double			y;
+	double			z;
+}					t_vec3;
+
+typedef struct s_color
+{
+	int				r;
+	int				g;
+	int				b;
+}					t_color;
+
+typedef struct s_ray
+{
+	// origin point with 3 coords;
+	// direction; scalar?;
+}					t_ray;
+
+///////////////////////////////////////////////////////////////////////////////
 //								OBJECTS										//
 
 typedef enum e_objtype
@@ -55,28 +77,6 @@ typedef struct s_object
 }					t_object;
 
 ///////////////////////////////////////////////////////////////////////////////
-//								MATH_THINGS									//
-typedef struct s_vec3
-{
-	double			x;
-	double			y;
-	double			z;
-}					t_vec3;
-
-typedef struct s_color
-{
-	int				r;
-	int				g;
-	int				b;
-}					t_color;
-
-typedef struct s_ray
-{
-	// origin point with 3 coords;
-	// direction; scalar?;
-}					t_ray;
-
-///////////////////////////////////////////////////////////////////////////////
 //								SCENE									//
 
 typedef struct s_ambient
@@ -89,7 +89,7 @@ typedef struct s_camera
 {
 	t_vec3		pos;
 	t_vec3		dir;
-	double		fov; // in degrees, not radians
+	double		fov;
 
 }					t_camera;
 
@@ -104,7 +104,7 @@ typedef struct s_scene
 	t_ambient		ambient;
 	t_camera		camera;
 	t_light			light;
-	t_object *objects; // linked list of objects, enum for different handling?
+	t_object *objects;
 }					t_scene;
 
 ///////////////////////////////////////////////////////////////////////////////
