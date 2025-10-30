@@ -24,10 +24,28 @@ typedef enum e_objtype
 	CYLINDER
 }					t_objtype;
 
-// to figure out
-// typedef struct s_sphere;
-// typedef struct s_plane;
-// typedef struct s_cylinder;
+typedef struct s_sphere
+{
+	t_vec3 center;
+	double dia;
+	t_color color;
+}	t_sphere;
+
+typedef struct s_plane
+{
+	t_vec3 point;
+	t_vec3 vec;
+	t_color color;
+}	t_plane;
+
+typedef struct s_cylinder
+{
+	t_vec3 center;
+	t_vec3 vec;
+	double dia;
+	double height;
+	t_color color;
+}	t_cylinder;
 
 typedef struct s_object
 {

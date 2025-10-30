@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   element_parse.c                                    :+:      :+:    :+:   */
+/*   acl_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 21:33:22 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 19:21:21 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/30 19:23:02 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,18 +133,6 @@ int	parse_light(char **strs, t_light *light)
 	if (light->brightness < 0.0 || light->brightness > 1.0)
 		return (printf("Error\nBrightness must be in range [0.0,1.0]\n"), 1);
 	return (0);
-}
-
-int	parse_sp(char **strs, t_object *objects)
-{
-}
-
-int	parse_pl(char **strs, t_object *objects)
-{
-}
-
-int	parse_cy(char **strs, t_object *objects)
-{
 }
 
 int	parse_elements(char *line, t_scene *scene)

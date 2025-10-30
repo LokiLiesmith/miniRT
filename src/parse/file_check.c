@@ -6,13 +6,14 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 18:48:37 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/30 19:40:27 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
 // handle comments in the .rt file
+// limits for cy height dia, sp dia, xyz coords?
 
 int	is_line_empty_or_whitespace(const char *line)
 {
