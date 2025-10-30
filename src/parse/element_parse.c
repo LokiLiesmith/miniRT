@@ -6,48 +6,42 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 21:33:22 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/26 19:16:51 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/30 14:04:16 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-// add to helper later
-int	ft_if_num(char *str)
+int	parse_rgb(char *rgb_str, t_color *color)
 {
-	int	count;
+	char	**rgb;
+	long	values[3];
+	int		i;
 
-	if (!str || !str[0])
-		return (1);
-	count = 0;
-	if (str[0] == '-' || str[0] == '+')
-		count++;
-	if (!str[count])
-		return (1);
-	while (str[count] != '\0')
-	{
-		if (str[count] < '0' || str[count] > '9' || str[count] != '.')
-			return (printf("Error\nInvalid char in params\n"), 1);
-		count++;
-	}
-	return (0);
-}
-
-// add to helper later
-double	ft_atod(char *str)
-{
-	int	sign;
-	int	i;
-
-	sign = 1;
+	rgb = ft_split(rgb_str, ',');
+	if (!rgb)
+		return (printf("Error\nMemory allocation failed\n"), 1);
 	i = 0;
-	if (str[i] == '+' || str[i] == '-')
+	while (i < 3)
 	{
-		if (str[i] == '-')
-			sign = -1;
+		if (rgb[i] == NULL)
+			return (free_split(rgb), printf("Error\nRGB must have 3 values\n"),
+				1);
+		if (check_if_int(rgb[i]) != 0)
+			return (free_split(rgb), printf("Error\nInvalid RGB format\n"), 1);
+		values[i] = ft_atol(rgb[i]);
+		if (values[i] < 0 || values[i] > 255)
+			return (free_split(rgb),
+				printf("Error\nRGB out of range [0-255]\n"), 1);
 		i++;
 	}
-	if  ()
+	if (rgb[3] != NULL)
+		return (free_split(rgb), printf("Error\nToo many RGB values\n"), 1);
+	color->r = values[0];
+	color->g = values[1];
+	color->b = values[2];
+	free_split(rgb);
+	return (0);
 }
 
 // ambient lighting ratio in the range [0.0,1.0]: 0.2
@@ -55,12 +49,14 @@ double	ft_atod(char *str)
 // Ex. A 0.2 255,255,255
 int	parse_ambient(char **strs, t_ambient *ambient)
 {
-	char	**rgb;
-	// check if all the chars are valid chars i.e, number or .
-	// convert to double
-	// check limits
-
-	free_split(rgb);
+	if (!is_valid_double(strs[1], 0))
+		return (printf("Error\nInvalid brightness format\n"), 1);
+	ambient->brightness = ft_atod(strs[1]);
+	if (ambient->brightness < 0.0 || ambient->brightness > 1.0)
+		return (printf("Error\nBrightness must be in range [0.0, 1.0]\n"), 1);
+	if (parse_rgb(strs[2], ambient->color) != 0)
+		return (1);
+	return (0);
 }
 
 int	parse_camera(char **strs, t_camera *camera)

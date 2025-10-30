@@ -6,51 +6,35 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/26 18:57:40 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/10/30 13:53:44 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-// If any misconfiguration of any kind is encountered in the file,
-// the program must exit
-// properly and return "Error\n" followed by an explicit error message of your choice.
-
-// Your program must take as its first argument a scene description file with the .rt
-// extension.
-// ◦ Each type of element can be separated by one or more line breaks.
-// ◦ Each type of information from an element can be separated by one or more
-// spaces.
-// ◦ Each type of element can be set in any order in the file.
-// ◦ Elements defined by a capital letter can only be declared once in the scene.
-
 // handle comments in the .rt file
-// check values (within limits or not)
 
 int	is_line_empty_or_whitespace(const char *line)
 {
 	while (*line)
 	{
 		if (*line != ' ' && *line != '\t' && *line != '\n' && *line != '\r')
-			return (0); // not empty
+			return (0);
 		line++;
 	}
-	return (1); // only whitespace
+	return (1);
 }
 
 int	check_type_identifier(char *line, t_found_elements *found)
 {
-	// Single character identifiers
 	if (line[0] == 'A' || line[0] == 'C' || line[0] == 'L')
 	{
-		// Check for duplicates
 		if (line[0] == 'A' && found->ambient)
 			return (printf("Error\nDuplicate Ambient element\n"), 1);
 		if (line[0] == 'C' && found->camera)
 			return (printf("Error\nDuplicate Camera element\n"), 1);
 		if (line[0] == 'L' && found->light)
 			return (printf("Error\nDuplicate Light element\n"), 1);
-		// Mark as found
 		if (line[0] == 'A')
 			found->ambient = 1;
 		else if (line[0] == 'C')
@@ -169,7 +153,6 @@ int	parse_scene_file(const char *filename)
 	if (!found_valid_line)
 		return (printf("Error\nFile is empty or contains only whitespace\n"),
 			1);
-	// Check if mandatory elements are present
 	if (!found.ambient)
 		return (printf("Error\nMissing Ambient element\n"), 1);
 	if (!found.camera)
@@ -189,7 +172,6 @@ int	check_input(int ac, char **av)
 	file_len = ft_strlen(av[1]);
 	if (file_len < 4)
 		return (printf("Error\nInvalid filename\n"), 1);
-	// Check if extension is correct
 	temp = ft_substr(av[1], file_len - 3, 3);
 	if (!temp)
 		return (printf("Error\nMemory allocation failed\n"), 1);
