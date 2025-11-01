@@ -39,8 +39,13 @@ typedef struct s_hit
 	t_color	color;
 }	t_hit;
 
-
-
+typedef struct s_view
+{
+	t_vec3	world_up;
+	t_vec3	forward;
+	t_vec3	right;
+	t_vec3	up;
+}	t_view;
 
 
 ///////////////////////////////////////////////////////////////////////////////

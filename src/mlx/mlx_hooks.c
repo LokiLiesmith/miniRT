@@ -6,11 +6,39 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/16 02:17:05 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/01 21:01:32 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+
+// static t_vec3	vec_rotate_x(t_vec3 v, double angle)
+// {
+// 	t_vec3	r;
+// 	double	c;
+// 	double	s;
+
+// 	c = cos(angle);
+// 	s = sin(angle);
+// 	r.x = v.x;
+// 	r.y = v.y * c - v.z * s;
+// 	r.z = v.y * s + v.z * c;
+// 	return (r);
+// }
+
+static t_vec3	vec_rotate_y(t_vec3 v, double angle)
+{
+	t_vec3	r;
+	double	c;
+	double	s;
+
+	c = cos(angle);
+	s = sin(angle);
+	r.x = v.x * c + v.z * s;
+	r.y = v.y;
+	r.z = -v.x * s + v.z * c;
+	return (r);
+}
 
 // Esc to close window
 void	key_hook(mlx_key_data_t keydata, void *param)
@@ -61,8 +89,17 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		render(rt);
 		printf("FOV: %f\n", rt->scene.camera.fov);
 	}
-
-
+//ROTATION
+	if (keydata.key == MLX_KEY_Q && keydata.action == MLX_PRESS)
+	{
+		rt->scene.camera.dir = vec_rotate_y(rt->scene.camera.dir, -0.05);
+		render(rt);
+	}
+	if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)
+	{
+		rt->scene.camera.dir = vec_rotate_y(rt->scene.camera.dir, 0.05);
+		render(rt);
+	}
 }
 
 // Close hook to handle window close button

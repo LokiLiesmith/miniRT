@@ -31,7 +31,7 @@ uint32_t	normal_to_color(t_vec3 normal)
     return rgba(r, g, b, 255);
 }
 
-static t_ray	generate_ray(t_rt *rt, int x, int y)
+static t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 // static t_ray generate_ray(t_vec3 origin, int x, int y)
 {
 	t_ray	ray;
@@ -40,15 +40,19 @@ static t_ray	generate_ray(t_rt *rt, int x, int y)
 	double	aspect_ratio = (double)WIDTH/(double)HEIGHT;
 //normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
 // 2x to stretch the new mapping so when I move -1 we have the interval set at [-1, 1];
-	double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
-	double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);//same shit but *-1 cuz y starts at the top on screen
-	
-	ray.dir.x = u * scale * aspect_ratio;
-	ray.dir.y = v * scale;//scale is new max based on the FOV/2.. tan(FOV/2)
-	ray.dir.z = 1;
+	// double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
+	// double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);//same shit but *-1 cuz y starts at the top on screen
+	double	u = (2.0 * ((x + 0.5) / (double)WIDTH) - 1.0) * aspect_ratio * scale;
+	double	v = (1.0 - 2.0 * ((y + 0.5) / (double)HEIGHT)) * scale;
 
+	t_vec3 dir_cam = {u, v, 1.0};
+	dir_cam = vec_normalize(dir_cam);
+	ray.dir = vec_add(
+		vec_add(vec_scale(view.right, dir_cam.x),
+				vec_scale(view.up, dir_cam.y)),
+		vec_scale(view.forward, dir_cam.z)
+	);
 	ray.dir = vec_normalize(ray.dir);
-
 	ray.origin = rt->scene.camera.pos;
 	return (ray);
 }
@@ -58,7 +62,7 @@ static t_ray	generate_ray(t_rt *rt, int x, int y)
 // C = Camera(origin)	ray.origin
 // S = Sphere Center	sphere.s
 // r = Sphere radius	sphere.r
-t_hit	check_intersection(t_ray ray, t_sphere sphere)
+t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
 {
 	t_hit	hit;
 	t_vec3	CS = vec_subtract(ray.origin, sphere.s);
@@ -86,6 +90,22 @@ t_hit	check_intersection(t_ray ray, t_sphere sphere)
 	return (hit);
 }
 
+t_view camera_orientation(t_rt *rt)
+{
+	t_view	view;
+
+	view.world_up.x = 0;
+	view.world_up.y = 1;
+	view.world_up.z = 0;
+
+	view.forward = vec_normalize(rt->scene.camera.dir);
+	view.right = vec_normalize(vec_cross(view.world_up, view.forward));
+	view.up = vec_normalize(vec_cross(view.forward, view.right));
+	print_vec3(view.forward);
+	print_vec3(view.right);
+	print_vec3(view.up);
+	return (view);
+}
 
 void	render(t_rt *rt)
 {
@@ -94,12 +114,14 @@ void	render(t_rt *rt)
 	t_ray		ray;
 	// t_vec3		origin = rt->scene.camera.pos;
 	t_sphere	sphere;
+	// t_sphere	sphere_2;
+	t_view		view = camera_orientation(rt);
 
 	print_camera(rt->scene.camera);
-	sphere.r = 5;
+	sphere.r = 20;
 	sphere.s.x = 0;
 	sphere.s.y = 0;
-	sphere.s.z = 20;
+	sphere.s.z = 0;
 	sphere.color.r = 0;
 	sphere.color.g = 160;
 	sphere.color.b = 160;
@@ -110,8 +132,8 @@ void	render(t_rt *rt)
 		x = 0;
 		while (x < WIDTH)
 		{
-			ray = generate_ray(rt, x, y);
-			t_hit hit = check_intersection(ray, sphere);
+			ray = generate_ray(rt, x, y, view);
+			t_hit hit = intersect_sphere(ray, sphere);
 			if (hit.t > 0)
 			{
 				// uint32_t color = normal_to_color(hit.normal);
@@ -140,7 +162,7 @@ static void	fake_parsing(t_rt *rt)
 	
 	rt->scene.camera.dir.x = 0;
 	rt->scene.camera.dir.y = 0;
-	rt->scene.camera.dir.z = 1;
+	rt->scene.camera.dir.z = 0.1;
 //AMBIENT
 	rt->scene.ambient.brightness = 0.2;
 	rt->scene.ambient.color.r = 255;
@@ -150,15 +172,15 @@ static void	fake_parsing(t_rt *rt)
 	rt->scene.light.pos.x = -50;
 	rt->scene.light.pos.y = 0;
 	rt->scene.light.pos.z = 5;
-	
+
 	rt->scene.light.brightness = 0.7;
-	
+
 	rt->scene.light.color.r = 255;
 	rt->scene.light.color.g = 255;
 	rt->scene.light.color.b = 255;
 
 	print_camera(rt->scene.camera);
-
+	
 	// rt->s
 }
 // static uint32_t calculate_color(point)
