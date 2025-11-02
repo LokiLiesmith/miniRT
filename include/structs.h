@@ -115,9 +115,6 @@ typedef struct s_found_elements
 	int	ambient;
 	int	camera;
 	int	light;
-	int	sp_count;
-	int	pl_count;
-	int	cy_count;
-}		t_found_elements; // after final checks/debugging i think u can remove the object counts(?)
+}		t_found;
 
 #endif

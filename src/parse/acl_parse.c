@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 21:33:22 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 23:13:31 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/02 23:08:13 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,24 @@ int	parse_ambient(char **strs, t_ambient *ambient)
 // 3D normalized orientation vector, in the range [-1,1] for each x, y, z axis:
 // 0.0,0.0,1.0
 // FOV: Horizontal field of view in degrees in the range [0,180]: 70
-int	parse_camera(char **strs, t_camera *camera)
+int	parse_camera(char **strs, t_camera *camera, int i)
 {
-    double xyz[3];
+	double	xyz[3];
+
 	if (parse_xyz(strs[1], xyz) != 0)
 		return (1);
-    camera->pos.x = xyz[0];
+	camera->pos.x = xyz[0];
 	camera->pos.y = xyz[1];
 	camera->pos.z = xyz[2];
 	if (parse_xyz(strs[2], xyz) != 0)
 		return (1);
-    int i;
-    i = 0;
-    while (i < 3)
-    {
-        if (xyz[i] < -1 || xyz[i] > 1)
-            return (printf("Error\nC_vec values must be in range [-1,1]\n"), 1);
-        i++;
-    }
-    camera->vec.x = xyz[0];
+	while (i < 3)
+	{
+		if (xyz[i] < -1 || xyz[i] > 1)
+			return (printf("Error\nC_vec values must be in range [-1,1]\n"), 1);
+		i++;
+	}
+	camera->vec.x = xyz[0];
 	camera->vec.y = xyz[1];
 	camera->vec.z = xyz[2];
 	if (!is_valid_double(strs[3], 0))
@@ -66,12 +65,13 @@ int	parse_camera(char **strs, t_camera *camera)
 // the light brightness ratio in the range [0.0,1.0]: 0.6
 int	parse_light(char **strs, t_light *light)
 {
-	double xyz[3];
+	double	xyz[3];
+
 	if (parse_xyz(strs[1], xyz) != 0)
 		return (1);
-	light->pos.x = xyz[0];	
+	light->pos.x = xyz[0];
 	light->pos.y = xyz[1];
-	light->pos.z = xyz[2];	
+	light->pos.z = xyz[2];
 	if (!is_valid_double(strs[2], 0))
 		return (printf("Error\nInvalid L_brightness format\n"), 1);
 	light->brightness = ft_atod(strs[2]);
@@ -92,7 +92,7 @@ int	parse_elements(char *line, t_scene *scene)
 	if (line[0] == 'A')
 		result = parse_ambient(split_strs, &scene->ambient);
 	else if (line[0] == 'C')
-		result = parse_camera(split_strs, &scene->camera);
+		result = parse_camera(split_strs, &scene->camera, 0);
 	else if (line[0] == 'L')
 		result = parse_light(split_strs, &scene->light);
 	else if (line[0] == 's' && line[1] == 'p')

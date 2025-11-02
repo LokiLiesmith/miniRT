@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:23:17 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/02 19:15:25 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/02 23:08:29 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,21 @@ int	parse_sp(char **strs, t_object **objs_lst)
 // 3D normalized normal vector, in the range [-1,1] for each x, y, z axis:
 // 0.0,1.0,0.0
 // R,G,B colors in the range [0-255]: 0,0,225
+int	parse_pl_normal(int i, t_plane *pl, double xyz[3])
+{
+	while (i < 3)
+	{
+		if (xyz[i] < -1 || xyz[i] > 1)
+			return (free(pl),
+				printf("Error\npl_vec values must be in range [-1,1]\n"), 1);
+		i++;
+	}
+	pl->normal.x = xyz[0];
+	pl->normal.y = xyz[1];
+	pl->normal.z = xyz[2];
+	return (0);
+}
+
 int	parse_pl(char **strs, t_object **objs_lst, int i)
 {
 	t_plane		*pl;
@@ -65,16 +80,8 @@ int	parse_pl(char **strs, t_object **objs_lst, int i)
 	pl->point.z = xyz[2];
 	if (parse_xyz(strs[2], xyz) != 0)
 		return (free(pl), 1);
-	while (i < 3)
-	{
-		if (xyz[i] < -1 || xyz[i] > 1)
-			return (free(pl),
-				printf("Error\npl_vec values must be in range [-1,1]\n"), 1);
-		i++;
-	}
-	pl->normal.x = xyz[0];
-	pl->normal.y = xyz[1];
-	pl->normal.z = xyz[2];
+	if (parse_pl_normal(i, pl, xyz) != 0)
+		return (free(pl), 1);
 	if (parse_rgb(strs[3], &pl->color, 0) != 0)
 		return (free(pl), 1);
 	new_obj = create_new_obj(PLANE, pl);
@@ -91,6 +98,33 @@ int	parse_pl(char **strs, t_object **objs_lst, int i)
 // the cylinder diameter: 14.2
 // the cylinder height: 21.42
 // R, G, B colors in the range [0,255]: 10, 0, 255
+int	parse_cy_cont(int i, double xyz[3], char **strs, t_cylinder *cy)
+{
+	while (i < 3)
+	{
+		if (xyz[i] < -1 || xyz[i] > 1)
+			return (printf("Error\ncy_vec values must be in range [-1,1]\n"),
+				1);
+		i++;
+	}
+	cy->axis.x = xyz[0];
+	cy->axis.y = xyz[1];
+	cy->axis.z = xyz[2];
+	if (!is_valid_double(strs[3], 0))
+		return (printf("Error\nInvalid cy diameter\n"), 1);
+	cy->dia = ft_atod(strs[3]);
+	if (cy->dia <= 0.0)
+		return (printf("Error\ncy diameter must be positive\n"), 1);
+	if (!is_valid_double(strs[4], 0))
+		return (printf("Error\nInvalid cy height\n"), 1);
+	cy->height = ft_atod(strs[4]);
+	if (cy->height <= 0.0)
+		return (printf("Error\ncy height must be positive\n"), 1);
+	if (parse_rgb(strs[5], &cy->color, 0) != 0)
+		return (1);
+	return (0);
+}
+
 int	parse_cy(char **strs, t_object **objs_lst, int i)
 {
 	t_cylinder	*cy;
@@ -107,27 +141,7 @@ int	parse_cy(char **strs, t_object **objs_lst, int i)
 	cy->center.z = xyz[2];
 	if (parse_xyz(strs[2], xyz) != 0)
 		return (free(cy), 1);
-	while (i < 3)
-	{
-		if (xyz[i] < -1 || xyz[i] > 1)
-			return (free(cy),
-				printf("Error\ncy_vec values must be in range [-1,1]\n"), 1);
-		i++;
-	}
-	cy->axis.x = xyz[0];
-	cy->axis.y = xyz[1];
-	cy->axis.z = xyz[2];
-	if (!is_valid_double(strs[3], 0))
-		return (free(cy), printf("Error\nInvalid cy diameter\n"), 1);
-	cy->dia = ft_atod(strs[3]);
-	if (cy->dia <= 0.0)
-		return (free(cy), printf("Error\ncy diameter must be positive\n"), 1);
-	if (!is_valid_double(strs[4], 0))
-		return (free(cy), printf("Error\nInvalid cy height\n"), 1);
-	cy->height = ft_atod(strs[4]);
-	if (cy->height <= 0.0)
-		return (free(cy), printf("Error\ncy height must be positive\n"), 1);
-	if (parse_rgb(strs[5], &cy->color, 0) != 0)
+	if (parse_cy_cont(i, xyz, strs, cy) != 0)
 		return (free(cy), 1);
 	new_obj = create_new_obj(CYLINDER, cy);
 	if (!new_obj)

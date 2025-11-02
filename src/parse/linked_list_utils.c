@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 21:13:13 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 22:36:23 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/02 23:08:26 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_object	*create_new_obj(t_objtype type, void *data)
 	if (!new_obj)
 		return (printf("Error\nMalloc error - new node\n"), NULL);
 	new_obj->type = type;
-    new_obj->data = data;
+	new_obj->data = data;
 	new_obj->next = NULL;
 	return (new_obj);
 }

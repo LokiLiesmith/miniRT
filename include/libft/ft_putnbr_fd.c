@@ -1,40 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putnr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/19 01:44:56 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/19 02:07:06 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/15 15:06:00 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/18 19:25:02 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// Outputs the integer ’n’ to the specified file descriptor.
 void	ft_putnbr_fd(int n, int fd)
 {
-	long	nbr;
-	char	buffer[12];
-	int		i;
+	char	c;
 
-	nbr = n;
-	if (nbr == 0)
+	if (n == -2147483648)
 	{
-		ft_putchar_fd('0', fd);
+		write(fd, "-2147483648", 11);
 		return ;
 	}
-	if (nbr < 0)
+	if (n < 0)
 	{
-		ft_putchar_fd('-', fd);
-		nbr = -nbr;
+		write(fd, "-", 1);
+		n = -n;
 	}
-	i = 0;
-	while (nbr > 0)
+	if (n < 10 && n >= 0)
 	{
-		buffer[i++] = (nbr % 10) + '0';
-		nbr /= 10;
+		c = '0' + n;
+		write(fd, &c, 1);
 	}
-	while (i-- > 0)
-		ft_putchar_fd(buffer[i], fd);
+	if (n >= 10)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		c = '0' + (n % 10);
+		write(fd, &c, 1);
+	}
 }
+
+// int	main(void)
+// {
+// 	int n = 12345;
+// 	ft_putnbr_fd(n, 1);
+// 	return (0);
+// }

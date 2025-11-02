@@ -3,49 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/15 13:29:04 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/15 14:54:58 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/13 14:28:56 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 18:40:32 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// The strrchr() function locates the last occurrence of c (converted to a
+// char) in the string pointed to by s.  The terminating null character is
+// considered to be part of the string; therefore if c is `\0', the func-
+// tions locate the terminating `\0'.
+// Return value: The functions strrchr() return a pointer to the located
+// character, or NULL if the character does not appear in the string.
 char	*ft_strrchr(const char *s, int c)
 {
-	const char	*end;
+	unsigned char	a;
+	int				i;
 
-	end = s;
-	while (*end)
-		end++;
-	while (end >= s)
+	a = (unsigned char)c;
+	i = ft_strlen(s) + 1;
+	while (i--)
 	{
-		if (*end == (char)c)
-			return ((char *)end);
-		end--;
+		if ((unsigned char)s[i] == a)
+		{
+			return ((char *)&s[i]);
+		}
 	}
 	return (NULL);
 }
 
-/* #include <stdio.h>
-
-void test_ft_strrchr(const char *str, int c)
-{
-    char *result = ft_strrchr(str, c);
-    if (result)
-        printf("Srchn last '%c' in \"%s\": Fnd at \"%s\"\n", c, str, result);
-    else
-        printf("Searching last '%c' in \"%s\": Not found.\n", c, str);
-}
-
-int main(void)
-{
-    test_ft_strrchr("Hello, world!", 'o');  // Expected: "orld!"
-    test_ft_strrchr("42 Network 42", '4');  // Expected: "42" (last one)
-    test_ft_strrchr("Hello, world!", 'z');  // Expected: Not found.
-    test_ft_strrchr("Hello, world!", '\0'); // Expected: "" (pointer to '\0')
-
-    return 0;
-}
- */
+// int	main(void)
+// {
+// 	char *s = "gRdhsRdhf";
+// 	int c = '\0';
+// 	printf("%s\n", ft_strrchr(s, c));
+// 	printf("%s\n", strrchr(s, c));
+// 	return (0);
+// }

@@ -3,32 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 22:54:10 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/14 22:39:18 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/10 18:57:46 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 18:45:24 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include <stdio.h>
-// unsigned int type and const char so it's read only and it cant rewrite
-//look for NULL char and increment
-// size_t - unsigned integer type for sizes and lenghts dealing with memory 
 #include "libft.h"
 
+// DESCRIPTION:
+//     The strlen() function computes the length of the string s. The strnlen()
+//     function attempts to compute the length of s, but never scans beyond the
+//     first maxlen bytes of s.
+// RETURN VALUES:
+//     The strlen() function returns the number of characters that precede the
+//     terminating NUL character.
 size_t	ft_strlen(const char *s)
 {
-	size_t	len;
+	int	count;
 
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
+	count = 0;
+	while (s[count] != '\0')
+		count++;
+	return (count);
 }
-// int main(void)
+
+// int	main(void)
 // {
-// 	char *string = "ThisisAtest!";
-// 	printf("String: %s\n", string);
-// 	printf("Length of string: %zu\n", ft_strlen(string));
-// 	return(0);
+// 	size_t output_yours = ft_strlen("[]\\ ");
+// 	printf("your output: %zu\n", output_yours);
+// 	size_t output_comp = strlen("[]\\ ");
+// 	printf("in-built function output: %zu\n", output_comp);
+// 	return (0);
 // }

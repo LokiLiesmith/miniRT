@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 18:51:40 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 23:47:30 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/02 23:08:31 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,75 +67,31 @@ int	count_split(char **split_strs)
 	return (count);
 }
 
-int parse_xyz(char *s, double xyz[3])
+int	is_line_empty_or_whitespace(const char *line)
 {
-	char **sub_strs;
-	sub_strs = ft_split(s, ',');
-	if (!sub_strs)
-		return (printf("Error\nft_split malloc fail in parse_xyz\n"), 1);
-	int i;
+	while (*line)
+	{
+		if (*line != ' ' && *line != '\t' && *line != '\n' && *line != '\r')
+			return (0);
+		line++;
+	}
+	return (1);
+}
+
+void	strip_newline(char *line)
+{
+	int	i;
+
+	if (!line)
+		return ;
 	i = 0;
-	while (sub_strs[i] && i < 3)
+	while (line[i])
 	{
-		if (!is_valid_double(sub_strs[i], 0))
-			return (free_split(sub_strs), printf("Error\nInvalid char for params\n"), 1);
-		xyz[i] = ft_atod(sub_strs[i]);
+		if (line[i] == '\n' || line[i] == '\r')
+		{
+			line[i] = '\0';
+			break ;
+		}
 		i++;
 	}
-	if (i != 3)
-		return (free_split(sub_strs), printf("Error\nLess than 3 values for coords/vec\n"), 1);
-	if (sub_strs[3] != NULL)
-		return (free_split(sub_strs), printf("Error\nMore than 3 values for coords/vec\n"), 1);
-	free_split(sub_strs);
-	return (0);
-}
-
-int	check_if_int(char *str)
-{
-	int	count;
-
-	if (!str || !str[0])
-		return (1);
-	count = 0;
-	if (str[0] == '-' || str[0] == '+')
-		count++;
-	if (!str[count])
-		return (1);
-	while (str[count] != '\0')
-	{
-		if (str[count] < '0' || str[count] > '9')
-			return (1);
-		count++;
-	}
-	return (0);
-}
-
-int	parse_rgb(char *rgb_str, t_color *color, int i)
-{
-	char	**rgb;
-	long	values[3];
-
-	rgb = ft_split(rgb_str, ',');
-	if (!rgb)
-		return (printf("Error\nMemory allocation failed\n"), 1);
-	while (i < 3)
-	{
-		if (rgb[i] == NULL)
-			return (free_split(rgb), printf("Error\nRGB must have 3 values\n"),
-				1);
-		if (check_if_int(rgb[i]) != 0)
-			return (free_split(rgb), printf("Error\nInvalid RGB format\n"), 1);
-		values[i] = ft_atol(rgb[i]);
-		if (values[i] < 0 || values[i] > 255)
-			return (free_split(rgb),
-				printf("Error\nRGB out of range [0-255]\n"), 1);
-		i++;
-	}
-	if (rgb[3] != NULL)
-		return (free_split(rgb), printf("Error\nToo many RGB values\n"), 1);
-	color->r = values[0];
-	color->g = values[1];
-	color->b = values[2];
-	free_split(rgb);
-	return (0);
 }
