@@ -118,10 +118,10 @@ void	render(t_rt *rt)
 	t_view		view = camera_orientation(rt);
 
 	print_camera(rt->scene.camera);
-	sphere.r = 20;
+	sphere.r = 5;
 	sphere.s.x = 0;
 	sphere.s.y = 0;
-	sphere.s.z = 0;
+	sphere.s.z = 10;
 	sphere.color.r = 0;
 	sphere.color.g = 160;
 	sphere.color.b = 160;
@@ -162,7 +162,7 @@ static void	fake_parsing(t_rt *rt)
 	
 	rt->scene.camera.dir.x = 0;
 	rt->scene.camera.dir.y = 0;
-	rt->scene.camera.dir.z = 0.1;
+	rt->scene.camera.dir.z = 1;
 //AMBIENT
 	rt->scene.ambient.brightness = 0.2;
 	rt->scene.ambient.color.r = 255;
