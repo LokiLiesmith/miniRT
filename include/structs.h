@@ -56,14 +56,14 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_vec3 point;
-	t_vec3 vec;
+	t_vec3 normal;
 	t_color color;
 }	t_plane;
 
 typedef struct s_cylinder
 {
 	t_vec3 center;
-	t_vec3 vec;
+	t_vec3 axis;
 	double dia;
 	double height;
 	t_color color;

@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:23:17 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/30 23:17:16 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/02 19:15:25 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 // R,G,B colors in the range [0-255]: 10, 0, 255
 int	parse_sp(char **strs, t_object **objs_lst)
 {
-    t_sphere *sp;
-	t_object *new_obj;
-	double xyz[3];
+	t_sphere	*sp;
+	t_object	*new_obj;
+	double		xyz[3];
+
 	sp = (t_sphere *)malloc(sizeof(t_sphere));
 	if (!sp)
 		return (printf("Error\nsp malloc fail\n"), 1);
@@ -39,7 +40,7 @@ int	parse_sp(char **strs, t_object **objs_lst)
 	new_obj = create_new_obj(SPHERE, sp);
 	if (!new_obj)
 		return (free(sp), 1);
-	add_obj(objs_lst, new_obj);	
+	add_obj(objs_lst, new_obj);
 	return (0);
 }
 
@@ -50,9 +51,10 @@ int	parse_sp(char **strs, t_object **objs_lst)
 // R,G,B colors in the range [0-255]: 0,0,225
 int	parse_pl(char **strs, t_object **objs_lst, int i)
 {
-	t_plane *pl;
-	t_object *new_obj;
-	double xyz[3];
+	t_plane		*pl;
+	t_object	*new_obj;
+	double		xyz[3];
+
 	pl = (t_plane *)malloc(sizeof(t_plane));
 	if (!pl)
 		return (printf("Error\npl malloc fail\n"), 1);
@@ -63,21 +65,22 @@ int	parse_pl(char **strs, t_object **objs_lst, int i)
 	pl->point.z = xyz[2];
 	if (parse_xyz(strs[2], xyz) != 0)
 		return (free(pl), 1);
-    while (i < 3)
-    {
-        if (xyz[i] < -1 || xyz[i] > 1)
-            return (free(pl), printf("Error\npl_vec values must be in range [-1,1]\n"), 1);
-        i++;
-    }
-	pl->vec.x = xyz[0];
-	pl->vec.y = xyz[1];
-	pl->vec.z = xyz[2];
+	while (i < 3)
+	{
+		if (xyz[i] < -1 || xyz[i] > 1)
+			return (free(pl),
+				printf("Error\npl_vec values must be in range [-1,1]\n"), 1);
+		i++;
+	}
+	pl->normal.x = xyz[0];
+	pl->normal.y = xyz[1];
+	pl->normal.z = xyz[2];
 	if (parse_rgb(strs[3], &pl->color, 0) != 0)
 		return (free(pl), 1);
 	new_obj = create_new_obj(PLANE, pl);
 	if (!new_obj)
 		return (free(pl), 1);
-	add_obj(objs_lst, new_obj);	
+	add_obj(objs_lst, new_obj);
 	return (0);
 }
 
@@ -90,9 +93,10 @@ int	parse_pl(char **strs, t_object **objs_lst, int i)
 // R, G, B colors in the range [0,255]: 10, 0, 255
 int	parse_cy(char **strs, t_object **objs_lst, int i)
 {
-	t_cylinder *cy;
-	t_object *new_obj;
-	double xyz[3];
+	t_cylinder	*cy;
+	t_object	*new_obj;
+	double		xyz[3];
+
 	cy = (t_cylinder *)malloc(sizeof(t_cylinder));
 	if (!cy)
 		return (printf("Error\ncy malloc fail\n"), 1);
@@ -103,15 +107,16 @@ int	parse_cy(char **strs, t_object **objs_lst, int i)
 	cy->center.z = xyz[2];
 	if (parse_xyz(strs[2], xyz) != 0)
 		return (free(cy), 1);
-    while (i < 3)
-    {
-        if (xyz[i] < -1 || xyz[i] > 1)
-            return (free(cy), printf("Error\ncy_vec values must be in range [-1,1]\n"), 1);
-        i++;
-    }
-	cy->vec.x = xyz[0];
-	cy->vec.y = xyz[1];
-	cy->vec.z = xyz[2];
+	while (i < 3)
+	{
+		if (xyz[i] < -1 || xyz[i] > 1)
+			return (free(cy),
+				printf("Error\ncy_vec values must be in range [-1,1]\n"), 1);
+		i++;
+	}
+	cy->axis.x = xyz[0];
+	cy->axis.y = xyz[1];
+	cy->axis.z = xyz[2];
 	if (!is_valid_double(strs[3], 0))
 		return (free(cy), printf("Error\nInvalid cy diameter\n"), 1);
 	cy->dia = ft_atod(strs[3]);
@@ -127,6 +132,6 @@ int	parse_cy(char **strs, t_object **objs_lst, int i)
 	new_obj = create_new_obj(CYLINDER, cy);
 	if (!new_obj)
 		return (free(cy), 1);
-	add_obj(objs_lst, new_obj);	
+	add_obj(objs_lst, new_obj);
 	return (0);
 }

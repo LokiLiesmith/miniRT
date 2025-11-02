@@ -18,8 +18,8 @@ int	is_line_empty_or_whitespace(const char *line);
 int	check_type_identifier(char *line, t_found_elements *found);
 int	check_line_format(char *line);
 void strip_newline(char *line);
-int	parse_scene_file(const char *filename);
-int	check_input(int ac, char **av);
+int	parse_scene_file(const char *filename, t_scene *scene);
+int	check_input(int ac, char **av, t_scene *scene);
 
 // acl_parse.c
 int	parse_ambient(char **strs, t_ambient *ambient);
@@ -47,6 +47,9 @@ int	parse_rgb(char *rgb_str, t_color *color, int i);
 // linked_list_utils.c
 t_object	*create_new_obj(t_objtype type, void *data);
 void	add_obj(t_object **list, t_object *new);
+
+// just for debugging - delete pls
+void print_scene(t_scene *scene);
 
 ///////////////////////////////////////////////////////////////////////////////
 //								UTILS										//

@@ -16,7 +16,7 @@ endif
 
 SRC_COMMON	:= src/main.c src/parse/file_check.c src/parse/acl_parse.c src/parse/ft_atod.c \
 			   src/parse/objs_parse.c src/parse/parse_utils.c src/parse/linked_list_utils.c \
-			   src/utils/utils.c
+			   src/utils/utils.c src/parse/debug_parse.c
 SRC			:= $(SRC_COMMON)
 
 OBJDIR		:= obj

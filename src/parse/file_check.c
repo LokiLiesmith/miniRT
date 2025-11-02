@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/10/31 00:50:17 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/02 18:58:58 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,13 @@ void strip_newline(char *line)
 	}
 }
 
-int	parse_scene_file(const char *filename)
+int	parse_scene_file(const char *filename, t_scene *scene)
 {
 	int					fd;
 	char				*line;
 	int					found_valid_line;
 	t_found_elements	found;
-	t_scene				scene;
 
-	ft_memset(&scene, 0, sizeof(t_scene));
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (perror("Error opening file"), 1);
@@ -132,7 +130,7 @@ int	parse_scene_file(const char *filename)
 				return (free(line), close(fd), 1);
 			if (check_line_format(line) != 0)
 				return (free(line), close(fd), 1);
-			if (parse_elements(line, &scene) != 0)
+			if (parse_elements(line, scene) != 0)
 			{
 				free(line);
 				close(fd);
@@ -156,7 +154,7 @@ int	parse_scene_file(const char *filename)
 	return (0);
 }
 
-int	check_input(int ac, char **av)
+int	check_input(int ac, char **av, t_scene *scene)
 {
 	int		file_len;
 	char	*temp;
@@ -175,7 +173,7 @@ int	check_input(int ac, char **av)
 		return (printf("Error\nInvalid file extension\n"), 1);
 	}
 	free(temp);
-	if (parse_scene_file(av[1]) != 0)
+	if (parse_scene_file(av[1], scene) != 0)
 		return (1);
 	return (0);
 }
