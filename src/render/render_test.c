@@ -69,23 +69,31 @@ t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
 	double	a = vec_dot(ray.dir, ray.dir);
 	double	b = 2 * vec_dot(ray.dir, CS);
 	double	c = vec_dot(CS, CS) - (sphere.r * sphere.r);
-
 	double	discriminant = b * b - (4 * a * c);
 
-	if (discriminant < 0)
-		{
-		hit.t = -1;
+	//default = no hit
+	hit.t = -1.00;
+	if (discriminant < 0.0)
 		return (hit);
-		}
-	double t = (-b - sqrt(discriminant)) / (2 * a);
-	if (t <= 0)
-	{
-		hit.t = -1;
+
+	double t0 = (-b - sqrt(discriminant)) / (2 * a);
+	double t1 = (-b + sqrt(discriminant)) / (2 * a);
+	double t = -1.0;
+
+	//logic for checkin if inside, when we start working with shadows - compare with epsilon cuy 0 isnt exactly 0 anymore
+	if (t0 > 0.0)
+		t = t0;
+	else if (t0 < 0 && t1 > 0)
+		t = t1;
+	else
 		return (hit);
-	}
+
 	hit.t = t;
 	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
 	hit.normal = vec_normalize(vec_subtract(hit.point, sphere.s));
+	// if(vec_dot(ray.dir, hit.normal) > 0)
+	// 	hit.normal = vec_scale(hit.normal, -1.0);//flip normal if inside
+
 	hit.color = sphere.color;
 	return (hit);
 }
@@ -118,10 +126,10 @@ void	render(t_rt *rt)
 	t_view		view = camera_orientation(rt);
 
 	print_camera(rt->scene.camera);
-	sphere.r = 5;
-	sphere.s.x = 0;
+	sphere.r = 2;
+	sphere.s.x = 1;
 	sphere.s.y = 0;
-	sphere.s.z = 10;
+	sphere.s.z = 0;
 	sphere.color.r = 0;
 	sphere.color.g = 160;
 	sphere.color.b = 160;
@@ -136,8 +144,8 @@ void	render(t_rt *rt)
 			t_hit hit = intersect_sphere(ray, sphere);
 			if (hit.t > 0)
 			{
-				// uint32_t color = normal_to_color(hit.normal);
-				uint32_t color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
+				uint32_t color = normal_to_color(hit.normal);
+				// uint32_t color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
 				// print_vec3(ray.dir);
 				set_pixel(rt->img, x, y, color);
 			}
@@ -217,6 +225,7 @@ uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light ligh
 	uint8_t g = fmin(255.0, hit.color.g * intensity);
 	uint8_t b = fmin(255.0, hit.color.b * intensity);
 
+	printf("dotNL: %f\n", vec_dot(N, L));
 	return (rgba(r, g, b, 255));
 }
 
