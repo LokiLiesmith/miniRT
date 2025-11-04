@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 14:43:05 by djanardh          #+#    #+#             */
-/*   Updated: 2025/05/03 16:30:44 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/04 21:34:47 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ int	ft_atoi(const char *str)
 	return (result * sign);
 }
 
-int	main(void)
-{
-	const char *str = "0hf";
-	printf("your atoi: %d\n", ft_atoi(str));
-	printf("actual atoi: %d\n", atoi(str));
-	return (0);
-}
+// int	main(void)
+// {
+// 	const char *str = "0hf";
+// 	printf("your atoi: %d\n", ft_atoi(str));
+// 	printf("actual atoi: %d\n", atoi(str));
+// 	return (0);
+// }

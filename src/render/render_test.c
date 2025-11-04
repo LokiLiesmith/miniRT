@@ -181,40 +181,40 @@ void	render(t_rt *rt)
 	}
 }
 
-void	fake_parsing(t_rt *rt)
-{
-//CAMERA
-	rt->scene.camera.pos.x = 0;
-	rt->scene.camera.pos.y = 0;
-	rt->scene.camera.pos.z = 0;
+// void	fake_parsing(t_rt *rt)
+// {
+// //CAMERA
+// 	rt->scene.camera.pos.x = 0;
+// 	rt->scene.camera.pos.y = 0;
+// 	rt->scene.camera.pos.z = 0;
 	
-	rt->scene.camera.fov = 70.00;
+// 	rt->scene.camera.fov = 70.00;
 	
-	rt->scene.camera.dir.x = 0;
-	rt->scene.camera.dir.y = 0;
-	rt->scene.camera.dir.z = 1;
-//AMBIENT
-	rt->scene.ambient.brightness = 0.2;
-	rt->scene.ambient.color.r = 255;
-	rt->scene.ambient.color.g = 255;
-	rt->scene.ambient.color.b = 255;
-//LIGHT
-	rt->scene.light.pos.x = -50;
-	rt->scene.light.pos.y = 25;
-	rt->scene.light.pos.z = 0;
+// 	rt->scene.camera.dir.x = 0;
+// 	rt->scene.camera.dir.y = 0;
+// 	rt->scene.camera.dir.z = 1;
+// //AMBIENT
+// 	rt->scene.ambient.brightness = 0.2;
+// 	rt->scene.ambient.color.r = 255;
+// 	rt->scene.ambient.color.g = 255;
+// 	rt->scene.ambient.color.b = 255;
+// //LIGHT
+// 	rt->scene.light.pos.x = -50;
+// 	rt->scene.light.pos.y = 25;
+// 	rt->scene.light.pos.z = 0;
 
-	rt->scene.light.brightness = 0.7;
+// 	rt->scene.light.brightness = 0.7;
 
-	rt->scene.light.color.r = 255;
-	rt->scene.light.color.g = 255;
-	rt->scene.light.color.b = 255;
+// 	rt->scene.light.color.r = 255;
+// 	rt->scene.light.color.g = 255;
+// 	rt->scene.light.color.b = 255;
 
-	// print_camera(&rt->scene.camera);
+// 	// print_camera(&rt->scene.camera);
 	
-	// rt->s
-//OBJECTS
-	fake_obj_list(rt);
-}
+// 	// rt->s
+// //OBJECTS
+// 	fake_obj_list(rt);
+// }
 // static uint32_t calculate_color(point)
 // {
 // 	i = Ispec + Ideff + Iambient;
