@@ -1,5 +1,6 @@
 #ifndef MINI_RT_H
 # define MINI_RT_H
+# define MINI_RT_H
 
 # include "get_next_line.h"
 # include "libft/libft.h"

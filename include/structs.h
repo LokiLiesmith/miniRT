@@ -69,28 +69,12 @@ typedef struct s_cylinder
 	t_color color;
 }	t_cylinder;
 
-<<<<<<< HEAD
-//P(t)=O+t⋅D // t is the distance traveled on the ray from the source?
-typedef struct s_ray
-{
-	t_vec3	origin;
-	t_vec3	dir;
-	// origin point with 3 coords;
-	// direction;
-	// scalar?;
-}	t_ray;
-
-
-
-
-=======
-typedef struct s_object
+typedef struct s_plane
 {
 	t_objtype		type;
 	void *data; // points to the structs above
 	struct s_object	*next;
 }					t_object;
->>>>>>> parsing
 
 ///////////////////////////////////////////////////////////////////////////////
 //								SCENE									//

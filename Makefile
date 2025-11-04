@@ -20,27 +20,10 @@ ifeq ($(UNAME_S),Darwin)
     LINK_FLAGS := -ldl -lglfw -pthread -lm -framework Cocoa -framework OpenGL -framework IOKit
 endif
 
-<<<<<<< HEAD
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#
-# ========= Sources per target =========
-# add more SRC files or directories
-# x_text.c has the int main() - we get rid of them after merging and keep the rest of the .cs
-# for now there's no need for common (I just copy the main you made into my test.c)
-
-SRC_MINIRT := src/main.c src/mlx/mlx_hooks.c
-SRC_MATH    := src/math/math_test.c
-SRC_PARSE	:= src/parse/parse_test.c
-SRC_RENDER	:= src/render/render_test.c
-SRC_UTILS	:= src/utils/utils_test.c
-# SRC_COMMON	:= src/main.c
-=======
 SRC_COMMON	:= src/main.c src/parse/file_check.c src/parse/acl_parse.c src/parse/ft_atod.c \
 			   src/parse/objs_parse.c src/parse/parse_utils.c src/parse/linked_list_utils.c \
 			   src/utils/utils.c src/get_next_line.c src/get_next_line_utils.c  src/parse/parse_xyz_rgb.c\
 			   src/parse/debug_parse.c
->>>>>>> parsing
 SRC			:= $(SRC_COMMON)
 SELECTED_SRC := $(SRC_$(UC_T)) $(SRC_COMMON)
 

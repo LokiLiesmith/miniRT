@@ -57,9 +57,3 @@ dkms.conf
 .DS_Store
 /bin
 /obj
-<<<<<<< HEAD
-MLX42/
-=======
-MLX42/
-.vscode
->>>>>>> parsing
