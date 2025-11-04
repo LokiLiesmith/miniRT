@@ -50,7 +50,6 @@ int	main(void)
 {
 	t_vec3	a;
 	init_vec3(&a, 1, 2, 3);
-	print_vec3(a);
 
 	return (0);
 }

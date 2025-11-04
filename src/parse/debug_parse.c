@@ -1,19 +1,19 @@
 #include "mini_rt.h"
 
 // Print a vector/point
-static void	print_vec3(const char *name, t_vec3 v)
+void	print_vec3(const char *name, t_vec3 v)
 {
 	printf("%s: (%.1f, %.1f, %.1f)\n", name, v.x, v.y, v.z);
 }
 
 // Print color in hex and RGB
-static void	print_color(const char *name, t_color color)
+void	print_color(const char *name, t_color color)
 {
 	printf("%s: (R:%d, G:%d, B:%d)\n", name, color.r, color.g, color.b);
 }
 
 // Print ambient light
-static void	print_ambient(t_ambient *ambient)
+void	print_ambient(t_ambient *ambient)
 {
 	printf("\n=== AMBIENT LIGHT ===\n");
 	printf("Ratio: %.1f\n", ambient->brightness);
@@ -21,16 +21,16 @@ static void	print_ambient(t_ambient *ambient)
 }
 
 // Print camera
-static void	print_camera(t_camera *camera)
+void	print_camera(t_camera *camera)
 {
 	printf("\n=== CAMERA ===\n");
 	print_vec3("Position", camera->pos);
-	print_vec3("Orientation", camera->vec);
+	print_vec3("Orientation", camera->dir);
 	printf("FOV: %.1f\n", camera->fov);
 }
 
 // Print light
-static void	print_light(t_light *light)
+void	print_light(t_light *light)
 {
 	printf("\n=== LIGHT ===\n");
 	print_vec3("Position", light->pos);
@@ -38,7 +38,7 @@ static void	print_light(t_light *light)
 }
 
 // Print a single object
-static void	print_object(t_object *obj, int index)
+void	print_object(t_object *obj, int index)
 {
 	t_sphere	*sp;
 	t_plane		*pl;
@@ -79,7 +79,7 @@ static void	print_object(t_object *obj, int index)
 }
 
 // Print all objects in the linked list
-static void	print_objects(t_object *objects)
+void	print_objects(t_object *objects)
 {
 	t_object	*current;
 	int			count;

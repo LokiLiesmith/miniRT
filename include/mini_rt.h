@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/04 15:48:21 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/04 16:21:21 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,25 @@ void		print_scene(t_scene *scene);
 ///////////////////////////////////////////////////////////////////////////////
 //								UTILS										//
 void		free_objects(t_object **list);
+
+/// PRINTS
+void		print_ambient(t_ambient *ambient);
+void		print_color(const char *name, t_color color);
+void		print_scene(t_scene *scene);
+void		print_camera(t_camera *camera);
+void		print_light(t_light *light);
+void		print_object(t_object *obj, int index);
+void		print_vec3(const char *name, t_vec3 v);
+void		print_objects(t_object *objects);
+
+
+
+//FAKE LIST
+void		fake_obj_list(t_rt *rt);
+void		print_list(t_object *list);
+void		add_obj(t_object **list, t_object *new);
+t_object	*create_new_obj(t_objtype type, void *data);
+
+
 
 #endif

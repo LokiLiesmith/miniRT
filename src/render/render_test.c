@@ -68,7 +68,7 @@ t_hit	intersect_sphere(t_ray ray, t_sphere *sphere)
 	t_vec3	CS = vec_subtract(ray.origin, sphere->s);
 	double	a = vec_dot(ray.dir, ray.dir);
 	double	b = 2 * vec_dot(ray.dir, CS);
-	double	c = vec_dot(CS, CS) - (sphere->r * sphere->r);
+	double	c = vec_dot(CS, CS) - (sphere->d * sphere->d);
 	double	discriminant = b * b - (4 * a * c);
 
 	//default = no hit
@@ -108,9 +108,9 @@ t_view camera_orientation(t_rt *rt)
 	view.forward = vec_normalize(rt->scene.camera.dir);
 	view.right = vec_normalize(vec_cross(view.world_up, view.forward));
 	view.up = vec_normalize(vec_cross(view.forward, view.right));
-	print_vec3(view.forward);
-	print_vec3(view.right);
-	print_vec3(view.up);
+	print_vec3("forward", view.forward);
+	print_vec3("right", view.right);
+	print_vec3("up", view.up);
 	return (view);
 }
 
@@ -154,7 +154,7 @@ void	render(t_rt *rt)
 	// t_sphere	sphere_2;
 	t_view		view = camera_orientation(rt);
 
-	print_camera(rt->scene.camera);
+	print_camera(&rt->scene.camera);
 
 	y = 0;
 	while (y < HEIGHT)
@@ -209,7 +209,7 @@ static void	fake_parsing(t_rt *rt)
 	rt->scene.light.color.g = 255;
 	rt->scene.light.color.b = 255;
 
-	print_camera(rt->scene.camera);
+	// print_camera(&rt->scene.camera);
 	
 	// rt->s
 //OBJECTS

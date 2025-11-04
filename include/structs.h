@@ -130,4 +130,21 @@ typedef struct s_found_elements
 	int	light;
 }		t_found;
 
+
+
+///////////////////////////////////////////////////////////////////////////////
+//								MAIN STRUCT									//
+
+typedef struct s_rt
+{
+	t_scene		scene;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	// t_gc	gc;			//gc-list? TODO import from minishell
+
+}	t_rt;
+
+
+
+
 #endif
