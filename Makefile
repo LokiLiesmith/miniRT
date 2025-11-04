@@ -31,7 +31,7 @@ endif
 SRC_MINIRT := src/main.c
 SRC_MATH    := src/math/math_test.c
 SRC_PARSE	:= src/parse/parse_test.c
-SRC_RENDER	:= src/render/render_test.c
+SRC_RENDER	:= src/render/render_test.c src/render/fake_parsing.c
 SRC_UTILS	:= src/utils/utils_test.c
 SRC_COMMON	:= src/mlx/mlx_hooks.c src/utils/math_utils.c src/math/vector_math.c
 SRC			:= $(SRC_COMMON)

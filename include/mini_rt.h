@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/10/26 13:24:48 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/04 00:54:10 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ void	close_hook(void *param);
 //math_utils.c
 void	print_vec3(t_vec3 v);
 void	print_camera(t_camera cam);
+
+//FAKE LIST
+void		fake_obj_list(t_rt *rt);
+void		print_list(t_object *list);
+void		add_obj(t_object **list, t_object *new);
+t_object	*create_new_obj(t_objtype type, void *data);
+
 
 
 

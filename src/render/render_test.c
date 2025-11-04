@@ -62,13 +62,13 @@ static t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 // C = Camera(origin)	ray.origin
 // S = Sphere Center	sphere.s
 // r = Sphere radius	sphere.r
-t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
+t_hit	intersect_sphere(t_ray ray, t_sphere *sphere)
 {
 	t_hit	hit;
-	t_vec3	CS = vec_subtract(ray.origin, sphere.s);
+	t_vec3	CS = vec_subtract(ray.origin, sphere->s);
 	double	a = vec_dot(ray.dir, ray.dir);
 	double	b = 2 * vec_dot(ray.dir, CS);
-	double	c = vec_dot(CS, CS) - (sphere.r * sphere.r);
+	double	c = vec_dot(CS, CS) - (sphere->r * sphere->r);
 	double	discriminant = b * b - (4 * a * c);
 
 	//default = no hit
@@ -90,11 +90,10 @@ t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
 
 	hit.t = t;
 	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
-	hit.normal = vec_normalize(vec_subtract(hit.point, sphere.s));
-	// if(vec_dot(ray.dir, hit.normal) > 0)
-	// 	hit.normal = vec_scale(hit.normal, -1.0);//flip normal if inside
-
-	hit.color = sphere.color;
+	hit.normal = vec_normalize(vec_subtract(hit.point, sphere->s));
+	if(vec_dot(ray.dir, hit.normal) > 0)
+		hit.normal = vec_scale(hit.normal, -1.0);//flip normal if inside
+	hit.color = sphere->color;
 	return (hit);
 }
 
@@ -115,25 +114,48 @@ t_view camera_orientation(t_rt *rt)
 	return (view);
 }
 
+t_hit	check_intersections(t_ray ray, t_rt *rt)
+{
+	t_hit		best;
+	t_hit		hit;
+	t_object	*current;
+	double		closest_t;
+	
+	best.t = -1.0;
+	closest_t = INFINITY;
+	current = rt->scene.objects;
+	while (current)
+	{
+		hit.t = -1.0;//HOLY MOTHER OF GOD AND ALL THAT IS HOLY
+		if (current->type == SPHERE)
+			hit = intersect_sphere(ray, (t_sphere *)current->data);
+		else if (current->type == PLANE)
+			printf("It's a Plane\n");
+		else if (current->type == CYLINDER)
+			printf("It's a Cylinder\n");
+	
+		if (hit.t > 0.0 && hit.t < closest_t)
+		{
+			closest_t = hit.t;
+			best = hit;
+		}
+		current = current->next;
+	}
+	return (best);
+}
+
+
 void	render(t_rt *rt)
 {
 	int			x;
 	int			y;
 	t_ray		ray;
 	// t_vec3		origin = rt->scene.camera.pos;
-	t_sphere	sphere;
 	// t_sphere	sphere_2;
 	t_view		view = camera_orientation(rt);
 
 	print_camera(rt->scene.camera);
-	sphere.r = 2;
-	sphere.s.x = 1;
-	sphere.s.y = 0;
-	sphere.s.z = 0;
-	sphere.color.r = 0;
-	sphere.color.g = 160;
-	sphere.color.b = 160;
-	
+
 	y = 0;
 	while (y < HEIGHT)
 	{
@@ -141,11 +163,11 @@ void	render(t_rt *rt)
 		while (x < WIDTH)
 		{
 			ray = generate_ray(rt, x, y, view);
-			t_hit hit = intersect_sphere(ray, sphere);
+			t_hit hit = check_intersections(ray, rt);
 			if (hit.t > 0)
 			{
-				uint32_t color = normal_to_color(hit.normal);
-				// uint32_t color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
+				// uint32_t color = normal_to_color(hit.normal);
+				uint32_t color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
 				// print_vec3(ray.dir);
 				set_pixel(rt->img, x, y, color);
 			}
@@ -190,6 +212,8 @@ static void	fake_parsing(t_rt *rt)
 	print_camera(rt->scene.camera);
 	
 	// rt->s
+//OBJECTS
+	fake_obj_list(rt);
 }
 // static uint32_t calculate_color(point)
 // {
@@ -225,7 +249,7 @@ uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light ligh
 	uint8_t g = fmin(255.0, hit.color.g * intensity);
 	uint8_t b = fmin(255.0, hit.color.b * intensity);
 
-	printf("dotNL: %f\n", vec_dot(N, L));
+	// printf("dotNL: %f\n", vec_dot(N, L));
 	return (rgba(r, g, b, 255));
 }
 
@@ -257,3 +281,4 @@ int	main(int ac, char **av)
 
 	return (0);
 }
+
