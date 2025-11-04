@@ -1,48 +1,87 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: msalangi <msalangi@student.42heilbronn.    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/03/12 22:55:52 by mrazem            #+#    #+#              #
-#    Updated: 2025/08/09 22:20:54 by msalangi         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
-CC = cc
-CFLAGS = -Wextra -Werror -Wall
-
-# SRC    := $(wildcard *.c)
-SRC = ft_memset.c ft_strlen.c ft_isprint.c ft_isdigit.c \
-	ft_isascii.c ft_isalpha.c ft_isalnum.c ft_bzero.c ft_memcpy.c \
-	ft_memmove.c ft_memchr.c ft_memcmp.c ft_strlcpy.c ft_toupper.c \
-	ft_tolower.c ft_strchr.c ft_strncmp.c ft_strrchr.c ft_strlcat.c \
-	ft_strnstr.c ft_atoi.c ft_calloc.c ft_strdup.c ft_substr.c ft_strjoin.c \
-	ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c \
-	ft_putendl_fd.c ft_putnbr_fd.c ft_putnbr_fd.c \
-	ft_safe_write.c ft_printchar.c ft_printed.c ft_printf.c ft_printhex.c ft_printnum.c ft_printptr.c \
-	ft_printstring.c ft_printunsigned.c ft_strcmp.c
-
-GNL_SRC = ../get_next_line/get_next_line.c
-
-	
-OBJ =$(SRC:.c=.o)
-GNL_OBJ = $(GNL_SRC:.c=.o)
-
+# Define Program name
 NAME = libft.a
 
-$(NAME): $(OBJ) $(GNL_OBJ)
-	@ar rcs $(NAME) $(OBJ) $(GNL_OBJ)
+# Define mandatory Source files
+SRCS =	ft_isalpha.c \
+		ft_isdigit.c \
+		ft_isalnum.c \
+		ft_isascii.c \
+		ft_isprint.c \
+		ft_strlen.c \
+		ft_memset.c \
+		ft_bzero.c \
+		ft_memcpy.c \
+		ft_memmove.c \
+		ft_toupper.c \
+		ft_tolower.c \
+		ft_memchr.c \
+		ft_memcmp.c \
+		ft_strlcpy.c \
+		ft_strlcat.c \
+		ft_strchr.c \
+		ft_strrchr.c \
+		ft_strnstr.c \
+		ft_atoi.c \
+		ft_strncmp.c \
+		ft_strnstr.c \
+		ft_calloc.c \
+		ft_strdup.c \
+		ft_substr.c \
+		ft_strjoin.c \
+		ft_strtrim.c \
+		ft_split.c \
+		ft_itoa.c \
+		ft_strmapi.c \
+		ft_striteri.c \
+		ft_putchar_fd.c \
+		ft_putstr_fd.c \
+		ft_putendl_fd.c \
+		ft_putnbr_fd.c 
 
+BONUS = ft_lstnew_bonus.c \
+		ft_lstadd_front_bonus.c \
+		ft_lstsize_bonus.c \
+		ft_lstlast_bonus.c \
+		ft_lstadd_back_bonus.c \
+		ft_lstdelone_bonus.c \
+		ft_lstclear_bonus.c \
+		ft_lstiter_bonus.c \
+		ft_lstmap_bonus.c
+
+# Define Object files
+OBJS = $(SRCS:%.c=%.o)
+BONUS_OBJS = $(BONUS:%.c=%.o)
+
+# Define the Compiler
+CC = cc
+
+# Define the flags for compilation
+CFLAGS = -Wall -Wextra -Werror
+
+# Archiver command to create the static library libft (.a file)
+AR = ar rcs 
+
+# Define the default target/ The first rule in a Makefile is this default rule
+# when you run 'make' it looks for 'all'
 all: $(NAME)
 
+$(NAME): $(OBJS)
+	$(AR) $(NAME) $(OBJS)
+
+bonus: $(BONUS_OBJS)
+		$(AR) $(NAME) $(BONUS_OBJS)
+
+# Rule to compile .c files into .o files
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Rule to remove object files
 clean:
-	@rm -f $(OBJ) $(GNL_OBJ)
+	rm -f $(OBJS) $(BONUS_OBJS)
 
+# Rule to remove object files and the program
 fclean: clean
-	@rm -f $(NAME)
+	rm -f $(NAME)
 
-re: fclean all
-
-.PHONY: all clean fclean re
+# 're' rule to rebuild the program
+re: clean fclean all re

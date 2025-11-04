@@ -3,43 +3,100 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 16:18:00 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/17 23:26:11 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/13 17:47:43 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 16:55:14 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// Parameters
+// s1: The string to be trimmed.
+// set: The string containing the set of characters to be removed.
+// Return value: The trimmed string
+// Description:
+// Allocates memory (using malloc(3)) and returns a copy of ’s1’ with characters
+// from ’set’ removed from the beginning and the end.
+static int	in_set_or_not(char c, char const *set)
+{
+	int	i;
+
+	i = 0;
+	while (set[i] != '\0')
+	{
+		if (set[i] == c)
+		{
+			return (1);
+		}
+		else
+		{
+			i++;
+		}
+	}
+	return (0);
+}
+
+static size_t	ft_start_index(char const *s1, char const *set)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] != '\0')
+	{
+		if (in_set_or_not(s1[i], set) == 1)
+			i++;
+		else
+		{
+			return (i);
+		}
+	}
+	return (i);
+}
+
+static size_t	ft_end_index(char const *s1, char const *set, size_t s1_len,
+		size_t start_index)
+{
+	size_t	i;
+
+	i = s1_len - 1;
+	if (start_index >= s1_len)
+		return (start_index);
+	while (i > start_index)
+	{
+		if (in_set_or_not(s1[i], set) == 1)
+			i--;
+		else
+		{
+			return (i);
+		}
+	}
+	return (start_index);
+}
+
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t	start;
-	size_t	end;
-	char	*result;
+	size_t	start_index;
+	size_t	end_index;
+	char	*trimmed_string;
+	size_t	s1_len;
 
-	start = 0;
-	if (!s1 || !set)
+	s1_len = ft_strlen(s1);
+	if (s1 == NULL || set == NULL)
 		return (NULL);
-	end = ft_strlen(s1);
-	while (s1[start] && ft_strchr(set, s1[start]))
-		start++;
-	while (end > start && ft_strchr(set, s1[end - 1]))
-		end--;
-	if (start >= end)
+	if (s1_len == 0)
 		return (ft_strdup(""));
-	result = malloc((end - start) + 1);
-	if (!result)
-		return (NULL);
-	ft_strlcpy(result, s1 + start, end - start + 1);
-	return (result);
+	start_index = ft_start_index(s1, set);
+	end_index = ft_end_index(s1, set, s1_len, start_index);
+	trimmed_string = ft_substr(s1, start_index, (end_index - start_index + 1));
+	return (trimmed_string);
 }
-	/* check if element in s1 is inside the set with strchr
-	if it is go to the next adress, do the same.
-	go until you find the first one that isnt!
-	thats teh start of the stirng
 
-	check if element in s1 is inside the set from the back with ft_strchr
-	if it is go to the adress before that do the same, repeat until you reach
-	something that isnt, thats teh end of the stirng
- */
+// int	main(void)
+// {
+// 	char const *s1 = "ababaaaMy name is Simonbbaaabba";
+// 	char const *set = "ab";
+// 	printf("%s\n", ft_strtrim(s1, set));
+// 	return (0);
+// }

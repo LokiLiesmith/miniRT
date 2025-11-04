@@ -3,46 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/15 14:24:07 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/15 23:36:40 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/13 14:49:38 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 18:47:03 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+//      The strncmp() function compares not more than n characters.  Because
+//      strncmp() is designed for comparing strings rather than binary data,
+//      characters that appear after a `\0' character are not compared.
+// RETURN VALUES:
+//      The strncmp() functions return an integer greater than,
+//      equal to, or less than 0, according as the string s1 is greater than,
+//      equal to, or less than the string s2.  The comparison is done using
+//      unsigned characters, so that `\200' is greater than `\0'.
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	size_t	i;
+	size_t			num;
+	size_t			i;
+	unsigned char	*r1;
+	unsigned char	*r2;
 
 	i = 0;
-	while (i < n && s1[i] && s2[i])
+	num = 0;
+	r1 = (unsigned char *)s1;
+	r2 = (unsigned char *)s2;
+	while ((n != 0) && (i < n) && ((r1[i] != '\0') || (r2[i] != '\0')))
 	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		if (r1[i] != r2[i])
+		{
+			num = r1[i] - r2[i];
+			return (num);
+		}
 		i++;
 	}
-	if (i < n)
-		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-	return (0);
+	return (num);
 }
 
-/* void	test_ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	int	result;
-
-	result = ft_strncmp(s1, s2, n);
-	printf("Comparing: \"%s\" and \"%s\" (n = %zu): %d\n", s1, s2, n, result);
-}
-
-int	main(void)
-{
-	test_ft_strncmp("apple", "apricot", 3);
-	test_ft_strncmp("apple", "banana", 5);
-	test_ft_strncmp("hello", "hella", 5);
-	test_ft_strncmp("hello", "hell", 10);
-	test_ft_strncmp("test", "test", 4);
-	return (0);
-}
- */
+// int	main(void)
+// {
+// 	const char *string3 = "abc";
+// 	const char *string4 = "abcd";
+// 	size_t n = 4;
+// 	printf("%d\n", ft_strncmp(string3, string4, n));
+// 	printf("%d\n", strncmp(string3, string4, n));
+// 	return (0);
+// }

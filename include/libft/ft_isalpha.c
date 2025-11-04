@@ -3,18 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 15:24:57 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/12 23:11:41 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/10 13:09:17 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 18:22:02 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+//  The isalpha() function tests for any character for which isupper or
+// islower is true.
 int	ft_isalpha(int c)
 {
-	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+	{
 		return (1);
+	}
 	return (0);
 }
+
+// int	main(void)
+// {
+// 	int output = ft_isalpha('[');
+// 	printf("%i\n", output);
+// 	return(0);
+// }
