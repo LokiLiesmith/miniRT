@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_check.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/04 13:41:46 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/04 21:45:51 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	check_line_format(char *line, int valid)
 		valid = 1;
 	else if (line[0] == 'C' && count == 4)
 		valid = 1;
-	else if (line[0] == 'L' && count == 4)
+	else if (line[0] == 'L' && count == 3)//was 4
 		valid = 1;
 	else if (line[0] == 's' && line[1] == 'p' && count == 4)
 		valid = 1;

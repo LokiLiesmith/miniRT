@@ -129,10 +129,10 @@ t_hit	check_intersections(t_ray ray, t_rt *rt)
 		hit.t = -1.0;//HOLY MOTHER OF GOD AND ALL THAT IS HOLY
 		if (current->type == SPHERE)
 			hit = intersect_sphere(ray, (t_sphere *)current->data);
-		else if (current->type == PLANE)
-			printf("It's a Plane\n");
-		else if (current->type == CYLINDER)
-			printf("It's a Cylinder\n");
+		// else if (current->type == PLANE)
+		// 	printf("It's a Plane\n");
+		// else if (current->type == CYLINDER)
+		// 	printf("It's a Cylinder\n");
 	
 		if (hit.t > 0.0 && hit.t < closest_t)
 		{
