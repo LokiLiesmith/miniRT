@@ -1,22 +1,40 @@
 #ifndef STRUCTS_H
-#define STRUCTS_H
-#include "MLX42/MLX42.h"
+# define STRUCTS_H
+# include "MLX42/MLX42.h"
 
 # define WIDTH 800
 # define HEIGHT 800
 
 typedef struct s_rt
 {
-	// t_scene	scene;			
-	mlx_t		*mlx;
-	mlx_image_t	*img;
+	// t_scene	scene;
+	mlx_t			*mlx;
+	mlx_image_t		*img;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
-}	t_rt;
+}					t_rt;
 
+///////////////////////////////////////////////////////////////////////////////
+//								MATH_THINGS									//
+typedef struct s_vec3
+{
+	double			x;
+	double			y;
+	double			z;
+}					t_vec3;
 
+typedef struct s_color
+{
+	int				r;
+	int				g;
+	int				b;
+}					t_color;
 
-
+typedef struct s_ray
+{
+	// origin point with 3 coords;
+	// direction; scalar?;
+}					t_ray;
 
 ///////////////////////////////////////////////////////////////////////////////
 //								OBJECTS										//
@@ -26,41 +44,32 @@ typedef enum e_objtype
 	SPHERE,
 	PLANE,
 	CYLINDER
-}	t_objtype;
+}					t_objtype;
 
-//to figure out
-// typedef struct s_sphere;
-// typedef struct s_plane;
-// typedef struct s_cylinder;
-
-typedef struct s_object
+typedef struct s_sphere
 {
-	t_objtype		type;
-	void			*data;//points to the structs above
-	struct s_object	*next;
-}	t_object;
+	t_vec3 center;
+	double dia;
+	t_color color;
+}	t_sphere;
 
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-//								MATH_THINGS									//
-typedef struct s_vec3
+typedef struct s_plane
 {
-	double x;
-	double y;
-	double z;
-}	t_vec3;
+	t_vec3 point;
+	t_vec3 normal;
+	t_color color;
+}	t_plane;
 
-typedef struct s_color
+typedef struct s_cylinder
 {
-	int	r;
-	int	g;
-	int	b;
-}	t_color;
+	t_vec3 center;
+	t_vec3 axis;
+	double dia;
+	double height;
+	t_color color;
+}	t_cylinder;
 
+<<<<<<< HEAD
 //P(t)=O+t⋅D // t is the distance traveled on the ray from the source?
 typedef struct s_ray
 {
@@ -74,38 +83,54 @@ typedef struct s_ray
 
 
 
+=======
+typedef struct s_object
+{
+	t_objtype		type;
+	void *data; // points to the structs above
+	struct s_object	*next;
+}					t_object;
+>>>>>>> parsing
 
 ///////////////////////////////////////////////////////////////////////////////
 //								SCENE									//
 
-
-//TODO define each element they give us according to pdf
-
 typedef struct s_ambient
 {
-
-}	t_ambient;
+	double			brightness;
+	t_color			color;
+}					t_ambient;
 
 typedef struct s_camera
 {
+	t_vec3		pos;
+	t_vec3		vec;
+	double		fov;
 
-}	t_camera;
+}					t_camera;
 
 typedef struct s_light
 {
+	t_vec3		pos;
+	double			brightness;
+}					t_light;
 
-}	t_light;
-
-
-typedef	struct s_scene
+typedef struct s_scene
 {
-	t_ambient	ambient;//A
-	t_camera	camera;//C
-	t_light		light;//L
-	t_object	*objects;//linked list of objects, enum for different handling?
-}	t_scene;
+	t_ambient		ambient;
+	t_camera		camera;
+	t_light			light;
+	t_object *objects; // linked list of all the objects
+}					t_scene;
 
+///////////////////////////////////////////////////////////////////////////////
+//								PARSING									//
 
-
+typedef struct s_found_elements
+{
+	int	ambient;
+	int	camera;
+	int	light;
+}		t_found;
 
 #endif

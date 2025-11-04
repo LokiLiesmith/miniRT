@@ -3,142 +3,130 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 20:55:41 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/22 11:23:41 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/14 18:03:31 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 18:38:15 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// Parameters: s: The string to be split.
+//             c: The delimiter character.
+
+// The array of new strings resulting from the split.NULL if the allocation
+//  fails.
+
+// 	Allocates memory(using malloc(3)) and
+// 	returns an array of strings obtained by splitting ’s’ using the character
+//     ’c’ as a delimiter.The array must end with a NULL pointer.
+
 #include "libft.h"
 
-//COUNT WORDS FOR ARRAY
-size_t	ft_count_words(char const *s, char delimiter)
+static unsigned int	ft_word_count(const char *s, char c)
 {
-	size_t	count;
-	int		in_word;
+	unsigned int	count;
+	int				flag;
 
-	in_word = 0;
+	if (!s)
+		return (0);
 	count = 0;
+	flag = 0;
 	while (*s)
 	{
-		if (*s != delimiter && in_word == 0)
+		if (*s != c && !flag)
 		{
-			in_word = 1;
+			flag = 1;
 			count++;
 		}
-		else if (*s == delimiter)
-			in_word = 0;
+		else if (*s == c)
+			flag = 0;
 		s++;
 	}
 	return (count);
 }
 
-//SAFE MALLOC
-int	safe_malloc(char **result, int position, size_t buffer)
+static void	ft_free_memory(char **split_strings, size_t count_array)
 {
-	int	i;
-
-	i = 0;
-	result[position] = malloc(buffer);
-	if (NULL == result[position])
-	{
-		while (i < position)
-		{
-			free(result[i++]);
-		}
-		free(result);
-		return (1);
-	}
-	return (0);
+	while (count_array--)
+		free(split_strings[count_array]);
+	free(split_strings);
 }
 
-int	fill_array(char **result, char const *s, char delimiter)
+static char	*ft_allocate_word(char const *s, unsigned int start,
+		unsigned int end)
 {
-	size_t	len;
-	int		i;
+	char	*word;
 
-	i = 0;
-	while (*s)
-	{
-		len = 0;
-		while (*s == delimiter && *s)
-			++s;
-		while (*s != delimiter && *s)
-		{
-			++len;
-			++s;
-		}
-		if (len)
-		{
-			if (safe_malloc(result, i, len + 1))
-				return (1);
-			ft_strlcpy(result[i], s - len, len + 1);
-			i++;
-		}
-	}
-	result[i] = NULL;
-	return (0);
+	word = ft_substr(s, start, end - start + 1);
+	if (!word)
+		return (NULL);
+	return (word);
 }
 
+static char	**ft_fill_array(char const *s, char c, char **split_strings,
+		int count)
+{
+	unsigned int	start;
+	unsigned int	end;
+	int				i;
+
+	i = -1;
+	while (s[++i] != '\0')
+	{
+		if (s[i] != c)
+		{
+			start = i;
+			while (s[i] != '\0')
+			{
+				if (s[i + 1] == c || s[i + 1] == '\0')
+				{
+					end = i;
+					split_strings[++count] = ft_allocate_word(s, start, end);
+					if (!split_strings[count])
+						return (ft_free_memory(split_strings, count), NULL);
+					break ;
+				}
+				i++;
+			}
+		}
+	}
+	return (split_strings[count + 1] = NULL, split_strings);
+}
+
+// Parameters: s: The string to be split. c: The delimiter character.
+// Return value: The array of new strings resulting from the split.
+// NULL if the allocation fails.
+// Description: Allocates memory (using malloc(3)) and returns an array of
+// strings obtained by splitting ’s’ using the character ’c’ as a delimiter.
+// The array must end with a NULL pointer.
 char	**ft_split(char const *s, char c)
 {
-	size_t	num_words;
-	char	**result;
+	char			**split_strings;
+	int				count;
+	unsigned int	word_count;
 
+	word_count = ft_word_count(s, c);
+	count = -1;
 	if (!s)
 		return (NULL);
-	num_words = 0;
-	num_words = ft_count_words(s, c);
-	result = malloc((num_words + 1) * sizeof(char *));
-	if (!result)
+	split_strings = malloc((ft_word_count(s, c) + 1) * sizeof(char *));
+	if (!split_strings)
 		return (NULL);
-	result[num_words] = NULL;
-	if (fill_array(result, s, c))
-		return (NULL);
-	return (result);
+	return (ft_fill_array(s, c, split_strings, count));
 }
 
-/* //TESTERFUNCS
-// cc -Werror -Wextra -Wall ft_split.c ft_strlcpy.c -o splittest
-#include <stdio.h>
-#include <unistd.h>
-
-void print_split(char **split)
-{
-	int i = 0;
-	while (split[i] != NULL)
-	{
-		printf("%s\n", split[i]);
-		i++;
-	}
-}
-int main (void)
-{
-	printf("NrOfWords: %zu\n", (ft_count_words("This is a test!", ' ')));
-	printf("NrOfWords: %zu\n", (ft_count_words("This    is a test!", ' ')));
-	printf("NrOfWords: %zu\n", (ft_count_words("   This is a test!", ' ')));
-	printf("NrOfWords: %zu\n", (ft_count_words("This is a test!   ", ' ')));
-
-	char **result = ft_split("This is a test!   ", ' ');
-	print_split(result);
-	printf("\n");
-	free(result);
-	
-	result = ft_split("   ", ' ');
-	print_split(result);
-	printf("\n");
-	free(result);
-	
-	result = ft_split(" spa ces every where   ", ' ');
-	print_split(result);
-	printf("\n");
-	free(result);
-	
-	result = ft_split("split\nthis\nby\nnewline", '\n');
-	print_split(result);
-	printf("\n");
-	free(result);
-	return (0);
-}
- */
+// int	main(void)
+// {
+// 	const char *s = "                  olol";
+// 	char c = ' ';
+// 	printf("%u\n", ft_word_count(s, c));
+// 	char **result = ft_split(s, c);
+// 	unsigned int i = 0;
+// 	while (result[i])
+// 	{
+// 		printf("split_string[%u] = %s\n", i, result[i]);
+// 		i++;
+// 	}
+// 	ft_free_memory(result, i);
+// 	return (0);
+// }

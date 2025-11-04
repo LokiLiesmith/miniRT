@@ -3,41 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 15:17:23 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/20 20:29:06 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/12 13:48:34 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 18:44:18 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-// The strlcpy() and strlcat() functions copy and concatenate strings with
-// the same input parameters and output result as snprintf(3).  They are
-// designed to be safer, more consistent, and less error prone replacements
-// for the easily misused functions strncpy(3) and strncat(3).
-// strlcpy() and strlcat() take the full size of the destination buffer and
-// guarantee NUL-termination if there is room.  Note that room for the NUL
-// should be included in dstsize.
-// strlcpy() copies up to dstsize - 1 characters from the string src to dst,
-// NUL-terminating the result if dstsize is not 0.
 
+// strlcpy() take the full size of the destination buffer
+// and guarantee NUL-termination if there is room.  Note that room for
+// the NUL should be included in dstsize.
+// strlcpy() copies up to dstsize - 1 characters from the string src to
+// dst, NUL-terminating the result if dstsize is not 0.
+// the strlcpy() return the total length of the string they tried to create.
+// For strlcpy() that means the length of src.
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	size_t	len;
 	size_t	i;
+	size_t	count;
 
-	len = 0;
 	i = 0;
-	while (src[len])
-		len++;
+	count = 0;
+	while (src[count] != '\0')
+		count++;
 	if (dstsize > 0)
 	{
-		while ((i < dstsize - 1) && (src[i] != '\0'))
+		while ((src[i] != '\0') && (i < (dstsize - 1)))
 		{
 			dst[i] = src[i];
 			i++;
 		}
 		dst[i] = '\0';
 	}
-	return (len);
+	return (count);
 }
+
+// int	main(void)
+// {
+// 	char	destination[] = "kill";
+// 	char	*source;
+// 	size_t	size;
+
+// 	source = "Helloworld";
+// 	size = 0;
+// 	printf("your fn output: %zu\n", ft_strlcpy(destination, source, size));
+// 	printf("comp fn output: %lu\n", strlcpy(destination, source, size));
+// 	return (0);
+// }

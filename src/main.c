@@ -10,8 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+<<<<<<< HEAD
 #include "mini_rt.h"
 
+=======
+>>>>>>> parsing
 // int main(int ac, char **av)
 // {
 // 	if (ac != 2)
@@ -24,11 +27,17 @@
 // 	return (0);
 // }
 
+// void	checkleaks(void)
+// {
+// 	system("leaks miniRT");
+// }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_rt rt;
+	// t_rt rt;
+	t_scene scene;
 
+<<<<<<< HEAD
 	if (ac != 2)
 		return (printf("Usage: './miniRT scene_file.rt'\n"), 1);
 	printf("main online: %s\n", av[1]);
@@ -49,3 +58,28 @@ int main(int ac, char **av)
 
 	return (0);
 }
+=======
+	// atexit(&checkleaks);
+	ft_memset(&scene, 0, sizeof(t_scene));
+	if (check_input(ac, av, &scene) != 0)
+		return (free_objects(&scene.objects), 1);
+	print_scene(&scene);
+	return (free_objects(&scene.objects), 0);
+
+	// mlx things
+	// rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", false);
+	// if (!rt.mlx)
+	// 	return (free_objects(&scene.objects),
+	// 		printf("Failed to initialize MLX"), 1);
+	// rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
+	// if (!rt.img)
+	// 	return (free_objects(&scene.objects), printf("Failed to create image"),
+	// 		1);
+	// mlx_image_to_window(rt.mlx, rt.img, 0, 0);
+	// mlx_loop(rt.mlx);
+	// mlx_delete_image(rt.mlx, rt.img);
+	// mlx_terminate(rt.mlx);
+
+	// return (free_objects(&scene.objects), 0);
+}
+>>>>>>> parsing

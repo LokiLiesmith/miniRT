@@ -3,27 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 23:25:53 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/12 23:26:02 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/11 15:19:14 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 17:26:04 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// take a pointer and fill the next n bytes with 0.
-// Cast void pointer to unsigned char so it knows what datatype,
-// and how to do the pointer arithmetic 
-// change the next n bytes to 0 while n larger than 0.
 #include "libft.h"
 
+// The bzero() function writes n zeroed bytes to the string s.  If n is
+// zero, bzero() does nothing.
 void	ft_bzero(void *s, size_t n)
 {
-	unsigned char	*ptr;
+	unsigned char	*s2;
+	size_t			i;
 
-	ptr = (unsigned char *) s;
-	while (n)
+	s2 = (unsigned char *)s;
+	i = 0;
+	while (i < n)
 	{
-		*ptr++ = 0;
-		n--;
+		s2[i] = '\0';
+		i++;
 	}
 }
+
+// int	main(void)
+// {
+// 	char	m[10] = "Hello";
+// 	char	b[10] = "Hello";
+
+// 	printf("%s\n", m);
+// 	ft_bzero(m, 3);
+// 	printf("your output: %s\n", m);
+// 	bzero(b, 3);
+// 	printf("in-built function output: %s\n", b);
+// 	printf("%s\n", b);
+// 	return (0);
+// }
