@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/04 14:15:24 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/04 15:48:21 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 
 # include "get_next_line.h"
 # include "libft/libft.h"
-# include "structs.h"
+# include "../include/structs.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <math.h>
-# include <stdlib.h>
 # include "../include/libft/libft.h"
 
 //MATH
