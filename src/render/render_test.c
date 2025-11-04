@@ -46,7 +46,7 @@ static t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 	double	v = (1.0 - 2.0 * ((y + 0.5) / (double)HEIGHT)) * scale;
 
 	t_vec3 dir_cam = {u, v, 1.0};
-	dir_cam = vec_normalize(dir_cam);
+	// dir_cam = vec_normalize(dir_cam);//NOT NEEDED?
 	ray.dir = vec_add(
 		vec_add(vec_scale(view.right, dir_cam.x),
 				vec_scale(view.up, dir_cam.y)),
