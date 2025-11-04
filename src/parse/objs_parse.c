@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:23:17 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/02 23:08:29 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/04 14:10:30 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ int	parse_sp(char **strs, t_object **objs_lst)
 		return (printf("Error\nsp malloc fail\n"), 1);
 	if (parse_xyz(strs[1], xyz) != 0)
 		return (free(sp), 1);
-	sp->center.x = xyz[0];
-	sp->center.y = xyz[1];
-	sp->center.z = xyz[2];
+	sp->s.x = xyz[0];
+	sp->s.y = xyz[1];
+	sp->s.z = xyz[2];
 	if (!is_valid_double(strs[2], 0))
 		return (free(sp), printf("Error\nInvalid sp diameter\n"), 1);
-	sp->dia = ft_atod(strs[2]);
-	if (sp->dia <= 0.0)
+	sp->d = ft_atod(strs[2]);
+	if (sp->d <= 0.0)
 		return (free(sp), printf("Error\nsp dia must be positive\n"), 1);
 	if (parse_rgb(strs[3], &sp->color, 0) != 0)
 		return (free(sp), 1);

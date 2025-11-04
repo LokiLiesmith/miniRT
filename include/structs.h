@@ -60,8 +60,8 @@ typedef enum e_objtype
 
 typedef struct s_sphere
 {
-	t_vec3 center;
-	double dia;
+	t_vec3 s;
+	double d;
 	t_color color;
 }	t_sphere;
 

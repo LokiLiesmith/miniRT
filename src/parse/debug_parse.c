@@ -50,8 +50,8 @@ static void	print_object(t_object *obj, int index)
 	{
 		printf("SPHERE\n");
 		sp = (t_sphere *)obj->data;
-		print_vec3("Center", sp->center);
-		printf("Diameter: %.1f\n", sp->dia);
+		print_vec3("Center", sp->s);
+		printf("Diameter: %.1f\n", sp->d);
 		print_color("Color", sp->color);
 	}
 	else if (obj->type == PLANE)
