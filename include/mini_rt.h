@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/04 16:21:21 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/04 17:47:21 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void		print_objects(t_object *objects);
 
 
 //FAKE LIST
+void		fake_parsing(t_rt *rt);
 void		fake_obj_list(t_rt *rt);
 void		print_list(t_object *list);
 void		add_obj(t_object **list, t_object *new);

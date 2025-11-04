@@ -181,7 +181,7 @@ void	render(t_rt *rt)
 	}
 }
 
-static void	fake_parsing(t_rt *rt)
+void	fake_parsing(t_rt *rt)
 {
 //CAMERA
 	rt->scene.camera.pos.x = 0;
@@ -200,8 +200,8 @@ static void	fake_parsing(t_rt *rt)
 	rt->scene.ambient.color.b = 255;
 //LIGHT
 	rt->scene.light.pos.x = -50;
-	rt->scene.light.pos.y = 0;
-	rt->scene.light.pos.z = 5;
+	rt->scene.light.pos.y = 25;
+	rt->scene.light.pos.z = 0;
 
 	rt->scene.light.brightness = 0.7;
 
@@ -253,32 +253,35 @@ uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light ligh
 	return (rgba(r, g, b, 255));
 }
 
-int	main(int ac, char **av)
-{
-	t_rt	rt;
+// int	main(int ac, char **av)
+// {
+// 	t_rt	rt;
 
-	if (ac != 2)
-		return (printf("Usage: './miniRT scene_file.rt'\n"), 1);
-	printf("main online: %s\n", av[1]);
+// 	ft_memset(&rt, 0, sizeof(t_rt));
 
-	rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", false);
-	if (!rt.mlx)
-		return (printf("Failed to initialize MLX"), 1);
-	rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
-	if (!rt.img)
-		return (printf("Failed to create image"), 1);
-	//TESTING///////////////////////////////////////////////////////////////
-	fake_parsing(&rt);//TESTING STRUCT
-	////////////////////////////////////////////////////////////////////////
+// 	if (ac != 2)
+// 		return (printf("Usage: './miniRT scene_file.rt'\n"), 1);
+// 	printf("main online: %s\n", av[1]);
+
+// 	rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", false);
+// 	if (!rt.mlx)
+// 		return (printf("Failed to initialize MLX"), 1);
+// 	rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
+// 	if (!rt.img)
+// 		return (printf("Failed to create image"), 1);
+// 	//TESTING///////////////////////////////////////////////////////////////
+// 	fake_parsing(&rt);//TESTING STRUCT
+// 	////////////////////////////////////////////////////////////////////////
 	
-	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
-	render(&rt);
-	mlx_key_hook(rt.mlx, key_hook, &rt);
-	mlx_close_hook(rt.mlx, close_hook, &rt);
-	mlx_loop(rt.mlx);
-	mlx_delete_image(rt.mlx, rt.img);
-	mlx_terminate(rt.mlx);
+// 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
+	
+// 	render(&rt);
+// 	mlx_key_hook(rt.mlx, key_hook, &rt);
+// 	mlx_close_hook(rt.mlx, close_hook, &rt);
+// 	mlx_loop(rt.mlx);
+// 	mlx_delete_image(rt.mlx, rt.img);
+// 	mlx_terminate(rt.mlx);
 
-	return (0);
-}
+// 	return (0);
+// }
 

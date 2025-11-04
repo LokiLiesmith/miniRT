@@ -22,10 +22,11 @@ endif
 SRC_MINI_RT	:= src/main.c
 SRC_COMMON	:= src/parse/file_check.c src/parse/acl_parse.c src/parse/ft_atod.c \
 			   src/parse/objs_parse.c src/parse/parse_utils.c src/parse/linked_list_utils.c \
-			   src/utils/utils.c src/get_next_line.c src/get_next_line_utils.c  src/parse/parse_xyz_rgb.c\
-			   src/parse/debug_parse.c src/mlx/mlx_hooks.c src/utils/math_utils.c src/math/vector_math.c
-SRC_RENDER	:= src/render/render_test.c src/render/fake_parsing.c
+			   src/utils/utils.c src/get_next_line.c src/get_next_line_utils.c  src/parse/parse_xyz_rgb.c \
+			   src/parse/debug_parse.c src/mlx/mlx_hooks.c src/utils/math_utils.c src/math/vector_math.c \ 
+			   src/render/render_test.c
 
+# SRC_RENDER	:= src/render/render_test.c src/render/fake_parsing.c
 
 SRC			:= $(SRC_COMMON)
 SELECTED_SRC := $(SRC_$(UC_T)) $(SRC_COMMON)
@@ -36,12 +37,10 @@ BINDIR		:= bin
 NAME		:= $(T)
 OBJ			:= $(SELECTED_SRC:src/%.c=$(OBJDIR)/%.o)
 
-
 #error if T doesn't match any SRC_*
 ifeq ($(strip $(SELECTED_SRC)),)
 $(error Unknown T='$(T)'. Valid options: miniRT parse math render utils)
 endif
-
 
 all: $(BINDIR)/$(NAME)
 
