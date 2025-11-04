@@ -11,10 +11,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-<<<<<<< HEAD
 void	key_hook(mlx_key_data_t keydata, void *param);
 void	close_hook(void *param);
-=======
 ///////////////////////////////////////////////////////////////////////////////
 //								PARSING										//
 
@@ -25,7 +23,6 @@ int			check_acl(t_found *found, int found_valid_line);
 int			parse_scene_file(const char *file, t_scene *scene, int val,
 				t_found *found);
 int			check_input(int ac, char **av, t_scene *scene);
->>>>>>> parsing
 
 // acl_parse.c
 int			parse_ambient(char **strs, t_ambient *ambient);

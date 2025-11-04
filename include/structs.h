@@ -69,7 +69,7 @@ typedef struct s_cylinder
 	t_color color;
 }	t_cylinder;
 
-typedef struct s_plane
+typedef struct s_object
 {
 	t_objtype		type;
 	void *data; // points to the structs above
