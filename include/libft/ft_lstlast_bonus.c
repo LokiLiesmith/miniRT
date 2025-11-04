@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printstring.c                                   :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/28 11:15:07 by mrazem            #+#    #+#             */
-/*   Updated: 2025/04/06 15:14:44 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/20 12:40:38 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 18:27:54 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_printstring(char *passed_string)
+// Parameters: lst:  The beginning of the list.
+// Return value: Last node of the list
+// Description: Returns the last node of the list.
+t_list	*ft_lstlast(t_list *lst)
 {
-	int	w;
-
-	w = 0;
-	if (!passed_string)
-		passed_string = "(null)";
-	while (*passed_string)
+	if (lst == NULL)
+		return (NULL);
+	while (lst->next != NULL)
 	{
-		w = ft_safe_write(1, passed_string, 1);
-		if (w == -1)
-			return (-1);
-		passed_string++;
+		lst = lst->next;
 	}
-	return (0);
+	return (lst);
 }

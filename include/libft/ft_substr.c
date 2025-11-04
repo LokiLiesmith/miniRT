@@ -3,48 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/16 20:47:33 by mrazem            #+#    #+#             */
-/*   Updated: 2025/09/05 02:21:09 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/13 16:28:11 by djanardh          #+#    #+#             */
+/*   Updated: 2025/04/08 18:43:39 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+static size_t	ft_malloc_size(size_t s_len, size_t start, size_t len)
+{
+	size_t	remaining_len;
+	size_t	malloc_size;
+
+	remaining_len = s_len - start;
+	if (len < remaining_len)
+		malloc_size = len;
+	else
+		malloc_size = remaining_len;
+	return (malloc_size);
+}
+
+// s: The original string from which to create the substring.
+// start: The starting index of the substring within ’s’.
+// len: The maximum length of the substring.
+// Allocates memory (using malloc(3)) and returns a substring from the string
+// ’s’. The substring starts at index ’start’ and has a maximum length of ’len’
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*substring;
+	size_t	s_len;
+	char	*sub_string;
+	size_t	i;
 
-	if (!s)
+	if (s == NULL)
 		return (NULL);
-	if (start >= ft_strlen(s))
+	i = 0;
+	s_len = ft_strlen(s);
+	if (start >= s_len)
 		return (ft_strdup(""));
-	if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	substring = (char *) malloc (len +1);
-	if (!substring)
+	sub_string = malloc(ft_malloc_size(s_len, start, len) + 1);
+	if (sub_string == NULL)
 		return (NULL);
-	ft_strlcpy(substring, s + start, len + 1);
-	return (substring);
-}
-/* #include <stdio.h>
-
-void test_ft_substr(const char *s, unsigned int start, size_t len)
-{
-    char *sub = ft_substr(s, start, len);
-    printf("ft_substr(\"%s\", %u, %zu) -> \"%s\"\n", s, start, len, sub);
-    free(sub);
+	while (s[start] != '\0' && (i < len) && start < s_len)
+	{
+		sub_string[i] = s[start];
+		i++;
+		start++;
+	}
+	sub_string[i] = '\0';
+	return (sub_string);
 }
 
-int main(void)
-{
-    test_ft_substr("Hello, World!", 7, 5);
-    test_ft_substr("Hello, World!", 0, 5);
-    test_ft_substr("Hello", 5, 3);
-    test_ft_substr("Hello", 10, 3);         
-    test_ft_substr("42", 1, 10);            
-    test_ft_substr("42", 0, 0);             
-
-    return 0;
-} */
+// int	main(void)
+// {
+// 	char *s = "helloworld";
+// 	unsigned int start = 400;
+// 	size_t len = 4;
+// 	printf("%s\n", ft_substr(s, start, len));
+// 	return (0);
+// }

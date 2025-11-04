@@ -56,23 +56,35 @@ typedef enum e_objtype
 	SPHERE,
 	PLANE,
 	CYLINDER
-}	t_objtype;
-
+}					t_objtype;
 
 typedef struct s_sphere
 {
-	t_vec3	s;
-	int		r;
-	t_color	color;
+	t_vec3 s;
+	double d;
+	t_color color;
 }	t_sphere;
 
-// typedef struct s_plane;
-// typedef struct s_cylinder;
+typedef struct s_plane
+{
+	t_vec3 point;
+	t_vec3 normal;
+	t_color color;
+}	t_plane;
+
+typedef struct s_cylinder
+{
+	t_vec3 center;
+	t_vec3 axis;
+	double dia;
+	double height;
+	t_color color;
+}	t_cylinder;
 
 typedef struct s_object
 {
 	t_objtype		type;
-	void			*data;//points to the structs above
+	void *data; // points to the structs above
 	struct s_object	*next;
 }	t_object;
 
@@ -82,16 +94,43 @@ typedef struct s_object
 
 
 ///////////////////////////////////////////////////////////////////////////////
+//								MATH_THINGS									//
+typedef struct s_vec3
+{
+	double x;
+	double y;
+	double z;
+}	t_vec3;
+
+typedef struct s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}	t_color;
+
+//P(t)=O+t⋅D // t is the distance traveled on the ray from the source?
+typedef struct s_ray
+{
+	t_vec3	origin;
+	t_vec3	dir;
+	// origin point with 3 coords;
+	// direction;
+	// scalar?;
+}	t_ray;
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
 //								SCENE									//
-
-
-//TODO define each element they give us according to pdf
 
 typedef struct s_ambient
 {
-	double	brightness;
-	t_color	color;
-}	t_ambient;
+	double			brightness;
+	t_color			color;
+}					t_ambient;
 
 typedef struct s_camera
 {
@@ -110,28 +149,20 @@ typedef struct s_light
 
 typedef struct s_scene
 {
-	t_ambient	ambient;//A
-	t_camera	camera;//C
-	t_light		light;//L
-	t_object	*objects;//linked list of objects, enum for different handling?
-}	t_scene;
-
-
-
-
-
+	t_ambient		ambient;
+	t_camera		camera;
+	t_light			light;
+	t_object *objects; // linked list of all the objects
+}					t_scene;
 
 ///////////////////////////////////////////////////////////////////////////////
-//								MAIN STRUCT									//
+//								PARSING									//
 
-typedef struct s_rt
+typedef struct s_found_elements
 {
-	t_scene		scene;
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-	// t_gc	gc;			//gc-list? TODO import from minishell
-
-}	t_rt;
-
+	int	ambient;
+	int	camera;
+	int	light;
+}		t_found;
 
 #endif

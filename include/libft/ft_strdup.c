@@ -3,53 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/16 18:14:43 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/16 18:33:23 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/13 15:50:21 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 18:56:03 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <signal.h>
-#include <string.h>
-#include <stdio.h>
 
-char	*ft_strdup(const char *s)
+// The strduplication() function allocates sufficient memory for a copy of the
+// string s1, does the copy, and returns a pointer to it.  The pointer may
+// subsequently be used as an argument to the function free(3).
+// If insufficient memory is available, NULL is returned and errno is set to
+// ENOMEM.
+char	*ft_strdup(const char *s1)
 {
-	char	*copy;
-	size_t	i;
+	char	*s2;
+	size_t	str_len;
+	int		i;
 
-	copy = (char *)malloc(ft_strlen(s) +1);
-	if (!copy)
-		return (NULL);
 	i = 0;
-	while (s[i])
+	str_len = ft_strlen(s1);
+	s2 = malloc(str_len + 1);
+	if (s2 == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
 	{
-		copy[i] = s[i];
+		s2[i] = s1[i];
 		i++;
 	}
-	copy[i] = '\0';
-	return (copy);
+	s2[i] = '\0';
+	return ((char *)s2);
 }
 
-/* void	test_ft_strdup(const char *s)
-{
-	char	*copy;
-
-	copy = ft_strdup(s);
-	printf("Original: %s -> Copy: %s\n", s, copy);
-	free(copy);
-}
-
-int	main(void)
-{
-	test_ft_strdup("eyo, 420!");
-	test_ft_strdup("");
-	test_ft_strdup("Malloc test!420!");
-	return (0);
-}
- */
+// int	main(void)
+// {
+// 	const char *s1 = "hello";
+// 	printf("%s\n", ft_strdup(s1));
+// 	printf("%s\n", strdup(s1));
+// 	return (0);
+// }

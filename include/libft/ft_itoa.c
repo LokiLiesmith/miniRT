@@ -3,59 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/18 14:50:47 by mrazem            #+#    #+#             */
-/*   Updated: 2025/03/18 23:34:53 by mrazem           ###   ########.fr       */
+/*   Created: 2025/03/13 19:30:35 by djanardh          #+#    #+#             */
+/*   Updated: 2025/03/20 18:25:12 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-//COUNT DECIMALS
-static int	int_len(long nbr)
+static long	ft_int_len(long n)
 {
-	int	count;
+	long	i;
 
-	count = 0;
-	if (nbr < 0)
+	i = 0;
+	if (n < 0)
 	{
-		count++;
-		nbr = -nbr;
+		n = n * (-1);
+		while (n >= 10)
+		{
+			n = n / 10;
+			i++;
+		}
+		return (i + 2);
 	}
-	if (nbr == 0)
-		count++;
-	while (nbr != 0)
+	if (n == 0)
+		return (1);
+	while (n >= 10)
 	{
-		nbr /= 10;
-		count++;
+		n = n / 10;
+		i++;
 	}
-	return (count);
+	return (i + 1);
 }
 
-char	*ft_itoa(int c)
+static char	*ft_posnum(long i, long temp, char *str)
 {
-	long	nbr;
-	int		len;
-	char	*result;
+	while (i >= 0)
+	{
+		str[i] = (temp % 10) + '0';
+		temp = temp / 10;
+		i--;
+	}
+	return (str);
+}
 
-	nbr = c;
-	len = int_len(nbr);
-	result = malloc((len + 1) * sizeof(char));
-	if (!result)
+static char	*ft_negnum(long i, long temp, char *str)
+{
+	while (i > 0)
+	{
+		str[i] = (temp % 10) + '0';
+		temp = temp / 10;
+		i--;
+	}
+	return (str);
+}
+
+// Parameters: n: The integer to convert.
+// Return value: The string representing the integer. NULL if the allocation
+// fails.
+// Description: Allocates memory (using malloc(3)) and returns
+// a string representing the integer received as an argument. Negative numbers
+// must be handled.
+char	*ft_itoa(int n)
+{
+	long	i;
+	char	*str;
+	long	temp;
+
+	temp = n;
+	i = ft_int_len(temp);
+	str = malloc(ft_int_len(temp) + 1);
+	if (str == NULL)
 		return (NULL);
-	result[len] = '\0';
-	if (nbr < 0)
+	if (temp < 0)
 	{
-		result[0] = '-';
-		nbr = -nbr;
+		temp = -temp;
+		str[0] = '-';
+		str[i] = '\0';
+		return (ft_negnum(i - 1, temp, str));
 	}
-	if (nbr == 0)
-		result[0] = '0';
-	while (nbr > 0)
-	{
-		result[--len] = (nbr % 10) + '0';
-		nbr /= 10;
-	}
-	return (result);
+	str[i] = '\0';
+	return (ft_posnum(i - 1, temp, str));
 }
+
+// int	main(void)
+// {
+// 	printf("%lu\n", ft_int_len(-4564560));
+// 	printf("%s\n", ft_itoa(-4564560));
+// 	return (0);
+// }
