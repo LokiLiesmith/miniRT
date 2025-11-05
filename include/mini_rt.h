@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/04 17:47:21 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/05 18:42:20 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,26 @@ t_vec3	vec_scale(t_vec3 v, double scale);
 t_vec3	vec_reflect(t_vec3 ray_in, t_vec3 normal);
 
 //RENDER
-void        render(t_rt *rt);
-uint32_t	normal_to_color(t_vec3 normal);
-uint32_t    calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light);
 
+
+//check_intersections.c
+t_view		camera_orientation(t_rt *rt);
+t_ray		generate_ray(t_rt *rt, int x, int y, t_view view);
+t_hit		check_intersections(t_ray ray, t_rt *rt);
+
+
+
+//colors.c
+uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+uint32_t	normal_to_color(t_vec3 normal);
+uint32_t	calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light);
+
+//render.c
+void        render(t_rt *rt);
+void		set_pixel(mlx_image_t *img, int x, int y, uint32_t color);
+
+//sphere.c
+t_hit		intersect_sphere(t_ray ray, t_sphere *sphere);
 
 
 

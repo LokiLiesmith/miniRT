@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/04 21:34:00 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/05 18:30:51 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	main(int ac, char **av)
 	render(&rt);
 	mlx_key_hook(rt.mlx, key_hook, &rt);
 	mlx_close_hook(rt.mlx, close_hook, &rt);
-
 	mlx_loop(rt.mlx);
 	mlx_delete_image(rt.mlx, rt.img);
 	mlx_terminate(rt.mlx);
