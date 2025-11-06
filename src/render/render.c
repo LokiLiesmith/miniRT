@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:27 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/05 18:37:28 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/06 22:42:12 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ void	render(t_rt *rt)
 	int			y;
 	t_ray		ray;
 	t_view		view = camera_orientation(rt);
-
-	print_camera(&rt->scene.camera);
+	uint32_t	color;
+	t_hit		hit;
+	// print_camera(&rt->scene.camera);
 
 	y = 0;
 	while (y < HEIGHT)
@@ -43,18 +44,31 @@ void	render(t_rt *rt)
 		while (x < WIDTH)
 		{
 			ray = generate_ray(rt, x, y, view);
-			t_hit hit = check_intersections(ray, rt);
-			if (hit.t > 0)
+			hit = check_intersections(ray, rt);
+			if (hit.t > 0)//actual hit
 			{
-				// uint32_t color = normal_to_color(hit.normal);
-				uint32_t color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
+				t_ray shadow_ray;
+				t_vec3 light_direction = vec_normalize(vec_subtract(rt->scene.light.pos, hit.point));
+				shadow_ray.origin = vec_scale(hit.normal, 1e-4);
+				shadow_ray.dir = light_direction;
+				
+				t_hit shadow_hit = check_intersections(shadow_ray, rt);
+				if (shadow_hit.t > 0)
+				{
+					color = rgba(0, 0, 0, 255);
+				}
+				else
+					color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
+					// color = normal_to_color(hit.normal);
+
 				// print_vec3(ray.dir);
-				set_pixel(rt->img, x, y, color);
 			}
 			else
-				set_pixel(rt->img, x, y, rgba(255, 255, 255, 255));
+				color = rgba(255, 255, 255, 255);
+				// set_pixel(rt->img, x, y, rgba(255, 255, 255, 255));
 			// print_vec3(ray.origin);
 			// color = trace_ray(ray, scene);
+			set_pixel(rt->img, x, y, color);
 			x++;
 		}
 		y++;

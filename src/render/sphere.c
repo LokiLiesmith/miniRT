@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:12:59 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/05 18:44:22 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/06 21:47:32 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_hit	intersect_sphere(t_ray ray, t_sphere *sphere)
 	double t = -1.0;
 
 	//logic for checkin if inside, when we start working with shadows - compare with epsilon cuz 0 isnt exactly 0 anymore (non exact double calculations)
-	if (t0 > 0.0)
+	if (t0 > 0)
 		t = t0;
 	else if (t0 < 0 && t1 > 0)
 		t = t1;
