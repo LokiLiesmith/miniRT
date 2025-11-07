@@ -20,9 +20,9 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	char		*dst2;
 	const char	*src2;
-	size_t		i;
+	// size_t		i;
 
-	i = 0;
+	// i = 0;
 	dst2 = (char *)dst;
 	src2 = (const char *)src;
 	if (dst2 == NULL && src2 == NULL)

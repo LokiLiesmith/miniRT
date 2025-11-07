@@ -109,7 +109,7 @@ char	**ft_split(char const *s, char c)
 	count = -1;
 	if (!s)
 		return (NULL);
-	split_strings = malloc((ft_word_count(s, c) + 1) * sizeof(char *));
+	split_strings = malloc((word_count + 1) * sizeof(char *));
 	if (!split_strings)
 		return (NULL);
 	return (ft_fill_array(s, c, split_strings, count));

@@ -49,13 +49,14 @@ void	render(t_rt *rt)
 			{
 				t_ray shadow_ray;
 				t_vec3 light_direction = vec_normalize(vec_subtract(rt->scene.light.pos, hit.point));
-				shadow_ray.origin = vec_scale(hit.normal, 1e-4);
+				shadow_ray.origin = vec_add(hit.point, vec_scale(hit.normal, 1e-4));
 				shadow_ray.dir = light_direction;
 				
 				t_hit shadow_hit = check_intersections(shadow_ray, rt);
 				if (shadow_hit.t > 0)
 				{
-					color = rgba(0, 0, 0, 255);
+					// color = rgba(0, 0, 0, 255);
+					color = calculate_color(rt->scene, shadow_hit, rt->scene.camera, rt->scene.light);
 				}
 				else
 					color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);

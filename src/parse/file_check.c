@@ -107,7 +107,7 @@ int	parse_scene_file(const char *file, t_scene *scene, int val, t_found *found)
 						0) != 0))
 				return (free(l), close(fd), 1);
 			if (parse_elements(l, scene) != 0)
-				return (free(l), close(fd), printf("Error in %.2s\n", l), 1);
+				return (close(fd), printf("Error in %.2s\n", l), free(l), 1);
 			val = 1;
 		}
 		free(l);
