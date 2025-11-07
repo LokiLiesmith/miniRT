@@ -48,7 +48,7 @@ uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 uint32_t	normal_to_color(t_vec3 normal);
 uint32_t	calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light);
 uint32_t	calculate_shadow(t_scene scene, t_hit shadow_hit);
-
+uint32_t	color_scale(t_color color, double factor);
 
 //render.c
 void        render(t_rt *rt);

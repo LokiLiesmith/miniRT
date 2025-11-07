@@ -65,7 +65,7 @@ void	render(t_rt *rt)
 				}
 			}
 			else
-				color = rgba(255, 255, 255, 255);
+				color = color_scale(rt->scene.ambient.color, rt->scene.ambient.brightness);
 			set_pixel(rt->img, x, y, color);
 			x++;
 		}

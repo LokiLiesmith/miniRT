@@ -73,3 +73,15 @@ uint32_t	calculate_shadow(t_scene scene, t_hit shadow_hit)
 
 	return (rgba(r, g, b, 255.0));
 }
+uint32_t	color_scale(t_color color, double factor)
+{
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+
+	r = color.r * factor;
+	g = color.g * factor;
+	b = color.b * factor;
+
+	return rgba(r, g, b, 255.0);
+}
