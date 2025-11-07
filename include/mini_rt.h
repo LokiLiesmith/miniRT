@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/05 18:42:20 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/07 11:12:31 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ t_hit		check_intersections(t_ray ray, t_rt *rt);
 uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 uint32_t	normal_to_color(t_vec3 normal);
 uint32_t	calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light);
+uint32_t	calculate_shadow(t_scene scene, t_hit shadow_hit);
+
 
 //render.c
 void        render(t_rt *rt);

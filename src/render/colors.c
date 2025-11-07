@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:36 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/07 00:29:08 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/07 11:14:59 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,20 @@ uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light ligh
 
 	// printf("dotNL: %f\n", vec_dot(N, L));
 	return (rgba(r, g, b, 255));
+}
+
+uint32_t	calculate_shadow(t_scene scene, t_hit shadow_hit)
+{
+	double	ambient;
+	uint8_t	r;
+	uint8_t	g;
+	uint8_t	b;
+
+	ambient = scene.ambient.brightness;
+
+	r = fmin(255.0, shadow_hit.color.r * ambient);
+	g = fmin(255.0, shadow_hit.color.g * ambient);
+	b = fmin(255.0, shadow_hit.color.b * ambient);
+
+	return (rgba(r, g, b, 255.0));
 }

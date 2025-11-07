@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:27 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/06 22:42:12 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/07 11:35:33 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	render(t_rt *rt)
 	t_view		view = camera_orientation(rt);
 	uint32_t	color;
 	t_hit		hit;
-	// print_camera(&rt->scene.camera);
 
 	y = 0;
 	while (y < HEIGHT)
@@ -49,26 +48,24 @@ void	render(t_rt *rt)
 			{
 				t_ray shadow_ray;
 				t_vec3 light_direction = vec_normalize(vec_subtract(rt->scene.light.pos, hit.point));
+				double light_dist = vec_len(vec_subtract(rt->scene.light.pos, hit.point));
+
 				shadow_ray.origin = vec_add(hit.point, vec_scale(hit.normal, 1e-4));
 				shadow_ray.dir = light_direction;
 				
 				t_hit shadow_hit = check_intersections(shadow_ray, rt);
-				if (shadow_hit.t > 0)
+				if (shadow_hit.t > 0 && shadow_hit.t < light_dist)
 				{
-					// color = rgba(0, 0, 0, 255);
-					color = calculate_color(rt->scene, shadow_hit, rt->scene.camera, rt->scene.light);
+					color = calculate_shadow(rt->scene, hit);
 				}
 				else
+				{
 					color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
 					// color = normal_to_color(hit.normal);
-
-				// print_vec3(ray.dir);
+				}
 			}
 			else
 				color = rgba(255, 255, 255, 255);
-				// set_pixel(rt->img, x, y, rgba(255, 255, 255, 255));
-			// print_vec3(ray.origin);
-			// color = trace_ray(ray, scene);
 			set_pixel(rt->img, x, y, color);
 			x++;
 		}

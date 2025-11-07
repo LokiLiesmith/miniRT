@@ -60,31 +60,31 @@ typedef enum e_objtype
 
 typedef struct s_sphere
 {
-	t_vec3 s;
-	double d;
-	t_color color;
+	t_vec3		s;
+	double		d;
+	t_color		color;
 }	t_sphere;
 
 typedef struct s_plane
 {
-	t_vec3 point;
-	t_vec3 normal;
-	t_color color;
+	t_vec3		point;
+	t_vec3		normal;
+	t_color		color;
 }	t_plane;
 
 typedef struct s_cylinder
 {
-	t_vec3 center;
-	t_vec3 axis;
-	double dia;
-	double height;
-	t_color color;
+	t_vec3		center;
+	t_vec3		axis;
+	double		dia;
+	double		height;
+	t_color		color;
 }	t_cylinder;
 
 typedef struct s_object
 {
 	t_objtype		type;
-	void *data; // points to the structs above
+	void			*data; // points to the structs above
 	struct s_object	*next;
 }	t_object;
 
@@ -117,7 +117,7 @@ typedef struct s_scene
 	t_ambient		ambient;
 	t_camera		camera;
 	t_light			light;
-	t_object *objects; // linked list of all the objects
+	t_object		*objects; // linked list of all the objects
 }					t_scene;
 
 ///////////////////////////////////////////////////////////////////////////////
