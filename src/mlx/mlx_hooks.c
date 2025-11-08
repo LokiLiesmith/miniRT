@@ -6,25 +6,25 @@
 /*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/08 02:16:21 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/08 02:24:50 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-// static t_vec3	vec_rotate_x(t_vec3 v, double angle)
-// {
-// 	t_vec3	r;
-// 	double	c;
-// 	double	s;
+static t_vec3	vec_rotate_x(t_vec3 v, double angle)
+{
+	t_vec3	r;
+	double	c;
+	double	s;
 
-// 	c = cos(angle);
-// 	s = sin(angle);
-// 	r.x = v.x;
-// 	r.y = v.y * c - v.z * s;
-// 	r.z = v.y * s + v.z * c;
-// 	return (r);
-// }
+	c = cos(angle);
+	s = sin(angle);
+	r.x = v.x;
+	r.y = v.y * c - v.z * s;
+	r.z = v.y * s + v.z * c;
+	return (r);
+}
 
 static t_vec3	vec_rotate_y(t_vec3 v, double angle)
 {
@@ -104,6 +104,19 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	{
 
 		rt->scene.camera.dir = vec_rotate_y(rt->scene.camera.dir, 0.05);
+		view = camera_orientation(rt);
+		render(rt);
+	}
+	if (keydata.key == MLX_KEY_O && keydata.action == MLX_PRESS)
+	{
+		rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, -0.05);
+		view = camera_orientation(rt);
+		render(rt);
+	}
+	if (keydata.key == MLX_KEY_L && keydata.action == MLX_PRESS)
+	{
+
+		rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, 0.05);
 		view = camera_orientation(rt);
 		render(rt);
 	}
