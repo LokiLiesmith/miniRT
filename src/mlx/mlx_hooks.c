@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/08 02:24:50 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/08 22:22:01 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		render(rt);
 		printf("LEFT\n");
 	}
-	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
+		if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
 	{
 		rt->scene.camera.pos = vec_add(rt->scene.camera.pos, vec_scale(view.right, speed));
 		render(rt);
@@ -102,7 +102,6 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	}
 	if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)
 	{
-
 		rt->scene.camera.dir = vec_rotate_y(rt->scene.camera.dir, 0.05);
 		view = camera_orientation(rt);
 		render(rt);
@@ -115,13 +114,30 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	}
 	if (keydata.key == MLX_KEY_L && keydata.action == MLX_PRESS)
 	{
-
 		rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, 0.05);
 		view = camera_orientation(rt);
 		render(rt);
 	}
 }
 
+void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
+{
+	t_rt *rt = (t_rt *)param;
+	int32_t mx;
+	int32_t my;
+
+	mx = 0;
+	my = 0;
+	(void)mods;
+	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
+	{
+		mlx_get_mouse_pos(rt->mlx, &mx, &my);
+		t_ray click_ray = generate_ray(rt, mx, my, camera_orientation(rt));
+		t_hit select = check_intersections(click_ray, rt);
+		if(select.t > 0)
+			printf("Hit at: %d, %d\n", mx, my);
+	}
+}
 // Close hook to handle window close button
 void	close_hook(void *param)
 {

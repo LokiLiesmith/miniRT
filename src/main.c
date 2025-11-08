@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/05 18:30:51 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/08 21:32:32 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	main(int ac, char **av)
 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
 	render(&rt);
 	mlx_key_hook(rt.mlx, key_hook, &rt);
+	mlx_mouse_hook(rt.mlx, mouse_hook, &rt);
 	mlx_close_hook(rt.mlx, close_hook, &rt);
 	mlx_loop(rt.mlx);
 	mlx_delete_image(rt.mlx, rt.img);

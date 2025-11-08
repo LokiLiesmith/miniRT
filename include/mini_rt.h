@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/07 11:12:31 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/08 22:04:00 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ t_hit		intersect_sphere(t_ray ray, t_sphere *sphere);
 //mlx_hooks.c
 void	key_hook(mlx_key_data_t keydata, void *param);
 void	close_hook(void *param);
+void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
 ///////////////////////////////////////////////////////////////////////////////
 //								PARSING										//
 
