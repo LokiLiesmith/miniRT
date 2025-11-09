@@ -33,10 +33,11 @@ typedef struct s_ray
 
 typedef struct s_hit
 {
-	double	t;//distance from ray origin
-	t_vec3	point;//hit point vector
-	t_vec3	normal;//normal at hitpoint
-	t_color	color;
+	double		t;//distance from ray origin
+	t_vec3		point;//hit point vector
+	t_vec3		normal;//normal at hitpoint
+	t_color		color;
+	t_object	*object;
 }	t_hit;
 
 typedef struct s_view
@@ -86,6 +87,7 @@ typedef struct s_object
 	t_objtype		type;
 	void			*data; // points to the structs above
 	struct s_object	*next;
+	bool			selected;
 }	t_object;
 
 ///////////////////////////////////////////////////////////////////////////////

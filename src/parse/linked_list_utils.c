@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 21:13:13 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/02 23:08:26 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/09 13:13:00 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_object	*create_new_obj(t_objtype type, void *data)
 	new_obj->type = type;
 	new_obj->data = data;
 	new_obj->next = NULL;
+	new_obj->selected = false;
 	return (new_obj);
 }
 

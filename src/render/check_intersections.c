@@ -66,8 +66,42 @@ t_hit	check_intersections(t_ray ray, t_rt *rt)
 		{
 			closest_t = hit.t;
 			best = hit;
+			best.object = current;
 		}
 		current = current->next;
 	}
 	return (best);
 }
+
+t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
+{
+	t_hit		best;
+	t_hit		hit;
+	t_object	*current;
+	double		closest_t;
+	
+	best.t = -1.0;
+	closest_t = INFINITY;
+	current = rt->scene.objects;
+	while (current)
+	{
+		hit.t = -1.0;//HOLY MOTHER OF GOD AND ALL THAT IS HOLY
+		if (current->type == SPHERE)
+			hit = intersect_sphere(ray, (t_sphere *)current->data);
+		// else if (current->type == PLANE)
+		// 	printf("It's a Plane\n");
+		// else if (current->type == CYLINDER)
+		// 	printf("It's a Cylinder\n");
+	
+		if (hit.t > 0.0 && hit.t < closest_t)
+		{
+			closest_t = hit.t;
+			best = hit;
+			//apply rotation until selected is true?
+			current->selected = true;
+		}
+		current = current->next;
+	}
+	return (best);
+}
+

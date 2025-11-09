@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/08 22:22:01 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/09 13:26:34 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		render(rt);
 	}
 }
-
+//EXPERIMENTAL - OBJECT SELECTION AND ROTATION
 void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
 {
 	t_rt *rt = (t_rt *)param;
@@ -133,9 +133,12 @@ void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *
 	{
 		mlx_get_mouse_pos(rt->mlx, &mx, &my);
 		t_ray click_ray = generate_ray(rt, mx, my, camera_orientation(rt));
-		t_hit select = check_intersections(click_ray, rt);
+		t_hit select = check_mouse_intersect(click_ray, rt);
 		if(select.t > 0)
+		{
+			selected_outline(rt);
 			printf("Hit at: %d, %d\n", mx, my);
+		}
 	}
 }
 // Close hook to handle window close button
