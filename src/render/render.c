@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:27 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/07 11:47:47 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/10 22:46:39 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	set_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 	int	i;
 
 	i = (y * img->width + x) * 4;
-
 	if (x < 0 || x >= (int)img->width || y < 0 || y >= (int)img->height)
 		return ;//so we dont go out of bounds
 	//pixel = RRGGBBAA
@@ -63,6 +62,8 @@ void	render(t_rt *rt)
 					color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
 					// color = normal_to_color(hit.normal);
 				}
+				if (hit.object == rt->scene.selected)
+					color = highlight_color(int_to_color(color));
 			}
 			else
 				color = color_scale(rt->scene.ambient.color, rt->scene.ambient.brightness);

@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 21:13:13 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/09 13:13:00 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/10 22:47:19 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_object	*create_new_obj(t_objtype type, void *data)
 	new_obj->type = type;
 	new_obj->data = data;
 	new_obj->next = NULL;
-	new_obj->selected = false;
+	// new_obj->selected = false;
 	return (new_obj);
 }
 

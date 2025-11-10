@@ -79,9 +79,12 @@ t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
 	t_hit		hit;
 	t_object	*current;
 	double		closest_t;
-	
+
 	best.t = -1.0;
 	closest_t = INFINITY;
+	best.object = NULL;
+	// clear_selection(rt);
+	rt->scene.selected = NULL;
 	current = rt->scene.objects;
 	while (current)
 	{
@@ -91,17 +94,17 @@ t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
 		// else if (current->type == PLANE)
 		// 	printf("It's a Plane\n");
 		// else if (current->type == CYLINDER)
-		// 	printf("It's a Cylinder\n");
+		// 	printf("It's Superman\n");
 	
 		if (hit.t > 0.0 && hit.t < closest_t)
 		{
 			closest_t = hit.t;
 			best = hit;
-			//apply rotation until selected is true?
-			current->selected = true;
+			best.object = current;
 		}
 		current = current->next;
 	}
+	rt->scene.selected = best.object;
 	return (best);
 }
 

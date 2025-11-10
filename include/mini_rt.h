@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/09 13:37:47 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/10 23:48:32 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_hit		check_intersections(t_ray ray, t_rt *rt);
 
 //colors.c
 uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+t_color		int_to_color(uint32_t color);
 uint32_t	normal_to_color(t_vec3 normal);
 uint32_t	calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light);
 uint32_t	calculate_shadow(t_scene scene, t_hit shadow_hit);
@@ -65,11 +66,15 @@ void	key_hook(mlx_key_data_t keydata, void *param);
 void	close_hook(void *param);
 
 //EXPERIMENTAL - OBJECT ROTATION
-void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
-t_hit	check_mouse_intersect(t_ray ray, t_rt *rt);
-void	clear_selection(t_rt *rt);
+void		mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
+t_hit		check_mouse_intersect(t_ray ray, t_rt *rt);
+// void		clear_selection(t_rt *rt);
+// int			get_selected_pos(t_scene *scene);
+uint32_t	highlight_color(t_color color);
 
-
+// OBJECT MOVEMENT
+void	move_sphere(t_rt *rt, t_sphere *sph, double speed, t_mov_dir direction);
+void	move_object(t_rt *rt, t_object *selected, double speed, t_mov_dir direction);
 
 ///////////////////////////////////////////////////////////////////////////////
 //								PARSING										//

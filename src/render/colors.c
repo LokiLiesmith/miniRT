@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:36 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/07 12:20:47 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/10 22:21:42 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@ uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 
 	color = r << 24 | g << 16 | b << 8 | a;
 	return (color);
+}
+
+t_color	int_to_color(uint32_t color)
+{
+	t_color	c;
+
+	c.r = (color >> 24) & 0xFF;
+	c.g = (color >> 16) & 0xFF;
+	c.b = (color >> 8) & 0xFF;
+
+	return (c);
 }
 
 uint32_t	normal_to_color(t_vec3 normal)
@@ -84,4 +95,17 @@ uint32_t	color_scale(t_color color, double factor)
 	b = color.b * factor;
 
 	return rgba(r, g, b, 255.0);
+}
+
+uint32_t	highlight_color(t_color color)
+{
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+
+	r = fmin(255, color.r + 80);
+	g = fmin(255, color.g + 80);
+	b = fmax(0, color.b - 20);
+
+	return (rgba(r, g, b, 255));
 }

@@ -118,3 +118,18 @@ void	print_scene(t_scene *scene)
 	printf("╚════════════════════════════════════════╝\n");
 	printf("\n");
 }
+
+// int	get_selected_pos(t_scene *scene)
+// {
+// 	t_object	*current;
+// 	int			pos;
+
+// 	pos = 0;
+// 	current = scene->objects;
+// 	while (current && !current->selected)
+// 	{
+// 		pos ++;
+// 		current = current->next;
+// 	}
+// 	return (pos);
+// }

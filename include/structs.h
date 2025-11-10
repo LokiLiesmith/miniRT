@@ -31,6 +31,8 @@ typedef struct s_ray
 	t_vec3	dir;
 }	t_ray;
 
+typedef struct s_object	t_object;
+
 typedef struct s_hit
 {
 	double		t;//distance from ray origin
@@ -87,7 +89,7 @@ typedef struct s_object
 	t_objtype		type;
 	void			*data; // points to the structs above
 	struct s_object	*next;
-	bool			selected;
+	// bool			selected;
 }	t_object;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -120,6 +122,7 @@ typedef struct s_scene
 	t_camera		camera;
 	t_light			light;
 	t_object		*objects; // linked list of all the objects
+	t_object		*selected;
 }					t_scene;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -136,6 +139,15 @@ typedef struct s_found_elements
 
 ///////////////////////////////////////////////////////////////////////////////
 //								MAIN STRUCT									//
+typedef enum e_mov_dir
+{
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN,
+	FORWARD,
+	BACKWARD
+}	t_mov_dir;
 
 typedef struct s_rt
 {
