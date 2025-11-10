@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/10 23:48:32 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/11 00:54:04 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ t_hit		check_mouse_intersect(t_ray ray, t_rt *rt);
 uint32_t	highlight_color(t_color color);
 
 // OBJECT MOVEMENT
-void	move_sphere(t_rt *rt, t_sphere *sph, double speed, t_mov_dir direction);
-void	move_object(t_rt *rt, t_object *selected, double speed, t_mov_dir direction);
+void	move_object(t_rt *rt, t_object *selected, double speed, t_mov_dir dir);
+void	move_sphere(t_rt *rt, t_sphere *sph, double speed, t_mov_dir dir);
+void	move_cylinder(t_rt *rt, t_cylinder *cy, double speed, t_mov_dir dir);
+void	move_plane(t_rt *rt, t_plane *pl, double speed, t_mov_dir dir);
 
 ///////////////////////////////////////////////////////////////////////////////
 //								PARSING										//

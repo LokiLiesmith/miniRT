@@ -89,7 +89,6 @@ typedef struct s_object
 	t_objtype		type;
 	void			*data; // points to the structs above
 	struct s_object	*next;
-	// bool			selected;
 }	t_object;
 
 ///////////////////////////////////////////////////////////////////////////////
