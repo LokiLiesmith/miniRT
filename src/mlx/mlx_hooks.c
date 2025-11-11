@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/11 00:55:39 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/11 12:49:47 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	// OBJECT TRANSLATION
 	if (rt->scene.selected)
 	{
-		if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
+		if (keydata.key == MLX_KEY_A && keydata.action == MLX_PRESS)
 			move_object(rt, rt->scene.selected, speed, LEFT);
-		if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
+		if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
 			move_object(rt, rt->scene.selected, speed, RIGHT);
-		if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
+		if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
 			move_object(rt, rt->scene.selected, speed, UP);
-		if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
+		if (keydata.key == MLX_KEY_S && keydata.action == MLX_PRESS)
 			move_object(rt, rt->scene.selected, speed, DOWN);
 		if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 			rt->scene.selected = NULL;
