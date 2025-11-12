@@ -56,11 +56,11 @@ t_vec3  random_in_unit_sphere(unsigned int seed)
         // multiply by 2 to extend it to [0,..., 2]
         // shift -1 so the range is from [-1, ... , 1]
         
-        // Using Rand leads to lower performance because the threads need to wait for rand
+        // // Using Rand leads to lower performance because the threads need to wait for rand
         // x = 2.0 * ((double)rand() / RAND_MAX) - 1.00;
         // y = 2.0 * ((double)rand() / RAND_MAX) - 1.00;
         // z = 2.0 * ((double)rand() / RAND_MAX) - 1.00;
-        // 
+        
        
         x = 2.0 * hash_double(seed + 1) - 1.00;
         y = 2.0 * hash_double(seed + 2) - 1.00;
@@ -78,6 +78,14 @@ t_vec3  random_in_unit_sphere(unsigned int seed)
         seed += 0x9E3779B9u;
     }
 }
+static t_vec3 random_on_unit_sphere(unsigned int seed)
+{
+    double z = 2.0 * hash_double(seed) - 1.0;
+    double a = 2.0 * M_PI * hash_double(seed + 1);
+    double r = sqrt(1.0 - z*z);
+    t_vec3 v = { r * cos(a), r * sin(a), z };
+    return v;
+}
 
 // visibility = calc_soft_shadow(rt, hit, x, y);
     // generate 16 shadow rays and shoot them at the light
@@ -85,19 +93,20 @@ t_vec3  random_in_unit_sphere(unsigned int seed)
     // return how many hit/nr_shot
 double calc_soft_shadow(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
 {
-    unsigned int    samples = 1;
+    unsigned int    samples = 16;
     int             visible = 0;
     unsigned int    i = 0;
     unsigned int    seed;
     t_vec3          jitter;
-    double          light_radius = 3;//TODO add to light struct
+    double          light_radius = 0.1;//TODO add to light struct
 
     t_vec3 origin = vec_add(hit.point, vec_scale(hit.normal, 1e-4));
 
     while(i < samples)
     {
         seed = build_seed(x, y, i);
-        jitter = random_in_unit_sphere(seed);
+        // jitter = random_in_unit_sphere(seed);
+        jitter = random_on_unit_sphere(seed ^ (i * 0x9e3779b9u));
         t_vec3 sample_pos = vec_add(rt->scene.light.pos, vec_scale(jitter, light_radius));
 
         //build shadow_ray
