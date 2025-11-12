@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:27 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/10 22:46:39 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/12 06:24:41 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,8 @@ void	render(t_rt *rt)
 			hit = check_intersections(ray, rt);
 			if (hit.t > 0)//actual hit
 			{
-				t_ray shadow_ray;
-				t_vec3 light_direction = vec_normalize(vec_subtract(rt->scene.light.pos, hit.point));
-				double light_dist = vec_len(vec_subtract(rt->scene.light.pos, hit.point));
-
-				shadow_ray.origin = vec_add(hit.point, vec_scale(hit.normal, 1e-4));
-				shadow_ray.dir = light_direction;
-				
-				t_hit shadow_hit = check_intersections(shadow_ray, rt);
-				if (shadow_hit.t > 0 && shadow_hit.t < light_dist)
-				{
-					color = calculate_shadow(rt->scene, hit);
-				}
-				else
-				{
-					color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
-					// color = normal_to_color(hit.normal);
-				}
+				color = calculate_color(rt, hit, x, y);
+				// color = normal_to_color(hit.normal);
 				if (hit.object == rt->scene.selected)
 					color = highlight_color(int_to_color(color));
 			}

@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:36 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/10 22:21:42 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/12 06:19:51 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,31 @@ uint32_t	normal_to_color(t_vec3 normal)
     return rgba(r, g, b, 255);
 }
 
-uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light)
+// uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light)
+uint32_t calculate_color(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
 {
 	t_vec3	N = vec_normalize(hit.normal);
-	t_vec3	L = vec_normalize(vec_subtract(light.pos, hit.point)); 
-	t_vec3	C = vec_normalize(vec_subtract(camera.pos, hit.point));
+	t_vec3	L = vec_normalize(vec_subtract(rt->scene.light.pos, hit.point)); 
+	t_vec3	C = vec_normalize(vec_subtract(rt->scene.camera.pos, hit.point));
 	t_vec3	R = vec_reflect(vec_scale(L, -1.0), N);
 	
 	double	intensity;
 	double	specular;
 	double	diffuse;
 	double	ambient;
+	double	visibility;//softshadownumber
 
-	ambient = scene.ambient.brightness;
-	diffuse = light.brightness * fmax(0.0, vec_dot(N, L));
-	specular = light.brightness * pow(fmax(0.0, vec_dot(R, C)), 64.0);
+	
+	ambient = rt->scene.ambient.brightness;
+	diffuse = rt->scene.light.brightness * fmax(0.0, vec_dot(N, L));
+	specular = rt->scene.light.brightness * pow(fmax(0.0, vec_dot(R, C)), 64.0);
+	
+	visibility = calc_soft_shadow(rt, hit, x, y);
+	//apply visibility
+	diffuse *= visibility;
+	specular *= visibility;
 	// combine + clamp
     intensity = ambient + diffuse + specular;
-    if (intensity > 1.0)
-		intensity = 1.0;
-    if (intensity < 0.0)
-		intensity = 0.0;
-
 	uint8_t r = fmin(255.0, hit.color.r * intensity);
 	uint8_t g = fmin(255.0, hit.color.g * intensity);
 	uint8_t b = fmin(255.0, hit.color.b * intensity);

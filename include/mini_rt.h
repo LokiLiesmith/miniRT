@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/11 00:54:04 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/12 06:27:45 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ t_vec3	vec_reflect(t_vec3 ray_in, t_vec3 normal);
 
 //RENDER
 
-
 //check_intersections.c
 t_view		camera_orientation(t_rt *rt);
 t_ray		generate_ray(t_rt *rt, int x, int y, t_view view);
@@ -47,8 +46,11 @@ t_hit		check_intersections(t_ray ray, t_rt *rt);
 uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 t_color		int_to_color(uint32_t color);
 uint32_t	normal_to_color(t_vec3 normal);
-uint32_t	calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light);
-uint32_t	calculate_shadow(t_scene scene, t_hit shadow_hit);
+// uint32_t	calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light);
+uint32_t	calculate_color(t_rt *rt, t_hit hit, unsigned int x, unsigned int y);
+double		calc_soft_shadow(t_rt *rt, t_hit hit, unsigned int x, unsigned int y);
+
+// uint32_t	calculate_shadow(t_scene scene, t_hit shadow_hit);
 uint32_t	color_scale(t_color color, double factor);
 
 //render.c
@@ -57,6 +59,9 @@ void		set_pixel(mlx_image_t *img, int x, int y, uint32_t color);
 
 //sphere.c
 t_hit		intersect_sphere(t_ray ray, t_sphere *sphere);
+
+//shadows.c
+t_vec3 		random_in_unit_sphere(unsigned int seed);
 
 
 
