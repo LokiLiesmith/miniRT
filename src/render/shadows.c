@@ -102,7 +102,7 @@ static t_vec3 random_on_unit_disk(unsigned int seed)
     r = sqrt(u1);
     theta = 2 * M_PI * u2;
     x = r * cos(theta);
-    y = r * cos(theta);
+    y = r * sin(theta);
     random.x = x;
     random.y = y;
     random.z = 0.0;
