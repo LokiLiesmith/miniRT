@@ -150,9 +150,10 @@ typedef enum e_mov_dir
 
 typedef struct s_rt
 {
-	t_scene		scene;
-	mlx_t		*mlx;
-	mlx_image_t	*img;
+	t_scene			scene;
+	mlx_t			*mlx;
+	mlx_image_t		*img;
+	unsigned int	samples;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;

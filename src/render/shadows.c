@@ -155,11 +155,11 @@ static t_vec3 random_on_unit_disk(unsigned int seed)
 
 double calc_soft_shadow(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
 {
-    unsigned int    samples = 256;
+    unsigned int    samples = rt->samples;
     int             visible = 0;
     unsigned int    i = 0;
     unsigned int    seed;
-    double          light_radius = 5;//TODO add to light struct
+    double          light_radius = 2;//TODO add to light struct
 
 
     t_vec3 origin = vec_add(hit.point, vec_scale(hit.normal, 1e-4));
@@ -167,7 +167,7 @@ double calc_soft_shadow(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
     t_vec3 disk_normal = vec_normalize(vec_scale(to_light, -1.00));
     t_view  disk_view = rotate_disk_to_world_view(disk_normal);
 
-    while (i  < samples)
+    while (i < samples)
     {
         seed = build_seed(x, y, i);
         t_vec3 sample = random_on_unit_disk(seed);

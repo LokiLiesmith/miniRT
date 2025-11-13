@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/11 12:49:47 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/13 04:36:42 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 
 	rt = (t_rt *)param;
 	view = camera_orientation(rt);
-
+	rt->samples = 1;
 	// OBJECT TRANSLATION
 	if (rt->scene.selected)
 	{
@@ -70,6 +70,15 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	}
 ///////////////////////////////////////////////////////////////////////
 // CAMERA CONTROLS
+
+
+	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
+	{
+		rt->samples = 256;
+		render(rt);
+		return ;
+	}	
+
 	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
 	{
 		rt->scene.camera.pos = vec_subtract(rt->scene.camera.pos, vec_scale(view.right, speed));
@@ -122,7 +131,6 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, 0.05);
 		view = camera_orientation(rt);
 	}
-
 	render(rt);
 }
 //EXPERIMENTAL - OBJECT SELECTION AND ROTATION
