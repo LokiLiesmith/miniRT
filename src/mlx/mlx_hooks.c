@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/13 04:36:42 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/13 04:44:35 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 
 	rt = (t_rt *)param;
 	view = camera_orientation(rt);
-	rt->samples = 1;
+
+	if (keydata.action != MLX_PRESS)
+    	return;
 	// OBJECT TRANSLATION
 	if (rt->scene.selected)
 	{
@@ -131,6 +133,8 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, 0.05);
 		view = camera_orientation(rt);
 	}
+	rt->samples = 1;
+
 	render(rt);
 }
 //EXPERIMENTAL - OBJECT SELECTION AND ROTATION
