@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/12 06:27:45 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/13 01:07:59 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ t_hit		intersect_sphere(t_ray ray, t_sphere *sphere);
 
 //shadows.c
 t_vec3 		random_in_unit_sphere(unsigned int seed);
+t_view		rotate_disk_to_world_view(t_vec3 normal);
+
 
 
 

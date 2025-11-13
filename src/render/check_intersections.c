@@ -9,12 +9,31 @@ t_view camera_orientation(t_rt *rt)
 	view.world_up.z = 0;
 
 	view.forward = vec_normalize(rt->scene.camera.dir);
+    // handle degenerate case: camera looking up or down
+    if (fabs(view.forward.y) > 0.999)
+		view.world_up = (t_vec3){1, 0, 0};
 	view.right = vec_normalize(vec_cross(view.world_up, view.forward));
 	view.up = vec_normalize(vec_cross(view.forward, view.right));
 	// print_vec3("forward", view.forward);
 	// print_vec3("right", view.right);
 	// print_vec3("up", view.up);
 	return (view);
+}
+
+t_view	rotate_disk_to_world_view(t_vec3 normal)
+{
+	t_view local_view;
+	
+	local_view.world_up.x = 0;
+	local_view.world_up.y = 1;
+	local_view.world_up.z = 0;
+
+	local_view.forward = vec_normalize(normal);
+	if (fabs(local_view.forward.y) > 0.999)
+		local_view.world_up = (t_vec3){1, 0, 0};
+	local_view.right = vec_normalize(vec_cross(local_view.world_up, local_view.forward));
+	local_view.up = vec_normalize(vec_cross(local_view.forward, local_view.right));
+	return (local_view);
 }
 
 t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
