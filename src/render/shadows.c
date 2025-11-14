@@ -66,7 +66,7 @@ t_vec3  random_in_unit_sphere(unsigned int seed)
         y = 2.0 * hash_double(seed + 2) - 1.00;
         z = 2.0 * hash_double(seed + 3) - 1.00;
        
-        //check sphere equation x^2 + y^2 + z^2 = 1
+        //check sphere equation x^2 + y^2 + z^2 = r^2
         r2 = x*x + y*y + z*z;
         if (r2 > 0.0 && r2 <= 1.0)
         {

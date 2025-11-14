@@ -146,6 +146,11 @@ void		print_object(t_object *obj, int index);
 void		print_vec3(const char *name, t_vec3 v);
 void		print_objects(t_object *objects);
 
+void		print_save_scene(t_rt *rt);
+void		print_save_object(t_object *obj);
+void		print_save_objects(t_object *objects);
+
+
 
 
 //FAKE LIST

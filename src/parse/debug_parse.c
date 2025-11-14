@@ -119,6 +119,74 @@ void	print_scene(t_scene *scene)
 	printf("\n");
 }
 
+void print_save_scene(t_rt *rt)
+{
+	t_ambient	A = rt->scene.ambient;
+	t_camera	C = rt->scene.camera;
+	t_light		L = rt->scene.light;
+
+	printf("A %.1f %.d,%.d,%.d\n", A.brightness, A.color.r, A.color.g, A.color.b);
+	// printf("C %.1f,%.1f,%.1f\n", C.pos.x, C.pos.x, C.pos.z);
+	printf("C %.1f,%.1f,%.1f %.1f,%.1f,%.1f %.1f\n", C.pos.x, C.pos.y, C.pos.z, C.dir.x, C.dir.y, C.dir.z, C.fov);
+	printf("L %.1f,%.1f,%.1f %.1f\n", L.pos.x, L.pos.y, L.pos.z, L.brightness);
+	// print_objects(rt->scene.objects);
+	print_save_objects(rt->scene.objects);
+}
+
+// Print a single object
+void	print_save_object(t_object *obj)
+{
+	t_sphere	*sp;
+	t_plane		*pl;
+	t_cylinder	*cy;
+
+	if (obj->type == SPHERE)
+	{
+		sp = (t_sphere *)obj->data;
+		printf("sp %.1f,%.1f,%.1f %.1f %d,%d,%d\n",
+			sp->s.x, sp->s.y, sp->s.z, sp->d,
+			sp->color.r, sp->color.g, sp->color.b);
+	}
+	else if (obj->type == PLANE)
+	{
+		pl = (t_plane *)obj->data;
+		printf("pl %.1f,%.1f,%.1f %.1f,%.1f,%.1f %d,%d,%d\n",
+			pl->point.x, pl->point.y, pl->point.z,
+			pl->normal.x, pl->normal.y, pl->normal.z,
+			pl->color.r, pl->color.g, pl->color.b);
+	}
+	else if (obj->type == CYLINDER)
+	{
+		cy = (t_cylinder *)obj->data;
+		printf("cy %.1f,%.1f,%.1f %.1f,%.1f,%.1f %.1f %.1f %d,%d,%d\n",
+			cy->center.x, cy->center.y, cy->center.z,
+			cy->axis.x, cy->axis.z, cy->axis.z,
+			cy->dia, cy->height,
+			cy->color.r, cy->color.g, cy->color.b);
+	}
+	else
+	{
+		printf("UNKNOWN\n");
+	}
+}
+
+void	print_save_objects(t_object *objects)
+{
+	t_object	*current;
+
+	current = objects;
+	if (!current)
+	{
+		printf("No objects found.\n");
+		return ;
+	}
+	while (current)
+	{
+		print_save_object(current);
+		current = current->next;
+	}
+}
+
 // int	get_selected_pos(t_scene *scene)
 // {
 // 	t_object	*current;

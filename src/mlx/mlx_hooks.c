@@ -79,6 +79,12 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		rt->samples = 256;
 		render(rt);
 		return ;
+	}
+	if (keydata.key == MLX_KEY_Z && keydata.action == MLX_PRESS)
+	{
+		print_save_scene(rt);
+		// print_objects(rt->scene.objects);
+		return ;
 	}	
 
 	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
