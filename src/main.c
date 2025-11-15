@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/13 02:11:06 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/15 14:45:21 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int ac, char **av)
 	// print_scene(&rt.scene);
 
 	// return (free_objects(&rt.scene.objects), 0);
-
+	/// EXPERIMENTAL - MULTI-THREADING
 	// mlx things
 	rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", false);
 	if (!rt.mlx)

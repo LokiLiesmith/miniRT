@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/13 01:07:59 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/15 17:37:25 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <pthread.h>
 # include "../include/libft/libft.h"
-
+# define MAX_THREADS 32
 //MATH
 double	vec_dot(t_vec3 a, t_vec3 b);
 t_vec3	vec_cross(t_vec3 a, t_vec3 b);

@@ -5,6 +5,7 @@
 
 # define WIDTH 800
 # define HEIGHT 800
+# define MAX_THREADS 32
 
 
 
@@ -135,7 +136,15 @@ typedef struct s_found_elements
 }		t_found;
 
 
+///////////////////////////////////////////////////////////////////////////////
+//								MULTI-THREADING								//
 
+typedef struct s_thread
+{
+	pthread_t	*thread;
+	int			id;
+
+}	t_thread;
 ///////////////////////////////////////////////////////////////////////////////
 //								MAIN STRUCT									//
 typedef enum e_mov_dir
@@ -150,10 +159,12 @@ typedef enum e_mov_dir
 
 typedef struct s_rt
 {
+	t_thread		threads[MAX_THREADS];
 	t_scene			scene;
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	unsigned int	samples;
+	unsigned int	cores;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;
