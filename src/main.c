@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/15 14:45:21 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/16 21:07:37 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,51 @@ int	main(int ac, char **av)
 			1);
 
 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
-	render(&rt);
+	init_threads(&rt);
+	// render(&rt);
 	mlx_key_hook(rt.mlx, key_hook, &rt);
 	mlx_mouse_hook(rt.mlx, mouse_hook, &rt);
 	mlx_close_hook(rt.mlx, close_hook, &rt);
 	mlx_loop(rt.mlx);
 	mlx_delete_image(rt.mlx, rt.img);
 	mlx_terminate(rt.mlx);
+	join_threads(&rt);
 
 	return (free_objects(&rt.scene.objects), 0);
 }
+
+// int	main(int ac, char **av)
+// {
+// 	t_rt rt;
+// 	// t_scene scene;
+
+// 	// atexit(&checkleaks);
+// 	ft_memset(&rt, 0, sizeof(t_rt));
+// 	rt.samples = 1;
+// 	if (check_input(ac, av, &rt.scene) != 0)
+// 		return (free_objects(&rt.scene.objects), 1);
+// 	// print_scene(&rt.scene);
+
+// 	// return (free_objects(&rt.scene.objects), 0);
+// 	/// EXPERIMENTAL - MULTI-THREADING
+// 	// mlx things
+// 	rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", false);
+// 	if (!rt.mlx)
+// 		return (free_objects(&rt.scene.objects),
+// 			printf("Failed to initialize MLX"), 1);
+// 	rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
+// 	if (!rt.img)
+// 		return (free_objects(&rt.scene.objects), printf("Failed to create image"),
+// 			1);
+
+// 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
+// 	render(&rt);
+// 	mlx_key_hook(rt.mlx, key_hook, &rt);
+// 	mlx_mouse_hook(rt.mlx, mouse_hook, &rt);
+// 	mlx_close_hook(rt.mlx, close_hook, &rt);
+// 	mlx_loop(rt.mlx);
+// 	mlx_delete_image(rt.mlx, rt.img);
+// 	mlx_terminate(rt.mlx);
+
+// 	return (free_objects(&rt.scene.objects), 0);
+// }

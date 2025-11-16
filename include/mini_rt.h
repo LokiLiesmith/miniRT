@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/15 17:37:25 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/16 21:07:07 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <unistd.h>
 # include <pthread.h>
 # include "../include/libft/libft.h"
-# define MAX_THREADS 32
+
 //MATH
 double	vec_dot(t_vec3 a, t_vec3 b);
 t_vec3	vec_cross(t_vec3 a, t_vec3 b);
@@ -40,8 +40,6 @@ t_vec3	vec_reflect(t_vec3 ray_in, t_vec3 normal);
 t_view		camera_orientation(t_rt *rt);
 t_ray		generate_ray(t_rt *rt, int x, int y, t_view view);
 t_hit		check_intersections(t_ray ray, t_rt *rt);
-
-
 
 //colors.c
 uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
@@ -151,8 +149,12 @@ void		print_save_scene(t_rt *rt);
 void		print_save_object(t_object *obj);
 void		print_save_objects(t_object *objects);
 
-
-
+//EXPERIMENTAL - MULTI-THREADING
+void	join_threads(t_rt *rt);
+void	init_threads(t_rt *rt);
+int		get_thread_count(void);
+void	*routine(void *arg);
+void	render_pixel(t_rt *rt, int px);
 
 //FAKE LIST
 void		fake_parsing(t_rt *rt);

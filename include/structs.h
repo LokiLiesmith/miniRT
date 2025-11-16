@@ -7,6 +7,9 @@
 # define HEIGHT 800
 # define MAX_THREADS 32
 
+# include <pthread.h>
+
+
 
 
 
@@ -159,12 +162,17 @@ typedef enum e_mov_dir
 
 typedef struct s_rt
 {
-	t_thread		threads[MAX_THREADS];
 	t_scene			scene;
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	unsigned int	samples;
-	unsigned int	cores;
+
+	//MULTITHREADING TINGS
+	int				thread_nr;
+	pthread_t		threads[MAX_THREADS];
+	pthread_mutex_t	px_lock;
+	int				px_current;
+	int				px_total;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;

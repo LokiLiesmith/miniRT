@@ -1,4 +1,4 @@
-#include "mini_rt.h"
+#include	"mini_rt.h"
 
 void	render_pixel(t_rt *rt, int px)
 {
@@ -80,7 +80,7 @@ void	init_threads(t_rt *rt)
 	}
     // printf("Number of Cores: %d\n", rt->thread_nr);
     // printf("MAX_THREADS: %d\n", MAX_THREADS);
-	printf("Init: OK\n");
+	// printf("Init: OK\n");
 }
 void	join_threads(t_rt *rt)
 {
@@ -92,26 +92,5 @@ void	join_threads(t_rt *rt)
 		pthread_join(rt->threads[i], NULL);
 		i++;
 	}
-	printf("Join: OK\n");
-}
-
-int	main(void)
-{
-    t_rt rt;
-    ft_memset(&rt, 0, sizeof(t_rt));
-
-
-    rt.mlx = mlx_init(WIDTH, HEIGHT, "Threads", false);
-    rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
-    mlx_image_to_window(rt.mlx, rt.img, 0, 0);
-    mlx_close_hook(rt.mlx, close_hook, &rt);
-   	mlx_key_hook(rt.mlx, key_hook, &rt);
-	init_threads(&rt);
-    mlx_loop(rt.mlx);
-    mlx_delete_image(rt.mlx, rt.img);
-	mlx_terminate(rt.mlx);
-	
-	join_threads(&rt);
-    printf("Threads\n");
-	return (0);
+	// printf("Join: OK\n");
 }

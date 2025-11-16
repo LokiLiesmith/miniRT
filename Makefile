@@ -3,7 +3,7 @@ LIBFT_LIB	:= $(LIBFT_PATH)/libft.a
 MLX_DIR		:= MLX42
 LIBMLX		:= $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -Wunreachable-code -Ofast -I include -I $(MLX_DIR)/include
+CFLAGS		:= -Wall -Wextra -Werror -pthread -Wunreachable-code -Ofast -I include -I $(MLX_DIR)/include
 
 # pick which test to build: make T=parser (defaults ot minishell)
 # or you can make run-parser
@@ -20,14 +20,14 @@ ifeq ($(UNAME_S),Darwin)
     LINK_FLAGS := -ldl -lglfw -pthread -lm -framework Cocoa -framework OpenGL -framework IOKit
 endif
 SRC_MINI_RT	:= src/main.c
-SRC_THREAD	:= src/threads/threads_test.c
+# SRC_THREAD	:= src/threads/threads_test.c
 SRC_COMMON	:= src/parse/file_check.c src/parse/acl_parse.c src/parse/ft_atod.c \
 			   src/parse/objs_parse.c src/parse/parse_utils.c src/parse/linked_list_utils.c \
 			   src/utils/utils.c src/get_next_line.c src/get_next_line_utils.c  src/parse/parse_xyz_rgb.c \
 			   src/parse/debug_parse.c src/mlx/mlx_hooks.c src/utils/math_utils.c src/math/vector_math.c \
 			   src/render/check_intersections.c src/render/colors.c src/render/render.c src/render/sphere.c \
-			   src/render/object_manipulation.c src/render/shadows.c \
-# 			   src/main.c 
+			   src/render/object_manipulation.c src/render/shadows.c src/render/multi_threading.c \
+			   src/main.c 
 
 # SRC_RENDER	:= src/render/render_test.c src/render/fake_parsing.c
 
