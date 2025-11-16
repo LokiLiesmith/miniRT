@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/16 21:23:34 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/16 22:10:24 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 	{
-		rt->samples = 1024;
+		rt->samples = 256;
 		render(rt);
 		return ;
 	}

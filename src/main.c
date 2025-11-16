@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/16 21:22:49 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/16 22:03:34 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int ac, char **av)
 
 	// atexit(&checkleaks);
 	ft_memset(&rt, 0, sizeof(t_rt));
-	rt.samples = 16;
+	rt.samples = 1;
 	if (check_input(ac, av, &rt.scene) != 0)
 		return (free_objects(&rt.scene.objects), 1);
 	// print_scene(&rt.scene);
