@@ -37,10 +37,11 @@ void *routine(void *arg)
 	
 	while(1)
 	{
-		pthread_mutex_lock(&rt->px_lock);
-		start = rt->px_current;
-		rt->px_current += 16;
-		pthread_mutex_unlock(&rt->px_lock);
+		// pthread_mutex_lock(&rt->px_lock);
+		// start = rt->px_current;
+		// rt->px_current += 16;
+		// pthread_mutex_unlock(&rt->px_lock);
+		start = atomic_fetch_add(&rt->a_px_current, 16);
 		if (start >= rt->px_total)
 			break ;
 		i = 0;
@@ -70,6 +71,8 @@ int	get_thread_count(void)
 
 void	init_threads(t_rt *rt)
 {
+	atomic_store(&rt->a_px_current, 0);
+	rt->px_current = 0;
 	rt->thread_nr = get_thread_count();
 	rt->px_total = WIDTH * HEIGHT;
 	int i = 0;

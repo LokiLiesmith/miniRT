@@ -8,6 +8,8 @@
 # define MAX_THREADS 32
 
 # include <pthread.h>
+# include <stdatomic.h>
+
 
 
 
@@ -173,6 +175,7 @@ typedef struct s_rt
 	pthread_mutex_t	px_lock;
 	int				px_current;
 	int				px_total;
+	atomic_int		a_px_current;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;
