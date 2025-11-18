@@ -1,0 +1,11 @@
+ST
+
+MT-Atomics:
+./bin/miniRT test_scenes/time_1.rt 
+Time_to_render: 281.822480ms
+Time_to_render: 3032.043919ms
+
+MT-Mutex
+3-E-25% ./bin/miniRT test_scenes/time_1.rt
+Time_to_render: 281.895011ms
+Time_to_render: 3067.495282ms

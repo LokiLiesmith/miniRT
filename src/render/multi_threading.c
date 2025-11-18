@@ -37,11 +37,11 @@ void *routine(void *arg)
 
 	while (1)
 	{
-		// pthread_mutex_lock(&rt->px_lock);
-		// start = rt->px_current;
-		// rt->px_current += 16;
-		// pthread_mutex_unlock(&rt->px_lock);
-		start = atomic_fetch_add(&rt->a_px_current, 16);
+		pthread_mutex_lock(&rt->px_lock);
+		start = rt->px_current;
+		rt->px_current += 16;
+		pthread_mutex_unlock(&rt->px_lock);
+		// start = atomic_fetch_add(&rt->a_px_current, 16);
 		if (start >= rt->px_total)
 			break ;
 		i = 0;
@@ -100,6 +100,34 @@ void	join_threads(t_rt *rt)
 
 void 	mt_render(t_rt *rt)
 {
+	// double	start;
+	// double	end;
+
+	// start = get_time_ms();
 	init_threads(rt);
 	join_threads(rt);
+	// end = get_time_ms();
+	// printf("Time_to_render: %fms\n", end - start);
+}
+
+double	get_time_ms(void)
+{
+	struct timespec	ts;
+
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return ((ts.tv_sec * 1000.0) + (ts.tv_nsec / 1e6));
+}
+
+void	render(t_rt *rt)
+{
+	double	start;
+	double	end;
+
+	start = get_time_ms();
+	if (rt->multi_thread == true)
+		mt_render(rt);
+	else
+		st_render(rt);
+	end = get_time_ms();
+	printf("Rendered in: %f ms\n", end-start);
 }

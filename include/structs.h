@@ -176,6 +176,7 @@ typedef struct s_rt
 	int				px_current;
 	int				px_total;
 	atomic_int		a_px_current;
+	bool			multi_thread;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/16 21:49:03 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/18 23:47:57 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <stdatomic.h>
+# include <time.h>
 # include "../include/libft/libft.h"
 
 //MATH
@@ -54,7 +55,7 @@ double		calc_soft_shadow(t_rt *rt, t_hit hit, unsigned int x, unsigned int y);
 uint32_t	color_scale(t_color color, double factor);
 
 //render.c
-void        render(t_rt *rt);
+void        st_render(t_rt *rt);
 void		set_pixel(mlx_image_t *img, int x, int y, uint32_t color);
 
 //sphere.c
@@ -156,7 +157,11 @@ void	init_threads(t_rt *rt);
 int		get_thread_count(void);
 void	*routine(void *arg);
 void	render_pixel(t_rt *rt, int px);
+
+void	render(t_rt *rt);
 void 	mt_render(t_rt *rt);
+double	get_time_ms(void);
+
 
 
 //FAKE LIST

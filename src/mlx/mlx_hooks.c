@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/16 22:10:24 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/18 23:55:37 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,20 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 // CAMERA CONTROLS
 
 
+	if (keydata.key == MLX_KEY_N && keydata.action == MLX_PRESS)
+	{
+		// rt->samples = 1024;
+		rt->multi_thread = !rt->multi_thread;
+		printf("Multi_threading: %d\n", rt->multi_thread);
+		render(rt);
+		// mt_render(rt);
+		return ;
+	}
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 	{
-		rt->samples *= 2;
-		// render(rt);
-		mt_render(rt);
+		rt->samples = 1024;
+		render(rt);
+		// mt_render(rt);
 		return ;
 	}
 	if (keydata.key == MLX_KEY_Z && keydata.action == MLX_PRESS)
@@ -140,10 +149,10 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, 0.05);
 		view = camera_orientation(rt);
 	}
-	rt->samples = 256;
+	rt->samples = 100;
 
-	mt_render(rt);
-	// render(rt);
+	// mt_render(rt);
+	render(rt);
 }
 //EXPERIMENTAL - OBJECT SELECTION AND ROTATION
 void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
@@ -166,6 +175,7 @@ void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *
 		else
 			print_object(select.object, 1);
 		render(rt);
+		// mt_render(rt);
 	}
 }
 // Close hook to handle window close button
