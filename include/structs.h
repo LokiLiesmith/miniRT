@@ -168,7 +168,7 @@ typedef struct s_rt
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	unsigned int	samples;
-
+	t_view			view;
 	//MULTITHREADING TINGS
 	int				thread_nr;
 	pthread_t		threads[MAX_THREADS];

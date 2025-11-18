@@ -28,14 +28,14 @@ void	render_pixel(t_rt *rt, int px)
 
 void *routine(void *arg)
 {
-	int	i;
-	int	start;
-	int	p;
+	int		i;
+	int		start;
+	int		p;
 	t_rt	*rt;
 
 	rt = (t_rt *)arg;
-	
-	while(1)
+
+	while (1)
 	{
 		// pthread_mutex_lock(&rt->px_lock);
 		// start = rt->px_current;

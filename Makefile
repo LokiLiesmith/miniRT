@@ -3,7 +3,7 @@ LIBFT_LIB	:= $(LIBFT_PATH)/libft.a
 MLX_DIR		:= MLX42
 LIBMLX		:= $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -pthread -Wunreachable-code -Ofast -I include -I $(MLX_DIR)/include
+CFLAGS		:= -Wall -Wextra -Werror -pthread -Wunreachable-code -g -Ofast -I include -I $(MLX_DIR)/include
 
 # pick which test to build: make T=parser (defaults ot minishell)
 # or you can make run-parser
