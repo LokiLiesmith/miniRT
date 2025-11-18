@@ -76,8 +76,9 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 	{
-		rt->samples = 256;
-		render(rt);
+		rt->samples *= 2;
+		// render(rt);
+		mt_render(rt);
 		return ;
 	}
 	if (keydata.key == MLX_KEY_Z && keydata.action == MLX_PRESS)
@@ -139,9 +140,10 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, 0.05);
 		view = camera_orientation(rt);
 	}
-	rt->samples = 16;
+	rt->samples = 256;
 
-	render(rt);
+	mt_render(rt);
+	// render(rt);
 }
 //EXPERIMENTAL - OBJECT SELECTION AND ROTATION
 void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param)

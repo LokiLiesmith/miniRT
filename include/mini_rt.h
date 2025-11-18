@@ -156,6 +156,8 @@ void	init_threads(t_rt *rt);
 int		get_thread_count(void);
 void	*routine(void *arg);
 void	render_pixel(t_rt *rt, int px);
+void 	mt_render(t_rt *rt);
+
 
 //FAKE LIST
 void		fake_parsing(t_rt *rt);

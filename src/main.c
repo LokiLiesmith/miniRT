@@ -36,7 +36,7 @@ int	main(int ac, char **av)
 
 	// atexit(&checkleaks);
 	ft_memset(&rt, 0, sizeof(t_rt));
-	rt.samples = 1;
+	rt.samples = 256;
 	if (check_input(ac, av, &rt.scene) != 0)
 		return (free_objects(&rt.scene.objects), 1);
 	// print_scene(&rt.scene);
@@ -54,7 +54,8 @@ int	main(int ac, char **av)
 			1);
 
 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
-	init_threads(&rt);
+	// init_threads(&rt);
+	mt_render(&rt);
 	// render(&rt);
 	mlx_key_hook(rt.mlx, key_hook, &rt);
 	mlx_mouse_hook(rt.mlx, mouse_hook, &rt);
@@ -62,7 +63,7 @@ int	main(int ac, char **av)
 	mlx_loop(rt.mlx);
 	mlx_delete_image(rt.mlx, rt.img);
 	mlx_terminate(rt.mlx);
-	join_threads(&rt);
+	// join_threads(&rt);
 
 	return (free_objects(&rt.scene.objects), 0);
 }

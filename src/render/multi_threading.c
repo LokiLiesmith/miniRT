@@ -97,3 +97,9 @@ void	join_threads(t_rt *rt)
 	}
 	// printf("Join: OK\n");
 }
+
+void 	mt_render(t_rt *rt)
+{
+	init_threads(rt);
+	join_threads(rt);
+}
