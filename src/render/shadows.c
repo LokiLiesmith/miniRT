@@ -184,7 +184,8 @@ double calc_soft_shadow(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
         shadow_ray.origin = origin;
         shadow_ray.dir = vec_normalize(to_sample);
 
-        t_hit shadow_hit = check_intersections(shadow_ray, rt);
+        // t_hit shadow_hit = check_intersections(shadow_ray, rt);
+        t_hit shadow_hit = check_intersections_arr(shadow_ray, rt);
         if (shadow_hit.t <= 0.0 || shadow_hit.t >= vec_len(to_sample))
 			visible++;
 		i++;

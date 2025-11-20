@@ -120,7 +120,6 @@ typedef struct s_light
 	t_color	color;
 }	t_light;
 
-
 typedef struct s_scene
 {
 	t_ambient		ambient;
@@ -128,6 +127,9 @@ typedef struct s_scene
 	t_light			light;
 	t_object		*objects; // linked list of all the objects
 	t_object		*selected;
+	//RUBBER-BURNING SPEED?
+	t_object		**object_arr;
+	int				obj_count;
 }					t_scene;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -140,16 +142,6 @@ typedef struct s_found_elements
 	int	light;
 }		t_found;
 
-
-///////////////////////////////////////////////////////////////////////////////
-//								MULTI-THREADING								//
-
-typedef struct s_thread
-{
-	pthread_t	*thread;
-	int			id;
-
-}	t_thread;
 ///////////////////////////////////////////////////////////////////////////////
 //								MAIN STRUCT									//
 typedef enum e_mov_dir

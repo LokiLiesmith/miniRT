@@ -69,6 +69,7 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	else if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS && !rt->scene.selected)
 	{
 		mlx_close_window(rt->mlx);
+		return ;
 	}
 ///////////////////////////////////////////////////////////////////////
 // CAMERA CONTROLS

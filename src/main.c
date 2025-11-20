@@ -42,7 +42,6 @@ int	main(int ac, char **av)
 	// print_scene(&rt.scene);
 
 	// return (free_objects(&rt.scene.objects), 0);
-	/// EXPERIMENTAL - MULTI-THREADING
 	// mlx things
 	rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", false);
 	if (!rt.mlx)
@@ -52,20 +51,20 @@ int	main(int ac, char **av)
 	if (!rt.img)
 		return (free_objects(&rt.scene.objects), printf("Failed to create image"),
 			1);
+	//RUBBER-BURNING SPEED?
+	build_object_arr(&rt.scene);
 
 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
-	// init_threads(&rt);
 	rt.multi_thread = true;
 	render(&rt);
-	// mt_render(&rt);
+
 	mlx_key_hook(rt.mlx, key_hook, &rt);
 	mlx_mouse_hook(rt.mlx, mouse_hook, &rt);
 	mlx_close_hook(rt.mlx, close_hook, &rt);
 	mlx_loop(rt.mlx);
 	mlx_delete_image(rt.mlx, rt.img);
 	mlx_terminate(rt.mlx);
-	// join_threads(&rt);
-
+	free_object_arr(&rt.scene);
 	return (free_objects(&rt.scene.objects), 0);
 }
 

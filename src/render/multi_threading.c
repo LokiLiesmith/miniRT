@@ -50,7 +50,8 @@ void *routine(void *arg)
 			p = start + i;
 			if (p >= rt->px_total)
 				break ;
-			render_pixel(rt, p);
+			render_pixel_arr(rt, p);
+			// render_pixel(rt, p);
 			i++;
 		}
 	}
@@ -129,5 +130,5 @@ void	render(t_rt *rt)
 	else
 		st_render(rt);
 	end = get_time_ms();
-	printf("Rendered in: %f ms\n", end-start);
+	printf("Render time: %.3f ms\n", end-start);
 }

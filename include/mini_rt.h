@@ -162,6 +162,12 @@ void	render(t_rt *rt);
 void 	mt_render(t_rt *rt);
 double	get_time_ms(void);
 
+//RUBBER-BURNING SPEED?
+void	build_object_arr(t_scene *scene);
+void	free_object_arr(t_scene *scene);
+t_hit	check_intersections_arr(t_ray ray, t_rt *rt);
+void	render_pixel_arr(t_rt *rt, int px);
+
 
 
 //FAKE LIST
