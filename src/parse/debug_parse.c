@@ -25,7 +25,7 @@ static void	print_camera(t_camera *camera)
 {
 	printf("\n=== CAMERA ===\n");
 	print_vec3("Position", camera->pos);
-	print_vec3("Orientation", camera->vec);
+	print_vec3("Orientation", camera->dir);
 	printf("FOV: %.1f\n", camera->fov);
 }
 

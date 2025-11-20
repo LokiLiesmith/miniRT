@@ -68,7 +68,7 @@ t_hit	intersect_sphere(t_ray ray, t_sphere *sphere)
 	t_vec3	CS = vec_subtract(ray.origin, sphere->s);
 	double	a = vec_dot(ray.dir, ray.dir);
 	double	b = 2 * vec_dot(ray.dir, CS);
-	double	c = vec_dot(CS, CS) - (sphere->r * sphere->r);
+	double	c = vec_dot(CS, CS) - ((sphere->d / 2) * (sphere->d / 2));
 	double	discriminant = b * b - (4 * a * c);
 
 	//default = no hit
@@ -108,9 +108,9 @@ t_view camera_orientation(t_rt *rt)
 	view.forward = vec_normalize(rt->scene.camera.dir);
 	view.right = vec_normalize(vec_cross(view.world_up, view.forward));
 	view.up = vec_normalize(vec_cross(view.forward, view.right));
-	print_vec3(view.forward);
-	print_vec3(view.right);
-	print_vec3(view.up);
+	// print_vec3(view.forward);
+	// print_vec3(view.right);
+	// print_vec3(view.up);
 	return (view);
 }
 
@@ -144,85 +144,6 @@ t_hit	check_intersections(t_ray ray, t_rt *rt)
 	return (best);
 }
 
-
-void	render(t_rt *rt)
-{
-	int			x;
-	int			y;
-	t_ray		ray;
-	// t_vec3		origin = rt->scene.camera.pos;
-	// t_sphere	sphere_2;
-	t_view		view = camera_orientation(rt);
-
-	print_camera(rt->scene.camera);
-
-	y = 0;
-	while (y < HEIGHT)
-	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			ray = generate_ray(rt, x, y, view);
-			t_hit hit = check_intersections(ray, rt);
-			if (hit.t > 0)
-			{
-				// uint32_t color = normal_to_color(hit.normal);
-				uint32_t color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
-				// print_vec3(ray.dir);
-				set_pixel(rt->img, x, y, color);
-			}
-			else
-				set_pixel(rt->img, x, y, rgba(255, 255, 255, 255));
-			// print_vec3(ray.origin);
-			// color = trace_ray(ray, scene);
-			x++;
-		}
-		y++;
-	}
-}
-
-static void	fake_parsing(t_rt *rt)
-{
-//CAMERA
-	rt->scene.camera.pos.x = 0;
-	rt->scene.camera.pos.y = 0;
-	rt->scene.camera.pos.z = 0;
-	
-	rt->scene.camera.fov = 70.00;
-	
-	rt->scene.camera.dir.x = 0;
-	rt->scene.camera.dir.y = 0;
-	rt->scene.camera.dir.z = 1;
-//AMBIENT
-	rt->scene.ambient.brightness = 0.2;
-	rt->scene.ambient.color.r = 255;
-	rt->scene.ambient.color.g = 255;
-	rt->scene.ambient.color.b = 255;
-//LIGHT
-	rt->scene.light.pos.x = -50;
-	rt->scene.light.pos.y = 0;
-	rt->scene.light.pos.z = 5;
-
-	rt->scene.light.brightness = 0.7;
-
-	rt->scene.light.color.r = 255;
-	rt->scene.light.color.g = 255;
-	rt->scene.light.color.b = 255;
-
-	print_camera(rt->scene.camera);
-	
-	// rt->s
-//OBJECTS
-	fake_obj_list(rt);
-}
-// static uint32_t calculate_color(point)
-// {
-// 	i = Ispec + Ideff + Iambient;
-// 	Ispec = dot(reflect, ray_that_hit_the_point);
-// 	color = rgba(r * i, g * i, b * i, 255);
-// 	return color;
-// }
-
 uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light)
 {
 	t_vec3	N = vec_normalize(hit.normal);
@@ -253,32 +174,112 @@ uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light ligh
 	return (rgba(r, g, b, 255));
 }
 
-int	main(int ac, char **av)
+void	render(t_rt *rt)
 {
-	t_rt	rt;
+	int			x;
+	int			y;
+	t_ray		ray;
+	// t_vec3		origin = rt->scene.camera.pos;
+	// t_sphere	sphere_2;
+	t_view		view = camera_orientation(rt);
 
-	if (ac != 2)
-		return (printf("Usage: './miniRT scene_file.rt'\n"), 1);
-	printf("main online: %s\n", av[1]);
+	// print_camera(rt->scene.camera);
 
-	rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", false);
-	if (!rt.mlx)
-		return (printf("Failed to initialize MLX"), 1);
-	rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
-	if (!rt.img)
-		return (printf("Failed to create image"), 1);
-	//TESTING///////////////////////////////////////////////////////////////
-	fake_parsing(&rt);//TESTING STRUCT
-	////////////////////////////////////////////////////////////////////////
-	
-	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
-	render(&rt);
-	mlx_key_hook(rt.mlx, key_hook, &rt);
-	mlx_close_hook(rt.mlx, close_hook, &rt);
-	mlx_loop(rt.mlx);
-	mlx_delete_image(rt.mlx, rt.img);
-	mlx_terminate(rt.mlx);
-
-	return (0);
+	y = 0;
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			ray = generate_ray(rt, x, y, view);
+			t_hit hit = check_intersections(ray, rt);
+			if (hit.t > 0)
+			{
+				// uint32_t color = normal_to_color(hit.normal);
+				uint32_t color = calculate_color(rt->scene, hit, rt->scene.camera, rt->scene.light);
+				// print_vec3(ray.dir);
+				set_pixel(rt->img, x, y, color);
+			}
+			else
+				set_pixel(rt->img, x, y, rgba(255, 255, 255, 255));
+			// print_vec3(ray.origin);
+			// color = trace_ray(ray, scene);
+			x++;
+		}
+		y++;
+	}
 }
+
+// static void	fake_parsing(t_rt *rt)
+// {
+// //CAMERA
+// 	rt->scene.camera.pos.x = 0;
+// 	rt->scene.camera.pos.y = 0;
+// 	rt->scene.camera.pos.z = 0;
+	
+// 	rt->scene.camera.fov = 70.00;
+	
+// 	rt->scene.camera.dir.x = 0;
+// 	rt->scene.camera.dir.y = 0;
+// 	rt->scene.camera.dir.z = 1;
+// //AMBIENT
+// 	rt->scene.ambient.brightness = 0.2;
+// 	rt->scene.ambient.color.r = 255;
+// 	rt->scene.ambient.color.g = 255;
+// 	rt->scene.ambient.color.b = 255;
+// //LIGHT
+// 	rt->scene.light.pos.x = -50;
+// 	rt->scene.light.pos.y = 0;
+// 	rt->scene.light.pos.z = 5;
+
+// 	rt->scene.light.brightness = 0.7;
+
+// 	rt->scene.light.color.r = 255;
+// 	rt->scene.light.color.g = 255;
+// 	rt->scene.light.color.b = 255;
+
+// 	print_camera(rt->scene.camera);
+	
+// 	// rt->s
+// //OBJECTS
+// 	fake_obj_list(rt);
+// }
+// static uint32_t calculate_color(point)
+// {
+// 	i = Ispec + Ideff + Iambient;
+// 	Ispec = dot(reflect, ray_that_hit_the_point);
+// 	color = rgba(r * i, g * i, b * i, 255);
+// 	return color;
+// }
+
+
+
+// int	main(int ac, char **av)
+// {
+// 	t_rt	rt;
+
+// 	if (ac != 2)
+// 		return (printf("Usage: './miniRT scene_file.rt'\n"), 1);
+// 	printf("main online: %s\n", av[1]);
+
+// 	rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", false);
+// 	if (!rt.mlx)
+// 		return (printf("Failed to initialize MLX"), 1);
+// 	rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
+// 	if (!rt.img)
+// 		return (printf("Failed to create image"), 1);
+// 	//TESTING///////////////////////////////////////////////////////////////
+// 	fake_parsing(&rt);//TESTING STRUCT
+// 	////////////////////////////////////////////////////////////////////////
+	
+// 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
+// 	render(&rt);
+// 	mlx_key_hook(rt.mlx, key_hook, &rt);
+// 	mlx_close_hook(rt.mlx, close_hook, &rt);
+// 	mlx_loop(rt.mlx);
+// 	mlx_delete_image(rt.mlx, rt.img);
+// 	mlx_terminate(rt.mlx);
+
+// 	return (0);
+// }
 

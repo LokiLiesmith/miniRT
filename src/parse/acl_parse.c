@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 21:33:22 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/02 23:08:13 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/19 19:17:35 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int	parse_camera(char **strs, t_camera *camera, int i)
 			return (printf("Error\nC_vec values must be in range [-1,1]\n"), 1);
 		i++;
 	}
-	camera->vec.x = xyz[0];
-	camera->vec.y = xyz[1];
-	camera->vec.z = xyz[2];
+	camera->dir.x = xyz[0];
+	camera->dir.y = xyz[1];
+	camera->dir.z = xyz[2];
 	if (!is_valid_double(strs[3], 0))
 		return (printf("Error\nInvalid FOV\n"), 1);
 	camera->fov = ft_atod(strs[3]);
