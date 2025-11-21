@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/21 03:26:56 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/21 03:43:21 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		rt->scene.camera.fov += 10;
 		printf("FOV: %f\n", rt->scene.camera.fov);
 	}
-//ROTATION - CAMERA
+//ROTATION - CAMERA ////KEEEP FOR OBJECT ROTATION??? TODO
 	if (keydata.key == MLX_KEY_Q && keydata.action == MLX_PRESS)
 	{
 		rt->scene.camera.dir = vec_rotate_y(rt->scene.camera.dir, -0.05);
@@ -165,7 +165,6 @@ void	select_object(t_rt *rt)
 
 	mx = 0;
 	my = 0;
-
 	mlx_get_mouse_pos(rt->mlx, &mx, &my);
 	click_ray = generate_ray(rt, mx, my, camera_orientation(rt));
 	select = check_mouse_intersect(click_ray, rt);
@@ -181,14 +180,10 @@ static t_mouse_data	init_mouse(t_rt *rt)
 
 	ft_bzero(&m, sizeof(t_mouse_data));
 	mlx_get_mouse_pos(rt->mlx, &m.mx, &m.my);
-
 	m.dx = m.mx - rt->prev_mouse_x;
 	m.dy = m.my - rt->prev_mouse_y;
-	
 	rt->prev_mouse_x = m.mx;
 	rt->prev_mouse_y = m.my;
-
-	// printf("dx: %d, dy: %d\n", m.dx, m.dy);
 	return (m);
 }
 
@@ -212,7 +207,7 @@ void	mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void *
 	if (button == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_RELEASE)
 	{
 		rt->pan_drag = false;
-		rt->samples = 250;
+		rt->samples = 100;
 		render(rt);
 	}
 	if (button == MLX_MOUSE_BUTTON_RIGHT && action == MLX_PRESS)
@@ -220,7 +215,7 @@ void	mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void *
 	if (button == MLX_MOUSE_BUTTON_RIGHT && action == MLX_RELEASE)
 	{
 			rt->rotate_drag = false;
-			rt->samples = 250;
+			rt->samples = 100;
 			render(rt);
 	}	
 }
@@ -233,10 +228,9 @@ void	mouse_pan(t_rt *rt, t_view view)
 	m = init_mouse(rt);
 	speed = 0.02;
 	
-	rt->scene.camera.pos = vec_add(rt->scene.camera.pos, vec_add(vec_scale(view.right, speed * -m.dx), vec_scale(view.up, speed * m.dy)));
-
-
-	printf("dx: %d, dy: %d\n", m.dx, m.dy);
+	rt->scene.camera.pos = vec_add(rt->scene.camera.pos,
+		vec_add(vec_scale(view.right, speed * -m.dx),
+		vec_scale(view.up, speed * m.dy)));
 }
 
 void	mouse_rotate(t_rt *rt, t_view view)
