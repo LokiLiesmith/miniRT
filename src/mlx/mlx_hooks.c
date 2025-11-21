@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/21 03:43:21 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/21 19:14:37 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ static t_vec3	vec_rotate_y(t_vec3 v, double angle)
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
 	t_rt	*rt;
-	t_view	view;
+	// t_view	view;
 	double	speed = 1.0;
 
 	rt = (t_rt *)param;
-	view = camera_orientation(rt);
+	// view = camera_orientation(rt);
 
 	if (keydata.action != MLX_PRESS)
     	return;
@@ -98,26 +98,26 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		return ;
 	}	
 
-	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
-	{
-		rt->scene.camera.pos = vec_subtract(rt->scene.camera.pos, vec_scale(view.right, speed));
-		printf("LEFT\n");
-	}
-		if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
-	{
-		rt->scene.camera.pos = vec_add(rt->scene.camera.pos, vec_scale(view.right, speed));
-		printf("RIGHT\n");
-	}
-	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
-	{
-		rt->scene.camera.pos = vec_add(rt->scene.camera.pos, vec_scale(view.up, speed));
-		printf("UP\n");
-	}
-	if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
-	{
-		rt->scene.camera.pos = vec_subtract(rt->scene.camera.pos, vec_scale(view.up, speed));
-		printf("DOWN\n");
-	}
+	// if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
+	// {
+	// 	rt->scene.camera.pos = vec_subtract(rt->scene.camera.pos, vec_scale(view.right, speed));
+	// 	printf("LEFT\n");
+	// }
+	// 	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
+	// {
+	// 	rt->scene.camera.pos = vec_add(rt->scene.camera.pos, vec_scale(view.right, speed));
+	// 	printf("RIGHT\n");
+	// }
+	// if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
+	// {
+	// 	rt->scene.camera.pos = vec_add(rt->scene.camera.pos, vec_scale(view.up, speed));
+	// 	printf("UP\n");
+	// }
+	// if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
+	// {
+	// 	rt->scene.camera.pos = vec_subtract(rt->scene.camera.pos, vec_scale(view.up, speed));
+	// 	printf("DOWN\n");
+	// }
 // FOV
 	if (keydata.key == MLX_KEY_MINUS && keydata.action == MLX_PRESS)
 	{
@@ -131,28 +131,14 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	}
 //ROTATION - CAMERA ////KEEEP FOR OBJECT ROTATION??? TODO
 	if (keydata.key == MLX_KEY_Q && keydata.action == MLX_PRESS)
-	{
 		rt->scene.camera.dir = vec_rotate_y(rt->scene.camera.dir, -0.05);
-		view = camera_orientation(rt);
-	}
 	if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)
-	{
 		rt->scene.camera.dir = vec_rotate_y(rt->scene.camera.dir, 0.05);
-		view = camera_orientation(rt);
-	}
 	if (keydata.key == MLX_KEY_O && keydata.action == MLX_PRESS)
-	{
 		rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, -0.05);
-		view = camera_orientation(rt);
-	}
 	if (keydata.key == MLX_KEY_L && keydata.action == MLX_PRESS)
-	{
 		rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, 0.05);
-		view = camera_orientation(rt);
-	}
 	rt->samples = 100;
-
-	// mt_render(rt);
 	render(rt);
 }
 
@@ -168,10 +154,11 @@ void	select_object(t_rt *rt)
 	mlx_get_mouse_pos(rt->mlx, &mx, &my);
 	click_ray = generate_ray(rt, mx, my, camera_orientation(rt));
 	select = check_mouse_intersect(click_ray, rt);
-	if(!(select.t > 0))
+	if (!(select.t > 0))
 		rt->scene.selected = NULL;
 	else
 		rt->scene.selected = select.object;
+	render(rt);
 }
 
 static t_mouse_data	init_mouse(t_rt *rt)
@@ -187,6 +174,16 @@ static t_mouse_data	init_mouse(t_rt *rt)
 	return (m);
 }
 
+static	void render_on_release(t_rt *rt, t_drag_type drag_type)
+{
+	if (drag_type == PAN_DRAG)
+		rt->pan_drag = false;
+	else if (drag_type == ROTATE_DRAG)
+		rt->rotate_drag = false;
+	rt->samples = 100;
+	render(rt);
+}
+
 //EXPERIMENTAL - OBJECT SELECTION AND ROTATION
 void	mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
 {
@@ -196,28 +193,17 @@ void	mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void *
 	rt = (t_rt *)param;
 	(void)mods;
 	m = init_mouse(rt);
-
+	(void)m;
 	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
-	{
 		select_object(rt);
-		render(rt);
-	}
 	if (button == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_PRESS)
 		rt->pan_drag = true;
 	if (button == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_RELEASE)
-	{
-		rt->pan_drag = false;
-		rt->samples = 100;
-		render(rt);
-	}
+		render_on_release(rt, PAN_DRAG);
 	if (button == MLX_MOUSE_BUTTON_RIGHT && action == MLX_PRESS)
 		rt->rotate_drag = true;
 	if (button == MLX_MOUSE_BUTTON_RIGHT && action == MLX_RELEASE)
-	{
-			rt->rotate_drag = false;
-			rt->samples = 100;
-			render(rt);
-	}	
+		render_on_release(rt, ROTATE_DRAG);
 }
 
 void	mouse_pan(t_rt *rt, t_view view)
@@ -227,10 +213,9 @@ void	mouse_pan(t_rt *rt, t_view view)
 
 	m = init_mouse(rt);
 	speed = 0.02;
-	
 	rt->scene.camera.pos = vec_add(rt->scene.camera.pos,
-		vec_add(vec_scale(view.right, speed * -m.dx),
-		vec_scale(view.up, speed * m.dy)));
+			vec_add(vec_scale(view.right, speed * -m.dx),
+				vec_scale(view.up, speed * m.dy)));
 }
 
 void	mouse_rotate(t_rt *rt, t_view view)
@@ -242,24 +227,23 @@ void	mouse_rotate(t_rt *rt, t_view view)
 	m = init_mouse(rt);
 	angle = 0.0005;
 
-    rt->scene.camera.dir = vec_rotate_y(rt->scene.camera.dir, m.dx * angle);
-    rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, -m.dy * angle);
+	rt->scene.camera.dir = vec_rotate_y(rt->scene.camera.dir, m.dx * angle);
+	rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, m.dy * angle);
 	rt->scene.camera.dir = vec_normalize(rt->scene.camera.dir);
 }
 
-void drag_loop(void *param)
+void	drag_loop(void *param)
 {
-	t_rt 			*rt;
+	t_rt			*rt;
 	t_view			view;
-	// t_mouse_data	m;
-	
-	rt= (t_rt *)param;
+
+	rt = (t_rt *)param;
 	view = camera_orientation(rt);
 	if (!rt->pan_drag && !rt->rotate_drag)
 		return ;
 	if (rt->pan_drag)
 		mouse_pan(rt, view);
-	else if(rt->rotate_drag)
+	else if (rt->rotate_drag)
 		mouse_rotate(rt, view);
 	rt->samples = 1;
 	render(rt);
@@ -273,28 +257,3 @@ void	close_hook(void *param)
 	rt = (t_rt *)param;
 	mlx_close_window(rt->mlx);
 }
-
-
-// void	mouse_select(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
-// {
-// 	t_rt	*rt;
-// 	int32_t	mx;
-// 	int32_t	my;
-
-// 	rt = (t_rt *)param;
-// 	mx = 0;
-// 	my = 0;
-// 	(void)mods;
-// 	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
-// 	{
-// 		mlx_get_mouse_pos(rt->mlx, &mx, &my);
-// 		t_ray click_ray = generate_ray(rt, mx, my, camera_orientation(rt));
-// 		t_hit select = check_mouse_intersect(click_ray, rt);
-// 		if(!(select.t > 0))
-// 			rt->scene.selected = NULL;
-// 		else
-// 			print_object(select.object, 1);
-// 		render(rt);
-// 		// mt_render(rt);
-// 	}
-// }

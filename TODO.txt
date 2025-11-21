@@ -1,0 +1,10 @@
+- MT - keeping the threads instead of joining after every render - have them wake on signal?
+- optimize structs for cache misses?
+- it's a PLANE
+- it's a CYLINDER
+- it's SUPERMAN?
+- move objects with mouse?
+- rotate objects with QEOL?
+
+
+- NORM it all

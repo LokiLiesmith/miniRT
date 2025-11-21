@@ -14,16 +14,13 @@ t_view camera_orientation(t_rt *rt)
 		view.world_up = (t_vec3){1, 0, 0};
 	view.right = vec_normalize(vec_cross(view.world_up, view.forward));
 	view.up = vec_normalize(vec_cross(view.forward, view.right));
-	// print_vec3("forward", view.forward);
-	// print_vec3("right", view.right);
-	// print_vec3("up", view.up);
 	return (view);
 }
 
 t_view	rotate_disk_to_world_view(t_vec3 normal)
 {
-	t_view local_view;
-	
+	t_view	local_view;
+
 	local_view.world_up.x = 0;
 	local_view.world_up.y = 1;
 	local_view.world_up.z = 0;
@@ -31,21 +28,23 @@ t_view	rotate_disk_to_world_view(t_vec3 normal)
 	local_view.forward = vec_normalize(normal);
 	if (fabs(local_view.forward.y) > 0.999)
 		local_view.world_up = (t_vec3){1, 0, 0};
-	local_view.right = vec_normalize(vec_cross(local_view.world_up, local_view.forward));
-	local_view.up = vec_normalize(vec_cross(local_view.forward, local_view.right));
+	local_view.right = vec_normalize(vec_cross(local_view.world_up,
+				local_view.forward));
+	local_view.up = vec_normalize(vec_cross(local_view.forward,
+				local_view.right));
 	return (local_view);
 }
 
+//normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
+// 2x to stretch the new mapping so when I move -1 we have the interval set at [-1, 1];
+// double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
+	// double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);//same shit but *-1 cuz y starts at the top on screen
 t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 {
 	t_ray	ray;
-	double	fov = rt->scene.camera.fov;
-	double	scale = tan((fov * 0.5) * (M_PI/180.0));
+	double	scale = tan((rt->scene.camera.fov * 0.5) * (M_PI/180.0));
 	double	aspect_ratio = (double)WIDTH/(double)HEIGHT;
-//normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
-// 2x to stretch the new mapping so when I move -1 we have the interval set at [-1, 1];
-	// double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
-	// double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);//same shit but *-1 cuz y starts at the top on screen
+
 	double	u = (2.0 * ((x + 0.5) / (double)WIDTH) - 1.0) * aspect_ratio * scale;
 	double	v = (1.0 - 2.0 * ((y + 0.5) / (double)HEIGHT)) * scale;
 
@@ -78,9 +77,8 @@ t_hit	check_intersections(t_ray ray, t_rt *rt)
 			hit = intersect_sphere(ray, (t_sphere *)current->data);
 		// else if (current->type == PLANE)
 		// 	printf("It's a Plane\n");
-		// else if (current->type == CYLINDER)
-		// 	printf("It's a Cylinder\n");
-	
+		else if (current->type == CYLINDER)
+			hit = intersect_cylinder(ray, (t_cylinder *)current->data);
 		if (hit.t > 0.0 && hit.t < closest_t)
 		{
 			closest_t = hit.t;

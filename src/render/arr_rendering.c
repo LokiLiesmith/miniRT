@@ -2,7 +2,7 @@
 
 static void	object_arr_len(t_scene *scene)
 {
-	t_object *current;
+	t_object	*current;
 
 	scene->obj_count = 0;
 	current = scene->objects;
@@ -13,7 +13,7 @@ static void	object_arr_len(t_scene *scene)
 	}
 }
 
-void build_object_arr(t_scene *scene)
+void	build_object_arr(t_scene *scene)
 {
 	t_object	*current;
 	int			i;

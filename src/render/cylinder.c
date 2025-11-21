@@ -4,8 +4,10 @@
 t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)
 {
 	t_hit	hit;
-	double	t;
-	
-
+	// double	t;
+	printf("It's a cylinder!\n");
+	(void)ray;
+	(void)cy;
+	hit.t = 1.00;
 	return (hit);
 }

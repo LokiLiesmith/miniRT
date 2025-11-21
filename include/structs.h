@@ -185,4 +185,11 @@ typedef struct s_mouse_data
 	int32_t	dy;
 }	t_mouse_data;
 
+typedef enum e_drag_type
+{
+	PAN_DRAG,
+	ROTATE_DRAG
+}	t_drag_type;
+
+
 #endif

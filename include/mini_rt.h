@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/20 23:16:19 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/21 19:08:54 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <time.h>
 # include "../include/libft/libft.h"
 
-//MATH
+// VECTOR MATH
 double	vec_dot(t_vec3 a, t_vec3 b);
 t_vec3	vec_cross(t_vec3 a, t_vec3 b);
 t_vec3	vec_subtract(t_vec3 a, t_vec3 b);
@@ -61,11 +61,12 @@ void		set_pixel(mlx_image_t *img, int x, int y, uint32_t color);
 //sphere.c
 t_hit		intersect_sphere(t_ray ray, t_sphere *sphere);
 
+//cylinder.c
+t_hit		intersect_cylinder(t_ray ray, t_cylinder *cy);
+
 //shadows.c
 t_vec3 		random_in_unit_sphere(unsigned int seed);
 t_view		rotate_disk_to_world_view(t_vec3 normal);
-
-
 
 // MLX
 //mlx_hooks.c
@@ -78,11 +79,7 @@ void		mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void 
 void		drag_hook(void *param);
 void		drag_loop(void *param);
 
-
-
 t_hit		check_mouse_intersect(t_ray ray, t_rt *rt);
-// void		clear_selection(t_rt *rt);
-// int			get_selected_pos(t_scene *scene);
 uint32_t	highlight_color(t_color color);
 
 // OBJECT MOVEMENT
@@ -99,7 +96,7 @@ int			check_type_identifier(char *line, t_found *found);
 int			check_line_format(char *line, int valid);
 int			check_acl(t_found *found, int found_valid_line);
 int			parse_scene_file(const char *file, t_scene *scene, int val,
-				t_found *found);
+			t_found *found);
 int			check_input(int ac, char **av, t_scene *scene);
 
 // acl_parse.c
@@ -181,7 +178,5 @@ void		fake_obj_list(t_rt *rt);
 void		print_list(t_object *list);
 void		add_obj(t_object **list, t_object *new);
 t_object	*create_new_obj(t_objtype type, void *data);
-
-
 
 #endif

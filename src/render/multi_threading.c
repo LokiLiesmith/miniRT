@@ -26,7 +26,7 @@ void	render_pixel(t_rt *rt, int px)
 	// printf("p:%d | x:%d, y:%d\n", px, x, y);
 }
 
-void *routine(void *arg)
+void	*routine(void *arg)
 {
 	int		i;
 	int		start;
@@ -34,14 +34,13 @@ void *routine(void *arg)
 	t_rt	*rt;
 
 	rt = (t_rt *)arg;
-
 	while (1)
 	{
-		pthread_mutex_lock(&rt->px_lock);
-		start = rt->px_current;
-		rt->px_current += 16;
-		pthread_mutex_unlock(&rt->px_lock);
-		// start = atomic_fetch_add(&rt->a_px_current, 16);
+		// pthread_mutex_lock(&rt->px_lock);
+		// start = rt->px_current;
+		// rt->px_current += 16;
+		// pthread_mutex_unlock(&rt->px_lock);
+		start = atomic_fetch_add(&rt->a_px_current, 16);
 		if (start >= rt->px_total)
 			break ;
 		i = 0;
@@ -50,8 +49,8 @@ void *routine(void *arg)
 			p = start + i;
 			if (p >= rt->px_total)
 				break ;
-			render_pixel_arr(rt, p);
-			// render_pixel(rt, p);
+			// render_pixel_arr(rt, p);
+			render_pixel(rt, p);
 			i++;
 		}
 	}
@@ -72,20 +71,20 @@ int	get_thread_count(void)
 
 void	init_threads(t_rt *rt)
 {
+	int	i;
+
 	atomic_store(&rt->a_px_current, 0);
 	rt->px_current = 0;
 	rt->thread_nr = get_thread_count();
 	rt->px_total = WIDTH * HEIGHT;
-	int i = 0;
+	i = 0;
 	while (i < rt->thread_nr)
-	{
+	{//TODO check if thread created == -1?
 		pthread_create(&rt->threads[i], NULL, &routine, rt);
 		i++;
 	}
-    // printf("Number of Cores: %d\n", rt->thread_nr);
-    // printf("MAX_THREADS: %d\n", MAX_THREADS);
-	// printf("Init: OK\n");
 }
+
 void	join_threads(t_rt *rt)
 {
 	int	i;
@@ -96,10 +95,9 @@ void	join_threads(t_rt *rt)
 		pthread_join(rt->threads[i], NULL);
 		i++;
 	}
-	// printf("Join: OK\n");
 }
 
-void 	mt_render(t_rt *rt)
+void	mt_render(t_rt *rt)
 {
 	// double	start;
 	// double	end;
@@ -130,5 +128,5 @@ void	render(t_rt *rt)
 	else
 		st_render(rt);
 	end = get_time_ms();
-	printf("Render time: %.3f ms\n", end-start);
+	printf("Render time: %.3f ms\n", end - start);
 }
