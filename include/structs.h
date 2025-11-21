@@ -10,11 +10,6 @@
 # include <pthread.h>
 # include <stdatomic.h>
 
-
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 //								MATH_THINGS									//
 typedef struct s_vec3

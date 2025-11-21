@@ -6,5 +6,8 @@
 - move objects with mouse?
 - rotate objects with QEOL?
 
-
 - NORM it all
+- LEAKS
+- hellgrind - threads
+
+
