@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/18 23:55:37 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/21 01:07:10 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,30 +155,117 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	// mt_render(rt);
 	render(rt);
 }
-//EXPERIMENTAL - OBJECT SELECTION AND ROTATION
-void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
+
+void	select_object(t_rt *rt)
 {
-	t_rt	*rt;
 	int32_t	mx;
 	int32_t	my;
+	t_ray	click_ray;
+	t_hit	select;
 
-	rt = (t_rt *)param;
 	mx = 0;
 	my = 0;
+
+	mlx_get_mouse_pos(rt->mlx, &mx, &my);
+	click_ray = generate_ray(rt, mx, my, camera_orientation(rt));
+	select = check_mouse_intersect(click_ray, rt);
+	if(!(select.t > 0))
+		rt->scene.selected = NULL;
+	else
+		rt->scene.selected = select.object;
+}
+
+static t_mouse_data	init_mouse(t_rt *rt)
+{
+	t_mouse_data	m;
+
+	ft_bzero(&m, sizeof(t_mouse_data));
+	mlx_get_mouse_pos(rt->mlx, &m.mx, &m.my);
+
+	m.dx = m.mx - rt->prev_mouse_x;
+	m.dy = m.my - rt->prev_mouse_y;
+	
+	rt->prev_mouse_x = m.mx;
+	rt->prev_mouse_y = m.my;
+
+	// printf("dx: %d, dy: %d\n", m.dx, m.dy);
+	return (m);
+}
+
+//EXPERIMENTAL - OBJECT SELECTION AND ROTATION
+void	mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
+{
+	t_rt			*rt;
+	t_mouse_data	m;
+
+	rt = (t_rt *)param;
 	(void)mods;
+	m = init_mouse(rt);
+
 	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
 	{
-		mlx_get_mouse_pos(rt->mlx, &mx, &my);
-		t_ray click_ray = generate_ray(rt, mx, my, camera_orientation(rt));
-		t_hit select = check_mouse_intersect(click_ray, rt);
-		if(!(select.t > 0))
-			rt->scene.selected = NULL;
-		else
-			print_object(select.object, 1);
+		select_object(rt);
 		render(rt);
-		// mt_render(rt);
 	}
+	if (button == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_PRESS)
+		rt->pan_drag = true;
+	if (button == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_RELEASE)
+		rt->pan_drag = false;
+	if (button == MLX_MOUSE_BUTTON_RIGHT && action == MLX_PRESS)
+		rt->rotate_drag = true;
+	if (button == MLX_MOUSE_BUTTON_RIGHT && action == MLX_RELEASE)
+		rt->rotate_drag = false;
 }
+
+void	mouse_pan(t_rt *rt, t_view view)
+{
+	t_mouse_data	m;
+	double			speed;
+
+	m = init_mouse(rt);
+	speed = 0.002;
+	
+	rt->scene.camera.pos = vec_add(rt->scene.camera.pos, vec_add(vec_scale(view.right, speed * -m.dx), vec_scale(view.up, speed * m.dy)));
+
+
+	printf("dx: %d, dy: %d\n", m.dx, m.dy);
+}
+
+void	mouse_rotate(t_rt *rt, t_view view)
+{
+	t_mouse_data	m;
+	double			angle;
+
+	(void)view;
+	m = init_mouse(rt);
+	angle = 0.005;
+
+    rt->scene.camera.dir = vec_rotate_y(rt->scene.camera.dir, -m.dx * angle);
+    rt->scene.camera.dir = vec_rotate_x(rt->scene.camera.dir, -m.dy * angle);
+	rt->scene.camera.dir = vec_normalize(rt->scene.camera.dir);
+}
+
+void drag_loop(void *param)
+{
+	t_rt 			*rt;
+	t_view			view;
+	t_mouse_data	m;
+	
+	rt= (t_rt *)param;
+	view = camera_orientation(rt);
+	m = init_mouse(rt);
+	rt->prev_mouse_x = m.mx;
+	rt->prev_mouse_y = m.my;
+	if (!rt->pan_drag && !rt->rotate_drag)
+		return ;
+	if (rt->pan_drag)
+		mouse_pan(rt, view);
+	else if(rt->rotate_drag)
+		mouse_rotate(rt, view);
+	rt->samples = 1;
+	render(rt);
+}
+
 // Close hook to handle window close button
 void	close_hook(void *param)
 {
@@ -187,3 +274,28 @@ void	close_hook(void *param)
 	rt = (t_rt *)param;
 	mlx_close_window(rt->mlx);
 }
+
+
+// void	mouse_select(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
+// {
+// 	t_rt	*rt;
+// 	int32_t	mx;
+// 	int32_t	my;
+
+// 	rt = (t_rt *)param;
+// 	mx = 0;
+// 	my = 0;
+// 	(void)mods;
+// 	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
+// 	{
+// 		mlx_get_mouse_pos(rt->mlx, &mx, &my);
+// 		t_ray click_ray = generate_ray(rt, mx, my, camera_orientation(rt));
+// 		t_hit select = check_mouse_intersect(click_ray, rt);
+// 		if(!(select.t > 0))
+// 			rt->scene.selected = NULL;
+// 		else
+// 			print_object(select.object, 1);
+// 		render(rt);
+// 		// mt_render(rt);
+// 	}
+// }

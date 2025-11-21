@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/18 23:46:44 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/20 23:36:42 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int ac, char **av)
 
 	// atexit(&checkleaks);
 	ft_memset(&rt, 0, sizeof(t_rt));
-	rt.samples = 100;
+	rt.samples = 16;
 	if (check_input(ac, av, &rt.scene) != 0)
 		return (free_objects(&rt.scene.objects), 1);
 	// print_scene(&rt.scene);
@@ -59,7 +59,11 @@ int	main(int ac, char **av)
 	render(&rt);
 
 	mlx_key_hook(rt.mlx, key_hook, &rt);
-	mlx_mouse_hook(rt.mlx, mouse_hook, &rt);
+	// mlx_mouse_hook(rt.mlx, mouse_select, &rt);
+	mlx_mouse_hook(rt.mlx, mouse_drag, &rt);
+	
+	mlx_mouse_hook(rt.mlx, mouse_drag, &rt);
+	mlx_loop_hook(rt.mlx, drag_loop, &rt);
 	mlx_close_hook(rt.mlx, close_hook, &rt);
 	mlx_loop(rt.mlx);
 	mlx_delete_image(rt.mlx, rt.img);

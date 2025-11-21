@@ -169,11 +169,20 @@ typedef struct s_rt
 	int				px_total;
 	atomic_int		a_px_current;
 	bool			multi_thread;
+	bool			pan_drag;
+	bool			rotate_drag;
+	int32_t			prev_mouse_x;
+	int32_t			prev_mouse_y;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;
 
-
-
+typedef struct s_mouse_data
+{
+	int32_t	mx;
+	int32_t	my;
+	int32_t	dx;
+	int32_t	dy;
+}	t_mouse_data;
 
 #endif

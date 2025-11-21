@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/18 23:47:57 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/20 23:16:19 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,19 @@ t_view		rotate_disk_to_world_view(t_vec3 normal);
 
 
 
-
 // MLX
 //mlx_hooks.c
 void	key_hook(mlx_key_data_t keydata, void *param);
 void	close_hook(void *param);
 
 //EXPERIMENTAL - OBJECT ROTATION
-void		mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
+void		mouse_select(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
+void		mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
+void		drag_hook(void *param);
+void		drag_loop(void *param);
+
+
+
 t_hit		check_mouse_intersect(t_ray ray, t_rt *rt);
 // void		clear_selection(t_rt *rt);
 // int			get_selected_pos(t_scene *scene);
