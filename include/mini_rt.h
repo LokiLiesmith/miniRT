@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/04 14:15:24 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/24 23:30:13 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void        render(t_rt *rt);
 uint32_t	normal_to_color(t_vec3 normal);
 uint32_t    calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light);
 
+// PLANE
+t_hit	intersect_plane(t_ray ray, t_plane *plane);
 
 
 
@@ -97,5 +99,10 @@ void		print_scene(t_scene *scene);
 ///////////////////////////////////////////////////////////////////////////////
 //								UTILS										//
 void		free_objects(t_object **list);
+
+// math utils
+void	print_vec3(t_vec3 v);
+
+
 
 #endif

@@ -3,7 +3,6 @@
 static void	set_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 {
 	int	i;
-
 	i = (y * img->width + x) * 4;
 
 	if (x < 0 || x >= (int)img->width || y < 0 || y >= (int)img->height)
@@ -97,6 +96,32 @@ t_hit	intersect_sphere(t_ray ray, t_sphere *sphere)
 	return (hit);
 }
 
+t_hit	intersect_plane(t_ray ray, t_plane *plane)
+{
+	t_hit	hit;
+	t_vec3	P0O;
+	double	a;
+	double	b;
+	double	t;
+
+	hit.t = -1.0;	
+	P0O = vec_subtract(plane->point, ray.origin);	
+	a = vec_dot(plane->normal, ray.dir);	
+	if (fabs(a) < 1e-6)
+		return (hit);	
+	b = vec_dot(plane->normal, P0O);	
+	t = b / a;	
+	if (t <= 0.0)
+		return (hit);	
+	hit.t = t;
+	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
+	hit.normal = plane->normal;	
+	if (vec_dot(ray.dir, hit.normal) > 0)
+		hit.normal = vec_scale(hit.normal, -1.0);
+	hit.color = plane->color;
+	return (hit);
+}
+
 t_view camera_orientation(t_rt *rt)
 {
 	t_view	view;
@@ -130,7 +155,7 @@ t_hit	check_intersections(t_ray ray, t_rt *rt)
 		if (current->type == SPHERE)
 			hit = intersect_sphere(ray, (t_sphere *)current->data);
 		else if (current->type == PLANE)
-			printf("It's a Plane\n");
+			hit = intersect_plane(ray, (t_plane *)current->data);
 		else if (current->type == CYLINDER)
 			printf("It's a Cylinder\n");
 	
@@ -184,7 +209,6 @@ void	render(t_rt *rt)
 	t_view		view = camera_orientation(rt);
 
 	// print_camera(rt->scene.camera);
-
 	y = 0;
 	while (y < HEIGHT)
 	{
@@ -209,6 +233,8 @@ void	render(t_rt *rt)
 		y++;
 	}
 }
+
+
 
 // static void	fake_parsing(t_rt *rt)
 // {

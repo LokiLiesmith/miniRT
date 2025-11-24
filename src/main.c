@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/19 19:39:41 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/11/24 22:11:21 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	main(int ac, char **av)
 	if (check_input(ac, av, &rt.scene) != 0)
 		return (free_objects(&rt.scene.objects), 1);
 	// return (print_scene(&scene), free_objects(&scene.objects), 0);//debug parse
-
 	// mlx things
 	rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", false);
 	if (!rt.mlx)
