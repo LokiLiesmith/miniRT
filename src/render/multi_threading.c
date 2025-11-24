@@ -19,7 +19,8 @@ void	render_pixel(t_rt *rt, int px)
 			color = highlight_color(int_to_color(color));
 	}
 	else
-		color = color_scale(rt->scene.ambient.color, rt->scene.ambient.brightness);
+		color = color_scale(rt->scene.ambient.color,
+				rt->scene.ambient.brightness);
 	set_pixel(rt->img, x, y, color);
 }
 

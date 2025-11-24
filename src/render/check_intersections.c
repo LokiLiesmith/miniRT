@@ -128,4 +128,3 @@ t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
 	rt->scene.selected = best.object;
 	return (best);
 }
-
