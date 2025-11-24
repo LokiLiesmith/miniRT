@@ -91,6 +91,14 @@ t_hit	check_intersections(t_ray ray, t_rt *rt)
 	return (best);
 }
 
+static void	init_mouse_intersect(t_hit *best, double *closest_t, t_rt *rt)
+{
+	best->t = -1.0;
+	best->object = NULL;
+	*closest_t = INFINITY;
+	rt->scene.selected = NULL;
+}
+
 t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
 {
 	t_hit		best;
@@ -98,11 +106,12 @@ t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
 	t_object	*current;
 	double		closest_t;
 
-	best.t = -1.0;
-	closest_t = INFINITY;
-	best.object = NULL;
+	// best.t = -1.0;
+	init_mouse_intersect(&best, &closest_t, rt);
+	// closest_t = INFINITY;
+	// best.object = NULL;
 	// clear_selection(rt);
-	rt->scene.selected = NULL;
+	// rt->scene.selected = NULL;
 	current = rt->scene.objects;
 	while (current)
 	{
@@ -113,7 +122,6 @@ t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
 		// 	printf("It's a Plane\n");
 		else if (current->type == CYLINDER)
 			hit = intersect_cylinder(ray, (t_cylinder *)current->data);
-	
 		if (hit.t > 0.0 && hit.t < closest_t)
 		{
 			closest_t = hit.t;
