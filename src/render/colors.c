@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:36 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/13 02:09:47 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/24 20:44:39 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,14 @@ t_color	int_to_color(uint32_t color)
 
 uint32_t	normal_to_color(t_vec3 normal)
 {
-    uint8_t r = (uint8_t)((normal.x + 1.0) * 0.5 * 255);
-    uint8_t g = (uint8_t)((normal.y + 1.0) * 0.5 * 255);
-    uint8_t b = (uint8_t)((normal.z + 1.0) * 0.5 * 255);
-    return rgba(r, g, b, 255);
+	uint8_t	r;
+	uint8_t	g;
+	uint8_t	b;
+
+	r = (uint8_t)((normal.x + 1.0) * 0.5 * 255);
+	g = (uint8_t)((normal.y + 1.0) * 0.5 * 255);
+	b = (uint8_t)((normal.z + 1.0) * 0.5 * 255);
+	return (rgba(r, g, b, 255));
 }
 
 // uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light)
@@ -53,11 +57,11 @@ uint32_t calculate_color(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
 	double	ambient;
 	double	visibility;//softshadownumber
 
-	
+
 	ambient = rt->scene.ambient.brightness;
 	diffuse = rt->scene.light.brightness * fmax(0.0, vec_dot(N, L));
 	specular = rt->scene.light.brightness * pow(fmax(0.0, vec_dot(R, C)), 64.0);
-	
+
 	visibility = calc_soft_shadow(rt, hit, x, y);
 	//apply visibility
 	diffuse *= visibility;
@@ -72,39 +76,24 @@ uint32_t calculate_color(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
 	return (rgba(r, g, b, 255));
 }
 
-uint32_t	calculate_shadow(t_scene scene, t_hit shadow_hit)
+uint32_t	color_scale(t_color color, double factor)
 {
-	double	ambient;
 	uint8_t	r;
 	uint8_t	g;
 	uint8_t	b;
-
-	ambient = scene.ambient.brightness;
-
-	r = fmin(255.0, shadow_hit.color.r * ambient);
-	g = fmin(255.0, shadow_hit.color.g * ambient);
-	b = fmin(255.0, shadow_hit.color.b * ambient);
-
-	return (rgba(r, g, b, 255.0));
-}
-uint32_t	color_scale(t_color color, double factor)
-{
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
 
 	r = color.r * factor;
 	g = color.g * factor;
 	b = color.b * factor;
 
-	return rgba(r, g, b, 255.0);
+	return (rgba(r, g, b, 255.0));
 }
 
 uint32_t	highlight_color(t_color color)
 {
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
+	uint8_t	r;
+	uint8_t	g;
+	uint8_t	b;
 
 	r = fmin(255, color.r + 80);
 	g = fmin(255, color.g + 80);

@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:27 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/24 16:45:20 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/24 20:57:49 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	st_render(t_rt *rt)
 	int			x;
 	int			y;
 	t_ray		ray;
-	t_view		view = rt->view;
 	uint32_t	color;
 	t_hit		hit;
 
@@ -41,7 +40,7 @@ void	st_render(t_rt *rt)
 		x = 0;
 		while (x < WIDTH)
 		{
-			ray = generate_ray(rt, x, y, view);
+			ray = generate_ray(rt, x, y, rt->view);
 			hit = check_intersections(ray, rt);
 			if (hit.t > 0)//actual hit
 			{

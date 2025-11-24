@@ -20,13 +20,13 @@ static void	normalize_normal(t_object *obj)
 
 	if (obj->type == CYLINDER)
 	{
-		cy = (t_cylinder*)obj->data;
+		cy = (t_cylinder *)obj->data;
 		cy->axis = vec_normalize(cy->axis);
 	}
 	else if (obj->type == PLANE)
 	{
 		pl = (t_plane *)obj->data;
-		pl->normal  = vec_normalize(pl->normal);
+		pl->normal = vec_normalize(pl->normal);
 	}
 }
 
@@ -49,7 +49,6 @@ void	build_object_arr(t_scene *scene)
 		current = current->next;
 		i++;
 	}
-	printf("obj_arr built. size: %d\n", scene->obj_count);
 }
 
 void	free_object_arr(t_scene *scene)
@@ -58,7 +57,7 @@ void	free_object_arr(t_scene *scene)
 	scene->object_arr = NULL;
 	scene->obj_count = 0;
 }
-
+// TODO REFACTOR
 t_hit	check_intersections_arr(t_ray ray, t_rt *rt)
 {
 	t_hit		best;
@@ -101,14 +100,13 @@ void	render_pixel_arr(t_rt *rt, int px)
 	int			x;
 	int			y;
 	t_ray		ray;
-	t_view		view = rt->view;
 	uint32_t	color;
 	t_hit		hit;
 
 	x = px % WIDTH;
 	y = px / WIDTH;
-	
-	ray = generate_ray(rt, x, y, view);
+
+	ray = generate_ray(rt, x, y, rt->view);
 	hit = check_intersections_arr(ray, rt);
 	if (hit.t > 0)
 	{
@@ -117,6 +115,7 @@ void	render_pixel_arr(t_rt *rt, int px)
 			color = highlight_color(int_to_color(color));
 	}
 	else
-		color = color_scale(rt->scene.ambient.color, rt->scene.ambient.brightness);
+		color = color_scale(rt->scene.ambient.color,
+				rt->scene.ambient.brightness);
 	set_pixel(rt->img, x, y, color);
 }

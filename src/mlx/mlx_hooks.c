@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/24 20:11:03 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/24 20:59:09 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	select_object(t_rt *rt)
 	mx = 0;
 	my = 0;
 	mlx_get_mouse_pos(rt->mlx, &mx, &my);
-	click_ray = generate_ray(rt, mx, my, camera_orientation(rt));
+	click_ray = generate_ray(rt, mx, my, rt->view);
 	select = check_mouse_intersect(click_ray, rt);
 	if (!(select.t > 0))
 		rt->scene.selected = NULL;

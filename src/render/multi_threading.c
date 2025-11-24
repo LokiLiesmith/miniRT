@@ -5,26 +5,22 @@ void	render_pixel(t_rt *rt, int px)
 	int			x;
 	int			y;
 	t_ray		ray;
-	t_view		view = camera_orientation(rt);
-	// t_view		view = rt->view;
 	uint32_t	color;
 	t_hit		hit;
 
 	x = px % WIDTH;
 	y = px / WIDTH;
-	
-	ray = generate_ray(rt, x, y, view);
+	ray = generate_ray(rt, x, y, rt->view);
 	hit = check_intersections(ray, rt);
 	if (hit.t > 0)
 	{
 		color = calculate_color(rt, hit, x, y);
-		if(hit.object == rt->scene.selected)
+		if (hit.object == rt->scene.selected)
 			color = highlight_color(int_to_color(color));
 	}
 	else
 		color = color_scale(rt->scene.ambient.color, rt->scene.ambient.brightness);
 	set_pixel(rt->img, x, y, color);
-	// printf("p:%d | x:%d, y:%d\n", px, x, y);
 }
 
 void	*routine(void *arg)
@@ -37,10 +33,6 @@ void	*routine(void *arg)
 	rt = (t_rt *)arg;
 	while (1)
 	{
-		// pthread_mutex_lock(&rt->px_lock);
-		// start = rt->px_current;
-		// rt->px_current += 16;
-		// pthread_mutex_unlock(&rt->px_lock);
 		start = atomic_fetch_add(&rt->a_px_current, 16);
 		if (start >= rt->px_total)
 			break ;
@@ -51,7 +43,6 @@ void	*routine(void *arg)
 			if (p >= rt->px_total)
 				break ;
 			render_pixel_arr(rt, p);
-			// render_pixel(rt, p);
 			i++;
 		}
 	}
@@ -101,14 +92,8 @@ void	join_threads(t_rt *rt)
 
 void	mt_render(t_rt *rt)
 {
-	// double	start;
-	// double	end;
-
-	// start = get_time_ms();
 	init_threads(rt);
 	join_threads(rt);
-	// end = get_time_ms();
-	// printf("Time_to_render: %fms\n", end - start);
 }
 
 double	get_time_ms(void)

@@ -1,6 +1,6 @@
 #include "mini_rt.h"
 
-t_view camera_orientation(t_rt *rt)
+t_view	camera_orientation(t_rt *rt)
 {
 	t_view	view;
 
@@ -10,7 +10,7 @@ t_view camera_orientation(t_rt *rt)
 
 	view.forward = vec_normalize(rt->scene.camera.dir);
     // handle degenerate case: camera looking up or down
-    if (fabs(view.forward.y) > 0.999)
+	if (fabs(view.forward.y) > 0.999)
 		view.world_up = (t_vec3){1, 0, 0};
 	view.right = vec_normalize(vec_cross(view.world_up, view.forward));
 	view.up = vec_normalize(vec_cross(view.forward, view.right));
@@ -66,7 +66,7 @@ t_hit	check_intersections(t_ray ray, t_rt *rt)
 	t_hit		hit;
 	t_object	*current;
 	double		closest_t;
-	
+
 	best.t = -1.0;
 	closest_t = INFINITY;
 	current = rt->scene.objects;
@@ -106,12 +106,7 @@ t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
 	t_object	*current;
 	double		closest_t;
 
-	// best.t = -1.0;
 	init_mouse_intersect(&best, &closest_t, rt);
-	// closest_t = INFINITY;
-	// best.object = NULL;
-	// clear_selection(rt);
-	// rt->scene.selected = NULL;
 	current = rt->scene.objects;
 	while (current)
 	{
