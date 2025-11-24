@@ -21,9 +21,10 @@ t_hit	intersect_sphere(t_ray ray, t_sphere *sphere)
 {
 	t_hit	hit;
 	t_vec3	CS = vec_subtract(ray.origin, sphere->s);
+	double	r = sphere->d / 2;
 	double	a = vec_dot(ray.dir, ray.dir);
 	double	b = 2 * vec_dot(ray.dir, CS);
-	double	c = vec_dot(CS, CS) - (sphere->d * sphere->d);
+	double	c = vec_dot(CS, CS) - (r * r);
 	double	discriminant = b * b - (4 * a * c);
 
 	//default = no hit

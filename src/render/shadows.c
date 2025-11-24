@@ -159,7 +159,7 @@ double calc_soft_shadow(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
     int             visible = 0;
     unsigned int    i = 0;
     unsigned int    seed;
-    double          light_radius = 2;//TODO add to light struct
+    double          light_radius = 1;//TODO add to light struct
 
 
     t_vec3 origin = vec_add(hit.point, vec_scale(hit.normal, 1e-4));

@@ -65,8 +65,8 @@ t_hit	check_intersections_arr(t_ray ray, t_rt *rt)
 			hit = intersect_sphere(ray, (t_sphere *)obj->data);
 		// if (obj->type == PLANE);
 		// 	hit = intersect_plane(ray, (t_plane *)obj->data);
-		// if (obj->type == CYLINDER);
-		// 	hit = intersect_cylinder(ray, (t_cylinder *)obj->data);
+		if (obj->type == CYLINDER)
+			hit = intersect_cylinder(ray, (t_cylinder *)obj->data);
 		if (hit.t > 0.0 && hit.t < closest_t)
 		{
 			closest_t = hit.t;

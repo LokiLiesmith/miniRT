@@ -78,6 +78,7 @@ t_hit	check_intersections(t_ray ray, t_rt *rt)
 		// else if (current->type == PLANE)
 		// 	printf("It's a Plane\n");
 		else if (current->type == CYLINDER)
+			// hit = intersect_cylinder(ray, (t_cylinder *)current->data);
 			hit = intersect_cylinder(ray, (t_cylinder *)current->data);
 		if (hit.t > 0.0 && hit.t < closest_t)
 		{
@@ -110,8 +111,8 @@ t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
 			hit = intersect_sphere(ray, (t_sphere *)current->data);
 		// else if (current->type == PLANE)
 		// 	printf("It's a Plane\n");
-		// else if (current->type == CYLINDER)
-		// 	printf("It's Superman\n");
+		else if (current->type == CYLINDER)
+			hit = intersect_cylinder(ray, (t_cylinder *)current->data);
 	
 		if (hit.t > 0.0 && hit.t < closest_t)
 		{

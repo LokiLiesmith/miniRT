@@ -49,8 +49,8 @@ void	*routine(void *arg)
 			p = start + i;
 			if (p >= rt->px_total)
 				break ;
-			// render_pixel_arr(rt, p);
-			render_pixel(rt, p);
+			render_pixel_arr(rt, p);
+			// render_pixel(rt, p);
 			i++;
 		}
 	}

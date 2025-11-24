@@ -42,6 +42,8 @@ t_vec3	vec_reflect(t_vec3 ray_in, t_vec3 normal);
 t_view		camera_orientation(t_rt *rt);
 t_ray		generate_ray(t_rt *rt, int x, int y, t_view view);
 t_hit		check_intersections(t_ray ray, t_rt *rt);
+t_hit		check_cylinder_side(t_ray ray, t_cylinder *cy);
+
 
 //colors.c
 uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
@@ -63,6 +65,11 @@ t_hit		intersect_sphere(t_ray ray, t_sphere *sphere);
 
 //cylinder.c
 t_hit		intersect_cylinder(t_ray ray, t_cylinder *cy);
+t_hit		check_caps(t_ray ray, t_cylinder *cy);
+t_hit		check_top_cap(t_ray ray, t_cylinder *cy);
+t_hit		check_base_cap(t_ray ray, t_cylinder *cy);
+
+
 
 //shadows.c
 t_vec3 		random_in_unit_sphere(unsigned int seed);
