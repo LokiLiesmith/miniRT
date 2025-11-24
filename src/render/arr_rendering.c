@@ -101,7 +101,7 @@ void	render_pixel_arr(t_rt *rt, int px)
 	int			x;
 	int			y;
 	t_ray		ray;
-	t_view		view = camera_orientation(rt);
+	t_view		view = rt->view;
 	uint32_t	color;
 	t_hit		hit;
 

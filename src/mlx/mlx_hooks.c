@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/21 19:14:37 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/24 20:11:03 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,9 @@ static t_vec3	vec_rotate_y(t_vec3 v, double angle)
 void	key_hook(mlx_key_data_t keydata, void *param)
 {
 	t_rt	*rt;
-	// t_view	view;
 	double	speed = 1.0;
 
 	rt = (t_rt *)param;
-	// view = camera_orientation(rt);
-
 	if (keydata.action != MLX_PRESS)
     	return;
 	// OBJECT TRANSLATION
@@ -73,51 +70,24 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	}
 ///////////////////////////////////////////////////////////////////////
 // CAMERA CONTROLS
-
-
 	if (keydata.key == MLX_KEY_N && keydata.action == MLX_PRESS)
 	{
-		// rt->samples = 1024;
 		rt->multi_thread = !rt->multi_thread;
 		printf("Multi_threading: %d\n", rt->multi_thread);
 		render(rt);
-		// mt_render(rt);
 		return ;
 	}
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 	{
 		rt->samples = 1024;
 		render(rt);
-		// mt_render(rt);
 		return ;
 	}
 	if (keydata.key == MLX_KEY_Z && keydata.action == MLX_PRESS)
 	{
 		print_save_scene(rt);
-		// print_objects(rt->scene.objects);
 		return ;
 	}	
-
-	// if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
-	// {
-	// 	rt->scene.camera.pos = vec_subtract(rt->scene.camera.pos, vec_scale(view.right, speed));
-	// 	printf("LEFT\n");
-	// }
-	// 	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
-	// {
-	// 	rt->scene.camera.pos = vec_add(rt->scene.camera.pos, vec_scale(view.right, speed));
-	// 	printf("RIGHT\n");
-	// }
-	// if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
-	// {
-	// 	rt->scene.camera.pos = vec_add(rt->scene.camera.pos, vec_scale(view.up, speed));
-	// 	printf("UP\n");
-	// }
-	// if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
-	// {
-	// 	rt->scene.camera.pos = vec_subtract(rt->scene.camera.pos, vec_scale(view.up, speed));
-	// 	printf("DOWN\n");
-	// }
 // FOV
 	if (keydata.key == MLX_KEY_MINUS && keydata.action == MLX_PRESS)
 	{
@@ -256,4 +226,20 @@ void	close_hook(void *param)
 
 	rt = (t_rt *)param;
 	mlx_close_window(rt->mlx);
+}
+
+void	mouse_scroll(double xdelta, double ydelta, void *param)
+{
+	t_rt	*rt;
+	double	speed;
+
+	rt = (t_rt *)param;
+	speed = 0.5;
+	(void)xdelta;
+	rt->samples = 1;
+	if(ydelta > 0)
+		rt->scene.camera.pos = vec_add(rt->scene.camera.pos, vec_scale(rt->view.forward, speed));
+	else if(ydelta < 0)
+		rt->scene.camera.pos = vec_subtract(rt->scene.camera.pos, vec_scale(rt->view.forward, speed));
+	render(rt);
 }

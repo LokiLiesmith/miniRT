@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/21 19:08:54 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/11/24 18:56:43 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void		mouse_select(mouse_key_t button, action_t action, modifier_key_t mods, voi
 void		mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
 void		drag_hook(void *param);
 void		drag_loop(void *param);
+void		mouse_scroll(double xdelta, double ydelta, void *param);
+
 
 t_hit		check_mouse_intersect(t_ray ray, t_rt *rt);
 uint32_t	highlight_color(t_color color);

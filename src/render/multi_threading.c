@@ -6,6 +6,7 @@ void	render_pixel(t_rt *rt, int px)
 	int			y;
 	t_ray		ray;
 	t_view		view = camera_orientation(rt);
+	// t_view		view = rt->view;
 	uint32_t	color;
 	t_hit		hit;
 
@@ -77,6 +78,7 @@ void	init_threads(t_rt *rt)
 	rt->px_current = 0;
 	rt->thread_nr = get_thread_count();
 	rt->px_total = WIDTH * HEIGHT;
+	rt->view = camera_orientation(rt);
 	i = 0;
 	while (i < rt->thread_nr)
 	{//TODO check if thread created == -1?

@@ -75,8 +75,8 @@ t_hit	check_cylinder_side(t_ray ray, t_cylinder *cy)
 // t = (N.(S-O)) / (N.D) = a/b 
 t_hit	check_caps(t_ray ray, t_cylinder *cy)
 {
-	t_hit t_base;
-	t_hit t_top;
+	t_hit	t_base;
+	t_hit	t_top;
 
 	t_base = check_base_cap(ray, cy);
 	t_top = check_top_cap(ray, cy);
@@ -93,46 +93,48 @@ t_hit	check_caps(t_ray ray, t_cylinder *cy)
 
 t_hit	check_top_cap(t_ray ray, t_cylinder *cy)
 {
-	t_hit hit;
-	t_vec3 T = vec_add(cy->center, vec_scale(cy->axis, cy->height));
-	t_vec3 SO = vec_subtract(T, ray.origin);
-	double a = vec_dot(cy->axis, SO);
-	double b = vec_dot(cy->axis, ray.dir);
+	t_hit	hit;
+	t_vec3	T = vec_add(cy->center, vec_scale(cy->axis, cy->height));
+	t_vec3	SO = vec_subtract(T, ray.origin);
+	double	a = vec_dot(cy->axis, SO);
+	double	b = vec_dot(cy->axis, ray.dir);
 	double	t;
 	t = a / b;
 	double 	r = cy->dia / 2;
 
 	hit.t = t;
 	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
-	double len_top = vec_len(vec_subtract(hit.point, vec_add(cy->center, vec_scale(cy->axis, cy->height))));
-	if ( len_top <= r)
+	double	len_top = vec_len(vec_subtract(hit.point, vec_add(cy->center, vec_scale(cy->axis, cy->height))));
+	if (len_top <= r)
 	{
 		hit.t = t;
 		hit.normal = cy->axis;
 		hit.color = cy->color;
 	}
-	else hit.t = -1.00;
+	else
+		hit.t = -1.00;
 	return (hit);
 }
 t_hit	check_base_cap(t_ray ray, t_cylinder *cy)
 {
-	t_hit hit;
-	t_vec3 SO = vec_subtract(cy->center, ray.origin);
-	double a = vec_dot(cy->axis, SO);
-	double b = vec_dot(cy->axis, ray.dir);
+	t_hit	hit;
+	t_vec3	SO = vec_subtract(cy->center, ray.origin);
+	double	a = vec_dot(cy->axis, SO);
+	double	b = vec_dot(cy->axis, ray.dir);
 	double	t;
 	t = a / b;
 	double 	r = cy->dia / 2;
 
 	hit.t = t;
 	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
-	double len_bottom = vec_len(vec_subtract(hit.point, cy->center));
+	double	len_bottom = vec_len(vec_subtract(hit.point, cy->center));
 	if ( len_bottom <= r)
 	{
 		hit.t = t;
 		hit.normal = vec_scale(cy->axis, -1.00);
 		hit.color = cy->color;
 	}
-	else hit.t = -1.00;
+	else
+		hit.t = -1.00;
 	return (hit);
 }
