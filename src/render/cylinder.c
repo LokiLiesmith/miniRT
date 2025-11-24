@@ -23,7 +23,7 @@ t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)
 //a sphere with a component in the N direction ignored = infinite cyl
 t_hit	check_cylinder_side(t_ray ray, t_cylinder *cy)
 {
-	cy->axis = vec_normalize(cy->axis);
+	// cy->axis = vec_normalize(cy->axis);
 	t_hit	hit;
 	t_vec3	D_para = vec_scale(cy->axis, vec_dot(ray.dir, cy->axis));
 	t_vec3	X = vec_subtract(ray.origin, cy->center);

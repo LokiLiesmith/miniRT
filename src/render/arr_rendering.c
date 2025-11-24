@@ -13,6 +13,23 @@ static void	object_arr_len(t_scene *scene)
 	}
 }
 
+static void	normalize_normal(t_object *obj)
+{
+	t_cylinder	*cy;
+	t_plane		*pl;
+
+	if (obj->type == CYLINDER)
+	{
+		cy = (t_cylinder*)obj->data;
+		cy->axis = vec_normalize(cy->axis);
+	}
+	else if (obj->type == PLANE)
+	{
+		pl = (t_plane *)obj->data;
+		pl->normal  = vec_normalize(pl->normal);
+	}
+}
+
 void	build_object_arr(t_scene *scene)
 {
 	t_object	*current;
@@ -27,6 +44,8 @@ void	build_object_arr(t_scene *scene)
 	while (i < scene->obj_count)
 	{
 		scene->object_arr[i] = current;
+		if (current->type == CYLINDER || current->type == PLANE)
+			normalize_normal(current);
 		current = current->next;
 		i++;
 	}
@@ -94,11 +113,10 @@ void	render_pixel_arr(t_rt *rt, int px)
 	if (hit.t > 0)
 	{
 		color = calculate_color(rt, hit, x, y);
-		if(hit.object == rt->scene.selected)
+		if (hit.object == rt->scene.selected)
 			color = highlight_color(int_to_color(color));
 	}
 	else
 		color = color_scale(rt->scene.ambient.color, rt->scene.ambient.brightness);
 	set_pixel(rt->img, x, y, color);
-	// printf("p:%d | x:%d, y:%d\n", px, x, y);
 }
