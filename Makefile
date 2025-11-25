@@ -1,7 +1,7 @@
 LIBFT_PATH	:= include/libft
 LIBFT_LIB	:= $(LIBFT_PATH)/libft.a
 MLX_DIR		:= MLX42
-LIBMLX		:= $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+LIBMLX		:= $(MLX_DIR)/build/libmlx42.a -ldl -pthread -lm #-lglfw
 CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror -pthread -Wunreachable-code -g -Ofast -I include -I $(MLX_DIR)/include
 
@@ -14,10 +14,10 @@ UC_T := $(shell echo $(T) | tr '[:lower:]' '[:upper:]')
 # Detect OS and set appropriate flags
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-    LINK_FLAGS := -ldl -lglfw -pthread -lm
+    LINK_FLAGS := -ldl -pthread -lm #-lglfw
 endif
 ifeq ($(UNAME_S),Darwin)
-    LINK_FLAGS := -ldl -lglfw -pthread -lm -framework Cocoa -framework OpenGL -framework IOKit
+    LINK_FLAGS := -ldl -pthread -lm -framework Cocoa -framework OpenGL -framework IOKit #-lglfw
 endif
 SRC_MINI_RT	:= src/main.c
 # SRC_THREAD	:= src/threads/threads_test.c
@@ -52,12 +52,23 @@ all: $(BINDIR)/$(NAME)
 $(MLX_DIR):
 	@git clone https://github.com/codam-coding-college/MLX42.git $(MLX_DIR)
 
+# libmlx: $(MLX_DIR)
+# 	@cmake -B $(MLX_DIR)/build $(MLX_DIR)
+# 	@cmake --build $(MLX_DIR)/build -j4
+
 libmlx: $(MLX_DIR)
-	@cmake -B $(MLX_DIR)/build $(MLX_DIR)
+	@cmake -B $(MLX_DIR)/build $(MLX_DIR) -DGLFW_BUILD_DOCS=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF
 	@cmake --build $(MLX_DIR)/build -j4
 
+# @$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_PATH) -lft $(LIBMLX) $(LINK_FLAGS) -o $@
 $(BINDIR)/$(NAME): libmlx $(OBJ) $(LIBFT_LIB) | $(BINDIR)
-	@$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_PATH) -lft $(LIBMLX) $(LINK_FLAGS) -o $@
+	$(CC) $(CFLAGS) $(OBJ) \
+    -L$(LIBFT_PATH) -lft \
+    $(MLX_DIR)/build/libmlx42.a \
+    $(MLX_DIR)/build/_deps/glfw-build/src/libglfw3.a \
+    $(LINK_FLAGS) \
+    -o $@
+
 	@echo "Built $@"
 
 $(LIBFT_LIB):
