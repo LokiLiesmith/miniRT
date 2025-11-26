@@ -23,7 +23,7 @@ endif
 SRC_COMMON	:= src/main.c src/get_next_line.c src/get_next_line_utils.c \
 				src/parse/file_check.c src/parse/acl_parse.c src/parse/ft_atod.c \
 			   src/parse/objs_parse.c src/parse/parse_utils.c src/parse/linked_list_utils.c \
-			      src/parse/parse_xyz_rgb.c src/parse/debug_parse.c \
+			      src/parse/parse_xyz_rgb.c \
 				  src/utils/utils.c src/utils/math_utils.c \
 				  src/mlx/mlx_hooks.c \
 				  src/math/vector_math.c \

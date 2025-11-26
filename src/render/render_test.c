@@ -60,7 +60,7 @@ static t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 // D = ray direction	ray.direction
 // C = Camera(origin)	ray.origin
 // S = Sphere Center	sphere.s
-// r = Sphere radius	sphere.r
+// d = Sphere diameter	sphere.d
 t_hit	intersect_sphere(t_ray ray, t_sphere *sphere)
 {
 	t_hit	hit;
@@ -96,28 +96,34 @@ t_hit	intersect_sphere(t_ray ray, t_sphere *sphere)
 	return (hit);
 }
 
+// P0O = P0 - O (plane point minus ray origin)
+// nd: denominator, N · D
+// n-p0o: numerator, N · P0O
 t_hit	intersect_plane(t_ray ray, t_plane *plane)
 {
 	t_hit	hit;
-	t_vec3	P0O;
-	double	a;
-	double	b;
+	t_vec3	p0o;
+	double	nd;
+	double	n_p0o;
 	double	t;
 
+	//default = no hit
 	hit.t = -1.0;	
-	P0O = vec_subtract(plane->point, ray.origin);	
-	a = vec_dot(plane->normal, ray.dir);	
-	if (fabs(a) < 1e-6)
+	p0o = vec_subtract(plane->point, ray.origin);	
+	nd = vec_dot(plane->normal, ray.dir);	
+	// Check if ray is parallel to plane (N · D ≈ 0)
+	if (fabs(nd) < 1e-6)
 		return (hit);	
-	b = vec_dot(plane->normal, P0O);	
-	t = b / a;	
+	n_p0o = vec_dot(plane->normal, p0o);	
+	t = n_p0o / nd;
+	// Check if intersection is in front of camera	
 	if (t <= 0.0)
 		return (hit);	
 	hit.t = t;
 	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
 	hit.normal = plane->normal;	
 	if (vec_dot(ray.dir, hit.normal) > 0)
-		hit.normal = vec_scale(hit.normal, -1.0);
+		hit.normal = vec_scale(hit.normal, -1.0); //flip normal if inside
 	hit.color = plane->color;
 	return (hit);
 }
