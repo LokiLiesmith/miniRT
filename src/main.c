@@ -28,7 +28,7 @@
 // {
 // 	system("leaks miniRT");
 // }
-void static	init_hooks(t_rt *rt)
+static void	init_hooks(t_rt *rt)
 {
 	mlx_key_hook(rt->mlx, key_hook, rt);
 	mlx_scroll_hook(rt->mlx, mouse_scroll, rt);

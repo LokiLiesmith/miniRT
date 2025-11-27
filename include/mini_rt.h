@@ -63,6 +63,8 @@ void		set_pixel(mlx_image_t *img, int x, int y, uint32_t color);
 //sphere.c
 t_hit		intersect_sphere(t_ray ray, t_sphere *sphere);
 
+t_hit		intersect_plane(t_ray ray, t_plane *plane);
+
 //cylinder.c
 t_hit		intersect_cylinder(t_ray ray, t_cylinder *cy);
 t_hit		check_caps(t_ray ray, t_cylinder *cy);
