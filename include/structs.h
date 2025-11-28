@@ -51,7 +51,6 @@ typedef struct s_view
 	t_vec3	up;
 }	t_view;
 
-
 ///////////////////////////////////////////////////////////////////////////////
 //								OBJECTS										//
 
@@ -148,6 +147,16 @@ typedef enum e_mov_dir
 	FORWARD,
 	BACKWARD
 }	t_mov_dir;
+
+typedef enum e_rot_dir
+{
+	X_CW,
+	X_CCW,
+	Y_CW,
+	Y_CCW,
+	Z_CW,
+	Z_CCW,
+}	t_rot_dir;
 
 typedef struct s_rt
 {
