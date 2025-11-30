@@ -72,7 +72,7 @@ t_hit	check_intersections(t_ray ray, t_rt *rt)
 	current = rt->scene.objects;
 	while (current)
 	{
-		hit.t = -1.0;//HOLY MOTHER OF GOD AND ALL THAT IS HOLY
+		hit.t = -1.0;
 		if (current->type == SPHERE)
 			hit = intersect_sphere(ray, (t_sphere *)current->data);
 		else if (current->type == PLANE)
@@ -109,7 +109,7 @@ t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
 	current = rt->scene.objects;
 	while (current)
 	{
-		hit.t = -1.0;//HOLY MOTHER OF GOD AND ALL THAT IS HOLY
+		hit.t = -1.0;
 		if (current->type == SPHERE)
 			hit = intersect_sphere(ray, (t_sphere *)current->data);
 		else if (current->type == PLANE)

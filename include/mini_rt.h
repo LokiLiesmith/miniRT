@@ -88,16 +88,35 @@ void		mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void 
 void		drag_hook(void *param);
 void		drag_loop(void *param);
 void		mouse_scroll(double xdelta, double ydelta, void *param);
-
+t_vec3		vec_rot_around_axis(t_vec3 v, t_vec3 axis, double angle);
+//OBSOLETE?
+t_vec3		vec_rotate_x(t_vec3 v, double angle);
+t_vec3		vec_rotate_y(t_vec3 v, double angle);
+t_vec3		vec_rotate_z(t_vec3 v, double angle);
 
 t_hit		check_mouse_intersect(t_ray ray, t_rt *rt);
 uint32_t	highlight_color(t_color color);
 
 // OBJECT MOVEMENT
+void	move_selection(mlx_key_data_t keydata, t_rt *rt);
+
 void	move_object(t_rt *rt, t_object *selected, double speed, t_mov_dir dir);
 void	move_sphere(t_rt *rt, t_sphere *sph, double speed, t_mov_dir dir);
 void	move_cylinder(t_rt *rt, t_cylinder *cy, double speed, t_mov_dir dir);
 void	move_plane(t_rt *rt, t_plane *pl, double speed, t_mov_dir dir);
+// OBJECT ROTATION
+void	rotate_selection(mlx_key_data_t keydata, t_rt *rt);
+void	rotate_object(t_rt *rt, t_object *selected, t_rot_dir rot_dir);
+void	rotate_plane(t_rt *rt, t_plane * pl, t_rot_dir rot_dir, double angle);
+void	rotate_cylinder(t_rt *rt, t_cylinder *cy, t_rot_dir rot_dir, double angle);
+
+
+// OBJECT SCALING
+void scale_selection(mlx_key_data_t keydata, t_rt *rt);
+void scale_sphere(mlx_key_data_t keydata, t_sphere *sp, t_scale par);
+void scale_cylinder(mlx_key_data_t keydata, t_cylinder *cy, t_scale par);
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //								PARSING										//

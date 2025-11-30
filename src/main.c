@@ -37,12 +37,20 @@ static void	init_hooks(t_rt *rt)
 	mlx_close_hook(rt->mlx, close_hook, rt);
 }
 
+static void	init_rt(t_rt *rt)
+{
+	ft_memset(rt, 0, sizeof(t_rt));
+	rt->samples = 8;
+	rt->prev_samples = 8;
+	rt->multi_thread = true;
+	// rt->mode = MODE_NONE;
+}
+
 int	main(int ac, char **av)
 {
 	t_rt	rt;
 
-	ft_memset(&rt, 0, sizeof(t_rt));
-	rt.samples = 16;
+	init_rt(&rt);
 	if (check_input(ac, av, &rt.scene) != 0)
 		return (free_objects(&rt.scene.objects), 1);
 	rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", false);
@@ -55,12 +63,11 @@ int	main(int ac, char **av)
 			printf("Failed to create image"), 1);
 	build_object_arr(&rt.scene);
 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
-	rt.multi_thread = true;
 	render(&rt);
 	init_hooks(&rt);
 	mlx_loop(rt.mlx);
 	mlx_delete_image(rt.mlx, rt.img);
 	mlx_terminate(rt.mlx);
-	free_object_arr(&rt.scene);
+	free_object_arr(&rt.scene); //TODO: free LL and ARRAY together?
 	return (free_objects(&rt.scene.objects), 0);
 }

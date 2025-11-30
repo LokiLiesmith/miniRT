@@ -105,7 +105,6 @@ void	render_pixel_arr(t_rt *rt, int px)
 
 	x = px % WIDTH;
 	y = px / WIDTH;
-
 	ray = generate_ray(rt, x, y, rt->view);
 	hit = check_intersections_arr(ray, rt);
 	if (hit.t > 0)

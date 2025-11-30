@@ -158,12 +158,27 @@ typedef enum e_rot_dir
 	Z_CCW,
 }	t_rot_dir;
 
+typedef enum e_mode
+{
+	MODE_NONE,
+	MODE_ROTATE,
+	MODE_SCALE,
+	MODE_MOVE
+}	t_mode;
+
+typedef enum e_scale
+{
+	SCALE_RADIUS,
+	SCALE_HEIGHT
+}	t_scale;
+
 typedef struct s_rt
 {
 	t_scene			scene;
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	unsigned int	samples;
+	unsigned int	prev_samples;
 	t_view			view;
 	//MULTITHREADING TINGS
 	int				thread_nr;
@@ -175,6 +190,8 @@ typedef struct s_rt
 	bool			multi_thread;
 	bool			pan_drag;
 	bool			rotate_drag;
+	t_mode			mode;
+	t_scale			scale;
 	int32_t			prev_mouse_x;
 	int32_t			prev_mouse_y;
 	// t_gc	gc;			//gc-list? TODO import from minishell
