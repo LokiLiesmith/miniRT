@@ -121,6 +121,39 @@ t_hit	intersect_plane(t_ray ray, t_plane *plane)
 		return (hit);	
 	hit.t = t;
 	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
+	// // circular bounded plane with radius 10 - i dont't like
+	// // CLAMP THE PLANE - check if hit point is within bounds
+	// t_vec3 to_hit = vec_subtract(hit.point, plane->point);
+	// double dist = vec_len(to_hit);
+	// // If hit is more than X units from plane center, reject it
+	// if (dist > 10.0)
+	// {
+	// 	hit.t = -1.0;
+	// 	return (hit);
+	// }
+
+	// square bounded plane
+	t_vec3 to_hit = vec_subtract(hit.point, plane->point);
+
+	// Create local axes on the plane (perpendicular to normal)
+	t_vec3 up = {0, 1, 0};
+	if (fabs(vec_dot(plane->normal, up)) > 0.99)
+		up = (t_vec3){1, 0, 0};  // If normal is vertical, use x-axis
+		
+	t_vec3 right = vec_normalize(vec_cross(plane->normal, up));
+	up = vec_normalize(vec_cross(right, plane->normal));
+
+	// Project hit point onto plane axes
+	double x_dist = fabs(vec_dot(to_hit, right));
+	double y_dist = fabs(vec_dot(to_hit, up));
+
+	// Check if within square bounds
+	if (x_dist > 30.0 || y_dist > 30.0)  // 30x30 square
+	{
+		hit.t = -1.0;
+		return (hit);
+	}
+
 	hit.normal = plane->normal;	
 	if (vec_dot(ray.dir, hit.normal) > 0)
 		hit.normal = vec_scale(hit.normal, -1.0); //flip normal if inside
