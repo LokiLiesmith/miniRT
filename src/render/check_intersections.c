@@ -43,10 +43,10 @@ t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 {
 	t_ray	ray;
 	double	scale = tan((rt->scene.camera.fov * 0.5) * (M_PI/180.0));
-	double	aspect_ratio = (double)WIDTH/(double)HEIGHT;
+	double	aspect_ratio = (double)rt->width / (double)rt->height;
 
-	double	u = (2.0 * ((x + 0.5) / (double)WIDTH) - 1.0) * aspect_ratio * scale;
-	double	v = (1.0 - 2.0 * ((y + 0.5) / (double)HEIGHT)) * scale;
+	double	u = (2.0 * ((x + 0.5) / (double)rt->width) - 1.0) * aspect_ratio * scale;
+	double	v = (1.0 - 2.0 * ((y + 0.5) / (double)rt->height)) * scale;
 
 	t_vec3 dir_cam = {u, v, 1.0};
 	// dir_cam = vec_normalize(dir_cam);//NOT NEEDED?

@@ -194,6 +194,11 @@ typedef struct s_rt
 	t_scale			scale;
 	int32_t			prev_mouse_x;
 	int32_t			prev_mouse_y;
+	//RESIZING
+	int32_t			height;
+	int32_t			width;
+	bool			resize_pending;
+	double			last_resize;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;

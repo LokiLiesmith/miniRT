@@ -8,8 +8,10 @@ void	render_pixel(t_rt *rt, int px)
 	uint32_t	color;
 	t_hit		hit;
 
-	x = px % WIDTH;
-	y = px / WIDTH;
+	// x = px % WIDTH;
+	// y = px / WIDTH;
+	x = px % rt->width;
+	y = px / rt->width;
 	ray = generate_ray(rt, x, y, rt->view);
 	hit = check_intersections(ray, rt);
 	if (hit.t > 0)
@@ -69,7 +71,7 @@ void	init_threads(t_rt *rt)
 	atomic_store(&rt->a_px_current, 0);
 	rt->px_current = 0;
 	rt->thread_nr = get_thread_count();
-	rt->px_total = WIDTH * HEIGHT;
+	rt->px_total = rt->height * rt->width;
 	rt->view = camera_orientation(rt);
 	i = 0;
 	while (i < rt->thread_nr)

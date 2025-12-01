@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:36 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/24 20:44:39 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/01 17:18:00 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ uint32_t calculate_color(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
 	double	ambient;
 	double	visibility;//softshadownumber
 
-
+	// rt->scene.ambient.brightness = 0.0;//darkside of the plane
 	ambient = rt->scene.ambient.brightness;
 	diffuse = rt->scene.light.brightness * fmax(0.0, vec_dot(N, L));
 	specular = rt->scene.light.brightness * pow(fmax(0.0, vec_dot(R, C)), 64.0);
