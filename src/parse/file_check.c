@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/12/02 17:15:43 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/12/02 18:55:04 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	check_line_format(char *line, int valid)
 		valid = 1;
 	else if (line[0] == 'C' && count == 4)
 		valid = 1;
-	else if (line[0] == 'L' && count == 3)
+	else if (line[0] == 'L' && count == 4)
 		valid = 1;
 	else if (line[0] == 's' && line[1] == 'p' && count == 4)
 		valid = 1;
