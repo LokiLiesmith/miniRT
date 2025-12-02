@@ -6,7 +6,7 @@
 # define WIDTH 800
 # define HEIGHT 800
 # define MAX_THREADS 32
-# define MAX_DISTANCE 100
+# define MAX_DISTANCE 200
 
 # include <pthread.h>
 # include <stdatomic.h>

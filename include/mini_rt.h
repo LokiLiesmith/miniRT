@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/24 20:59:17 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/02 21:06:07 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ t_view		rotate_disk_to_world_view(t_vec3 normal);
 //mlx_hooks.c
 void	key_hook(mlx_key_data_t keydata, void *param);
 void	close_hook(void *param);
+
+//window_resize.c
+void	on_resize(int32_t width, int32_t height, void *param);
+void	resize_update(void *param);
+
 
 //EXPERIMENTAL - OBJECT ROTATION
 void		mouse_select(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
@@ -167,7 +172,15 @@ void		print_scene(t_scene *scene);
 
 ///////////////////////////////////////////////////////////////////////////////
 //								UTILS										//
+
+// cleanup.c
 void		free_objects(t_object **list);
+void		free_object_arr(t_scene *scene);
+int			exit_success(t_rt *rt);
+int			exit_error(t_rt *rt, char *msg);
+void		free_all(t_rt *rt);
+
+
 
 /// PRINTS
 void		print_ambient(t_ambient *ambient);

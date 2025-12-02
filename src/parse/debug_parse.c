@@ -159,8 +159,8 @@ void	print_save_object(t_object *obj)
 	else if (obj->type == CYLINDER)
 	{
 		cy = (t_cylinder *)obj->data;
-		printf("cy %.1f,%.1f,%.1f %.1f,%.1f,%.1f %.1f %.1f %d,%d,%d\n",
-			cy->center.x, cy->center.y, cy->center.z, cy->axis.x, cy->axis.z,
+		printf("cy %.1f,%.1f,%.1f %.7f,%.7f,%.7f %.1f %.1f %d,%d,%d\n",
+			cy->center.x, cy->center.y, cy->center.z, cy->axis.x, cy->axis.y,
 			cy->axis.z, cy->dia, cy->height,
 			cy->color.r, cy->color.g, cy->color.b);
 	}

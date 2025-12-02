@@ -23,11 +23,12 @@ SRC_MINI_RT	:= src/main.c
 # SRC_THREAD	:= src/threads/threads_test.c
 SRC_COMMON	:= src/parse/file_check.c src/parse/acl_parse.c src/parse/ft_atod.c \
 			   src/parse/objs_parse.c src/parse/parse_utils.c src/parse/linked_list_utils.c \
-			   src/utils/utils.c src/get_next_line.c src/get_next_line_utils.c  src/parse/parse_xyz_rgb.c \
+			   src/utils/cleanup.c src/get_next_line.c src/get_next_line_utils.c  src/parse/parse_xyz_rgb.c \
 			   src/parse/debug_parse.c src/utils/math_utils.c src/math/vector_math.c \
 			   src/render/check_intersections.c src/render/colors.c src/render/render.c src/render/sphere.c \
 			   src/render/shadows.c src/render/multi_threading.c src/render/arr_rendering.c \
-			   src/render/cylinder.c src/render/plane.c src/mlx/control_scheme.c src/mlx/mlx_hooks.c\
+			   src/render/cylinder.c src/render/plane.c \
+			   src/mlx/control_scheme.c src/mlx/mlx_hooks.c src/mlx/window_resize.c \
 			   src/render/vector_rotations.c \
 			   src/render/object_movement.c src/render/object_rotation.c src/render/object_scaling.c \
 			   src/main.c 

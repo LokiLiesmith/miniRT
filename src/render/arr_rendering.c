@@ -51,12 +51,6 @@ void	build_object_arr(t_scene *scene)
 	}
 }
 
-void	free_object_arr(t_scene *scene)
-{
-	free(scene->object_arr);
-	scene->object_arr = NULL;
-	scene->obj_count = 0;
-}
 // TODO REFACTOR
 t_hit	check_intersections_arr(t_ray ray, t_rt *rt)
 {

@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/12/01 20:50:45 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/02 21:03:10 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,57 +29,26 @@
 // 	system("leaks miniRT");
 // }
 
-
-static void	resize_update(void *param)
-{
-	t_rt	*rt;
-	double	now;
-
-	rt = param;
-	if (!rt->resize_pending)
-		return ;
-	now = mlx_get_time();
-	if (now - rt->last_resize > 0.1)
-	{
-		mlx_delete_image(rt->mlx, rt->img);
-		rt->img = mlx_new_image(rt->mlx, rt->width, rt->height);
-		mlx_image_to_window(rt->mlx, rt->img, 0, 0);
-		render(rt);
-		rt->resize_pending = false;
-	}
-}
-
-static void	on_resize(int32_t width, int32_t height, void *param)
+static void	main_loop(void *param)
 {
 	t_rt	*rt;
 
 	rt = param;
-	rt->height = height;
-	rt->width = width;
-	rt->last_resize = mlx_get_time();
-	rt->resize_pending = true;
+	drag_loop(rt);
 	resize_update(rt);
 }
 
-static void	main_loop(void *param)
+static void	init_hooks(t_rt *rt)
 {
-    t_rt *rt = param;
-
-    drag_loop(rt);
-    resize_update(rt);
+	mlx_key_hook(rt->mlx, key_hook, rt);
+	mlx_scroll_hook(rt->mlx, mouse_scroll, rt);
+	mlx_mouse_hook(rt->mlx, mouse_drag, rt);
+	mlx_resize_hook(rt->mlx, on_resize, rt);
+	mlx_close_hook(rt->mlx, close_hook, rt);
+	mlx_loop_hook(rt->mlx, main_loop, rt);
 }
 
-static void init_hooks(t_rt *rt)
-{
-    mlx_key_hook(rt->mlx, key_hook, rt);
-    mlx_scroll_hook(rt->mlx, mouse_scroll, rt);
-    mlx_mouse_hook(rt->mlx, mouse_drag, rt);
-    mlx_resize_hook(rt->mlx, on_resize, rt);
-    mlx_close_hook(rt->mlx, close_hook, rt);
-    mlx_loop_hook(rt->mlx, main_loop, rt);
-}
-
-static void	init_rt(t_rt *rt)
+static int	init_rt(t_rt *rt)
 {
 	ft_memset(rt, 0, sizeof(t_rt));
 	rt->samples = 8;
@@ -89,32 +58,61 @@ static void	init_rt(t_rt *rt)
 	rt->height = HEIGHT;
 	rt->resize_pending = false;
 	rt->view_distance = MAX_DISTANCE;
-	
-	// rt->mode = MODE_NONE;
+	return (0);
+}
+
+static int	init_graphics(t_rt *rt)
+{
+	rt->mlx = mlx_init(rt->width, rt->height, "MiniRT", true);
+	if (!rt->mlx)
+		return (-1);
+	rt->img = mlx_new_image(rt->mlx, rt->width, rt->height);
+	if (!rt->img)
+		return (-1);
+	if (mlx_image_to_window(rt->mlx, rt->img, 0, 0) == -1)
+		return (-1);
+	init_hooks(rt);
+	return (0);
 }
 
 int	main(int ac, char **av)
 {
 	t_rt	rt;
 
-	init_rt(&rt);
+	if (init_rt(&rt) == -1)
+		exit_error(&rt, "Init_rt failed");
 	if (check_input(ac, av, &rt.scene) != 0)
-		return (free_objects(&rt.scene.objects), 1);
-	rt.mlx = mlx_init(WIDTH, HEIGHT, "Scene1", true);
-	if (!rt.mlx)
-		return (free_objects(&rt.scene.objects),
-			printf("Failed to initialize MLX"), 1);
-	rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
-	if (!rt.img)
-		return (free_objects(&rt.scene.objects),
-			printf("Failed to create image"), 1);
+		exit_error(&rt, "Bad input");
 	build_object_arr(&rt.scene);
-	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
+	if (init_graphics(&rt) == -1)
+		exit_error(&rt, "graphics init failed");
 	render(&rt);
-	init_hooks(&rt);
 	mlx_loop(rt.mlx);
-	mlx_delete_image(rt.mlx, rt.img);
-	mlx_terminate(rt.mlx);
-	free_object_arr(&rt.scene); //TODO: free LL and ARRAY together?
-	return (free_objects(&rt.scene.objects), 0);
+	return (exit_success(&rt));
 }
+
+// int	main(int ac, char **av)
+// {
+// 	t_rt	rt;
+
+// 	init_rt(&rt);
+// 	if (check_input(ac, av, &rt.scene) != 0)
+// 		return (free_objects(&rt.scene.objects), 1);
+// 	rt.mlx = mlx_init(WIDTH, HEIGHT, "MiniRT", true);
+// 	if (!rt.mlx)
+// 		return (free_objects(&rt.scene.objects),
+// 			printf("Failed to initialize MLX"), 1);
+// 	rt.img = mlx_new_image(rt.mlx, WIDTH, HEIGHT);
+// 	if (!rt.img)
+// 		return (free_objects(&rt.scene.objects),
+// 			printf("Failed to create image"), 1);
+// 	build_object_arr(&rt.scene);
+// 	mlx_image_to_window(rt.mlx, rt.img, 0, 0);
+// 	render(&rt);
+// 	init_hooks(&rt);
+// 	mlx_loop(rt.mlx);
+// 	mlx_delete_image(rt.mlx, rt.img);
+// 	mlx_terminate(rt.mlx);
+// 	free_object_arr(&rt.scene); //TODO: free LL and ARRAY together?
+// 	return (free_objects(&rt.scene.objects), 0);
+// }
