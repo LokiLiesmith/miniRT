@@ -101,7 +101,7 @@ re: fclean all
 
 .PHONY: all valgrind clean fclean re san libmlx
 miniRT valgrind clean fclean re san:
-	@$(MAKE) T=$@ $(BINDIR)/$@
+# 	@$(MAKE) T=$@ $(BINDIR)/$@
 
 # LIBFT_PATH	:= include/libft
 # LIBFT_LIB	:= $(LIBFT_PATH)/libft.a
