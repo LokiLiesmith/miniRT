@@ -6,6 +6,7 @@
 # define WIDTH 800
 # define HEIGHT 800
 # define MAX_THREADS 32
+# define MAX_DISTANCE 40
 
 # include <pthread.h>
 # include <stdatomic.h>
@@ -199,6 +200,7 @@ typedef struct s_rt
 	int32_t			width;
 	bool			resize_pending;
 	double			last_resize;
+	int				view_distance;
 	// t_gc	gc;			//gc-list? TODO import from minishell
 
 }	t_rt;

@@ -181,7 +181,7 @@ void		print_objects(t_object *objects);
 
 void		print_save_scene(t_rt *rt);
 void		print_save_object(t_object *obj);
-void		print_save_objects(t_object *objects);
+void		print_save_objects(t_rt *rt);
 
 //EXPERIMENTAL - MULTI-THREADING
 void	join_threads(t_rt *rt);

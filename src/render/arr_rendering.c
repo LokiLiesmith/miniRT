@@ -64,11 +64,11 @@ t_hit	check_intersections_arr(t_ray ray, t_rt *rt)
 	t_hit		hit;
 	t_object	*obj;
 	double		closest_t;
-	int 		i = 0;
+	int			i;
 	t_object	**objs;
 	int			count;
 	
-	
+	i = 0;
 	best.t = -1.0;
 	closest_t = INFINITY;
 	objs = rt->scene.object_arr;
@@ -85,7 +85,7 @@ t_hit	check_intersections_arr(t_ray ray, t_rt *rt)
 			hit = intersect_plane(ray, (t_plane *)obj->data);
 		if (obj->type == CYLINDER)
 			hit = intersect_cylinder(ray, (t_cylinder *)obj->data);
-		if (hit.t > 0.0 && hit.t < closest_t)
+		if (hit.t > 0.0 && hit.t < closest_t && hit.t < rt->view_distance)
 		{
 			closest_t = hit.t;
 			best = hit;

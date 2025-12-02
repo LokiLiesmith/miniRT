@@ -56,33 +56,12 @@ static void	on_resize(int32_t width, int32_t height, void *param)
 	rt = param;
 	rt->height = height;
 	rt->width = width;
-
 	rt->last_resize = mlx_get_time();
 	rt->resize_pending = true;
 	resize_update(rt);
 }
 
-// static void	on_resize(int32_t width, int32_t height, void *param)
-// {
-//     t_rt *rt = param;
-
-//     rt->width = width;
-//     rt->height = height;
-
-//     printf("resize: W = %d, H = %d\n", width, height);
-
-//     // Optionally retrieve again from MLX (not required)
-//     // mlx_get_window_size(rt->mlx, &rt->width, &rt->height);
-
-//     // Reallocate and rerender
-//     mlx_delete_image(rt->mlx, rt->img);
-//     rt->img = mlx_new_image(rt->mlx, width, height);
-//     mlx_image_to_window(rt->mlx, rt->img, 0, 0);
-//     render(rt);
-// }
-
-
-static void main_loop(void *param)
+static void	main_loop(void *param)
 {
     t_rt *rt = param;
 
@@ -109,6 +88,7 @@ static void	init_rt(t_rt *rt)
 	rt->width = WIDTH;
 	rt->height = HEIGHT;
 	rt->resize_pending = false;
+	rt->view_distance = MAX_DISTANCE;
 	
 	// rt->mode = MODE_NONE;
 }

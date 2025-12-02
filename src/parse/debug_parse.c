@@ -119,18 +119,21 @@ void	print_scene(t_scene *scene)
 	printf("\n");
 }
 
-void print_save_scene(t_rt *rt)
+void	print_save_scene(t_rt *rt)
 {
-	t_ambient	A = rt->scene.ambient;
-	t_camera	C = rt->scene.camera;
-	t_light		L = rt->scene.light;
+	t_ambient	a;
+	t_camera	c;
+	t_light		l;
 
-	printf("A %.1f %.d,%.d,%.d\n", A.brightness, A.color.r, A.color.g, A.color.b);
-	// printf("C %.1f,%.1f,%.1f\n", C.pos.x, C.pos.x, C.pos.z);
-	printf("C %.1f,%.1f,%.1f %.1f,%.1f,%.1f %.1f\n", C.pos.x, C.pos.y, C.pos.z, C.dir.x, C.dir.y, C.dir.z, C.fov);
-	printf("L %.1f,%.1f,%.1f %.1f\n", L.pos.x, L.pos.y, L.pos.z, L.brightness);
-	// print_objects(rt->scene.objects);
-	print_save_objects(rt->scene.objects);
+	a = rt->scene.ambient;
+	c = rt->scene.camera;
+	l = rt->scene.light;
+	printf("A %.1f %.d,%.d,%.d\n", a.brightness, a.color.r,
+		a.color.g, a.color.b);
+	printf("C %.1f,%.1f,%.1f %.1f,%.1f,%.1f %.1f\n",
+		c.pos.x, c.pos.y, c.pos.z, c.dir.x, c.dir.y, c.dir.z, c.fov);
+	printf("L %.1f,%.1f,%.1f %.1f\n", l.pos.x, l.pos.y, l.pos.z, l.brightness);
+	print_save_objects(rt);
 }
 
 // Print a single object
@@ -143,47 +146,52 @@ void	print_save_object(t_object *obj)
 	if (obj->type == SPHERE)
 	{
 		sp = (t_sphere *)obj->data;
-		printf("sp %.1f,%.1f,%.1f %.1f %d,%d,%d\n",
-			sp->s.x, sp->s.y, sp->s.z, sp->d,
-			sp->color.r, sp->color.g, sp->color.b);
+		printf("sp %.1f,%.1f,%.1f %.1f %d,%d,%d\n", sp->s.x, sp->s.y,
+			sp->s.z, sp->d, sp->color.r, sp->color.g, sp->color.b);
 	}
 	else if (obj->type == PLANE)
 	{
 		pl = (t_plane *)obj->data;
 		printf("pl %.1f,%.1f,%.1f %.1f,%.1f,%.1f %d,%d,%d\n",
-			pl->point.x, pl->point.y, pl->point.z,
-			pl->normal.x, pl->normal.y, pl->normal.z,
-			pl->color.r, pl->color.g, pl->color.b);
+			pl->point.x, pl->point.y, pl->point.z, pl->normal.x,
+			pl->normal.y, pl->normal.z, pl->color.r, pl->color.g, pl->color.b);
 	}
 	else if (obj->type == CYLINDER)
 	{
 		cy = (t_cylinder *)obj->data;
 		printf("cy %.1f,%.1f,%.1f %.1f,%.1f,%.1f %.1f %.1f %d,%d,%d\n",
-			cy->center.x, cy->center.y, cy->center.z,
-			cy->axis.x, cy->axis.z, cy->axis.z,
-			cy->dia, cy->height,
+			cy->center.x, cy->center.y, cy->center.z, cy->axis.x, cy->axis.z,
+			cy->axis.z, cy->dia, cy->height,
 			cy->color.r, cy->color.g, cy->color.b);
-	}
-	else
-	{
-		printf("UNKNOWN\n");
 	}
 }
 
-void	print_save_objects(t_object *objects)
-{
-	t_object	*current;
+// void	print_save_objects(t_object *objects)
+// {
+// 	t_object	*current;
 
-	current = objects;
-	if (!current)
+// 	current = objects;
+// 	if (!current)
+// 	{
+// 		printf("No objects found.\n");
+// 		return ;
+// 	}
+// 	while (current)
+// 	{
+// 		print_save_object(current);
+// 		current = current->next;
+// 	}
+// }
+
+void	print_save_objects(t_rt *rt)
+{
+	int	i;
+
+	i = 0;
+	while (i < rt->scene.obj_count)
 	{
-		printf("No objects found.\n");
-		return ;
-	}
-	while (current)
-	{
-		print_save_object(current);
-		current = current->next;
+		print_save_object(rt->scene.object_arr[i]);
+		i++;
 	}
 }
 

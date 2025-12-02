@@ -104,6 +104,16 @@ static void update_fov(mlx_key_data_t keydata, t_rt *rt)
 	printf("FOV:%f\n", rt->scene.camera.fov);
 }
 
+static void update_max_distance(mlx_key_data_t keydata, t_rt *rt)
+{
+	if (keydata.key == MLX_KEY_9)
+		rt->view_distance -= 3;
+	if (keydata.key == MLX_KEY_0)
+		rt->view_distance += 3;
+	if (rt->view_distance <= 0)
+		rt->view_distance = 3;
+}
+
 static void	regular_controls(mlx_key_data_t keydata, t_rt *rt)
 {
 	if (keydata.key == MLX_KEY_N)
@@ -112,6 +122,8 @@ static void	regular_controls(mlx_key_data_t keydata, t_rt *rt)
 		printf("Multi_threading: %d\n", rt->multi_thread);
 		render(rt);
 	}
+	else if (keydata.key == MLX_KEY_0 || keydata.key == MLX_KEY_9)
+		update_max_distance(keydata, rt);
 	else if (keydata.key == MLX_KEY_M)
 	{
 		rt->samples = 1024;
