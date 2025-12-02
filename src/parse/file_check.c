@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   file_check.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/04 21:45:51 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/02 17:15:43 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
-
-// handle comments in the .rt file
-// limits for cy height dia, sp dia, xyz coords? (dia & height - i check if > 0)
-
-// free all the structs in the end? gc or ...?
 
 int	check_type_identifier(char *line, t_found *found)
 {
@@ -62,7 +57,7 @@ int	check_line_format(char *line, int valid)
 		valid = 1;
 	else if (line[0] == 'C' && count == 4)
 		valid = 1;
-	else if (line[0] == 'L' && count == 3)//was 4
+	else if (line[0] == 'L' && count == 3)
 		valid = 1;
 	else if (line[0] == 's' && line[1] == 'p' && count == 4)
 		valid = 1;
