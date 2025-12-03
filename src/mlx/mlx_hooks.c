@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:10:32 by djanardh          #+#    #+#             */
-/*   Updated: 2025/11/24 20:59:09 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/03 20:43:21 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ void	select_object(t_rt *rt)
 		rt->scene.selected = NULL;
 	}
 	else
-	{
 		rt->scene.selected = select.object;
-	}
 	render(rt);
 }
 
@@ -59,7 +57,7 @@ static	void	render_on_release(t_rt *rt, t_drag_type drag_type)
 	render(rt);
 }
 
-void	mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
+void	mouse_drag(mouse_key_t btn, action_t action, modifier_key_t mods, void *param)
 {
 	t_rt			*rt;
 	t_mouse_data	m;
@@ -68,15 +66,15 @@ void	mouse_drag(mouse_key_t button, action_t action, modifier_key_t mods, void *
 	(void)mods;
 	m = init_mouse(rt);
 	(void)m;
-	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
+	if (btn == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
 		select_object(rt);
-	if (button == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_PRESS)
+	if (btn == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_PRESS)
 		rt->pan_drag = true;
-	if (button == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_RELEASE)
+	if (btn == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_RELEASE)
 		render_on_release(rt, PAN_DRAG);
-	if (button == MLX_MOUSE_BUTTON_RIGHT && action == MLX_PRESS)
+	if (btn == MLX_MOUSE_BUTTON_RIGHT && action == MLX_PRESS)
 		rt->rotate_drag = true;
-	if (button == MLX_MOUSE_BUTTON_RIGHT && action == MLX_RELEASE)
+	if (btn == MLX_MOUSE_BUTTON_RIGHT && action == MLX_RELEASE)
 		render_on_release(rt, ROTATE_DRAG);
 }
 

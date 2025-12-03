@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanardh <djanardh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 17:01:59 by djanardh          #+#    #+#             */
-/*   Updated: 2025/12/02 17:09:23 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/12/03 20:32:04 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ t_hit	intersect_plane(t_ray ray, t_plane *plane)
 	hit.t = t;
 	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
 	hit.normal = plane->normal;
-	if (vec_dot(ray.dir, hit.normal) > 0)
-		hit.normal = vec_scale(hit.normal, -1.0);
 	hit.color = plane->color;
+	inside_check(&hit, ray);
 	return (hit);
 }

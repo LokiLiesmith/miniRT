@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   object_scaling.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/03 20:39:16 by mrazem            #+#    #+#             */
+/*   Updated: 2025/12/03 20:39:17 by mrazem           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini_rt.h"
 
 static void	parameter_to_scale(mlx_key_data_t keydata, t_rt *rt)
@@ -8,7 +20,7 @@ static void	parameter_to_scale(mlx_key_data_t keydata, t_rt *rt)
 		rt->scale = SCALE_RADIUS;
 }
 
-void scale_cylinder(mlx_key_data_t keydata, t_cylinder *cy, t_scale par)
+void	scale_cylinder(mlx_key_data_t keydata, t_cylinder *cy, t_scale par)
 {
 	double	factor;
 
@@ -29,7 +41,7 @@ void scale_cylinder(mlx_key_data_t keydata, t_cylinder *cy, t_scale par)
 	}
 }
 
-void scale_sphere(mlx_key_data_t keydata, t_sphere *sp, t_scale par)
+void	scale_sphere(mlx_key_data_t keydata, t_sphere *sp, t_scale par)
 {
 	double	factor;
 
@@ -44,18 +56,19 @@ void scale_sphere(mlx_key_data_t keydata, t_sphere *sp, t_scale par)
 			sp->d -= factor;
 	}
 }
-void scale_selection(mlx_key_data_t keydata, t_rt *rt)
+
+void	scale_selection(mlx_key_data_t keydata, t_rt *rt)
 {
-	t_object *obj;
+	t_object	*obj;
 
 	if (keydata.key == MLX_KEY_R || keydata.key == MLX_KEY_H)
 	{
 		parameter_to_scale(keydata, rt);
-		return;
+		return ;
 	}
 	obj = rt->scene.selected;
 	if (obj->type == CYLINDER)
 		scale_cylinder(keydata, (t_cylinder *)obj->data, rt->scale);
-	else if(obj->type == SPHERE)
+	else if (obj->type == SPHERE)
 		scale_sphere(keydata, (t_sphere *)obj->data, rt->scale);
 }

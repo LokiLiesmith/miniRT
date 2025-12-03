@@ -31,12 +31,13 @@ void	rotate_selection(mlx_key_data_t keydata, t_rt *rt)
 		rotate_object(rt, rt->scene.selected, Z_CW);
 }
 
-static void scale_controls(mlx_key_data_t keydata, t_rt *rt)
+static void	scale_controls(mlx_key_data_t keydata, t_rt *rt)
 {
 	if (keydata.key == MLX_KEY_R || keydata.key == MLX_KEY_H
 		|| keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_S)
 		scale_selection(keydata, rt);
 }
+
 static void	rotate_controls(mlx_key_data_t keydata, t_rt *rt)
 {
 	if (keydata.key == MLX_KEY_A || keydata.key == MLX_KEY_S
@@ -44,7 +45,8 @@ static void	rotate_controls(mlx_key_data_t keydata, t_rt *rt)
 		|| keydata.key == MLX_KEY_Q || keydata.key == MLX_KEY_E)
 		rotate_selection(keydata, rt);
 }
-static void move_controls(mlx_key_data_t keydata, t_rt *rt)
+
+static void	move_controls(mlx_key_data_t keydata, t_rt *rt)
 {
 	if (keydata.key == MLX_KEY_A || keydata.key == MLX_KEY_S
 		|| keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_D)
@@ -95,7 +97,7 @@ static void	selected_controls(mlx_key_data_t keydata, t_rt *rt)
 		rotate_controls(keydata, rt);
 }
 
-static void update_fov(mlx_key_data_t keydata, t_rt *rt)
+static void	update_fov(mlx_key_data_t keydata, t_rt *rt)
 {
 	if (keydata.key == MLX_KEY_EQUAL)
 		rt->scene.camera.fov += 10;
@@ -104,7 +106,7 @@ static void update_fov(mlx_key_data_t keydata, t_rt *rt)
 	printf("FOV:%f\n", rt->scene.camera.fov);
 }
 
-static void update_max_distance(mlx_key_data_t keydata, t_rt *rt)
+static void	update_max_distance(mlx_key_data_t keydata, t_rt *rt)
 {
 	if (keydata.key == MLX_KEY_9)
 		rt->view_distance -= 3;
