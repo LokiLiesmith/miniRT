@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/03 00:48:17 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/03 20:10:17 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ t_hit		check_cap(t_ray ray, t_cylinder *cy, int cap);
 void		inside_check(t_hit *hit, t_ray ray);
 
 // t_hit		check_base_cap(t_ray ray, t_cylinder *cy);
+double		pick_root(double t0, double t1);
 
 
 
