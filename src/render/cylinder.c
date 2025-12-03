@@ -22,6 +22,134 @@ t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)
 	return (result);
 }
 
+typedef struct s_side_vars
+{
+	t_vec3	d_para;
+	t_vec3	d_perp;
+	t_vec3	x_vec;
+	t_vec3	x_para;
+	t_vec3	x_perp;
+
+	double	radius;
+	double	quad_a;
+	double	quad_b;
+	double	quad_c;
+	double	discriminant;
+
+	double	t0;
+	double	t1;
+
+	t_vec3	hit_vec;
+	t_vec3	hit_para;
+	t_vec3	hit_perp;
+	double	h_on_axis;
+}	t_side_vars;
+
+typedef struct s_disc_vars
+{
+	double	a;
+	double	b;
+	double	c;
+}	t_disc_vars;
+
+// D_perp^2 * t^2  +   2 * X_perp * D_perp * t + x_perp^2 - r^2;
+static void	calc_side_vars(t_side_vars *v, t_ray ray, t_cylinder *cy)
+{
+	v->x_vec = vec_subtract(ray.origin, cy->center);
+
+	v->d_para = vec_scale(cy->axis, vec_dot(ray.dir, cy->axis));
+	v->x_para = vec_scale(cy->axis, vec_dot(v->x_vec, cy->axis));
+
+	v->d_perp = vec_subtract(ray.dir, v->d_para);
+	v->x_perp = vec_subtract(v->x_vec, v->x_para);
+
+	v->radius = cy->dia * 0.5;
+
+	v->quad_a = vec_dot(v->d_perp, v->d_perp);
+	v->quad_b = 2.0 * vec_dot(v->x_perp, v->d_perp);
+	v->quad_c = vec_dot(v->x_perp, v->x_perp) - v->radius * v->radius;
+
+	v->discriminant = v->quad_b * v->quad_b - 4 * v->quad_a * v->quad_c;
+}
+//////////////////////////////////////////////////////////////////////////////////
+//OPTIMIZED GPT I wanna test the diff
+static void	calc_side_vars(t_side_vars *v, t_ray ray, t_cylinder *cy)
+{
+    // X = O - C
+    v->x_vec = vec_subtract(ray.origin, cy->center);
+
+    double d_dot_n = vec_dot(ray.dir, cy->axis);     // parallel component length of D
+    double x_dot_n = vec_dot(v->x_vec, cy->axis);     // parallel component length of X
+
+    v->radius = cy->dia * 0.5;
+
+    // ===== Quadratic coefficients =====
+    // A = |D|² - (D·N)²
+    v->quad_a = vec_dot(ray.dir, ray.dir) - d_dot_n * d_dot_n;
+
+    // B = 2 ( X·D - (X·N)(D·N) )
+    v->quad_b = 2.0 * (vec_dot(v->x_vec, ray.dir) - x_dot_n * d_dot_n);
+
+    // C = |X|² - (X·N)² - r²
+    v->quad_c = vec_dot(v->x_vec, v->x_vec) - x_dot_n * x_dot_n - v->radius * v->radius;
+
+    // Discriminant
+    v->discriminant = v->quad_b * v->quad_b - 4.0 * v->quad_a * v->quad_c;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+
+static void	find_roots(t_side_vars *v, double *t0, double *t1)
+{
+	double	a;
+	double	b;
+	double	c;
+	double	sqrt_discriminant;
+
+	a = v->quad_a;
+	b = v->quad_b;
+	c = v->quad_c;
+	sqrt_discriminant = sqrt(v->discriminant);
+	*t0 = (-b - sqrt_discriminant) / (2 * a);
+	*t1 = (-b + sqrt_discriminant) / (2 * a);
+}
+
+static double	pick_root(double t0, double t1)
+{
+	double	tmp;
+
+	if (t0 > t1)
+	{
+		tmp = t0;
+		t0 = t1;
+		t1 = tmp;
+	}
+	if (t0 > 0)
+		return (t0);
+	if (t1 > 0)
+		return (t1);
+	return -1;
+}
+// D_perp^2 * t^2  +   2 * X_perp * D_perp * t + x_perp^2 - r^2;
+//a sphere with a component in the N direction ignored = infinite cyl
+t_hit	check_cylinder_side(t_ray ray, t_cylinder *cy)
+{
+	t_hit		hit;
+	t_side_vars	v;
+	double		t0;
+	double		t1;
+
+	calc_side_vars(&v, ray, cy);
+	hit.t = -1.00;
+	if (v.discriminant < 0.0)
+		return (hit);
+	find_roots(&v, &t0, &t1);
+	double t = pick_root(t0, t1);
+
+
+}
+
 // D_perp^2 * t^2  +   2 * X_perp * D_perp * t + x_perp^2 - r^2;
 //a sphere with a component in the N direction ignored = infinite cyl
 t_hit	check_cylinder_side(t_ray ray, t_cylinder *cy)
@@ -112,10 +240,10 @@ static void	calc_cap_vars(t_cap_vars *v, t_ray ray, t_cylinder *cy, int cap)
 	v->to_center = vec_subtract(v->center, ray.origin);
 	v->n_dot_oc = vec_dot(cy->axis, v->to_center);
 	v->axis_dot_dir = vec_dot(cy->axis, ray.dir);
-	v->radius = cy->dia / 2.0;
+	v->radius = cy->dia * 0.5;
 }
 
-static	void	set_valid_hit(t_hit *hit, t_cylinder *cy, int cap, double t)
+static	void	set_valid_cap_hit(t_hit *hit, t_cylinder *cy, int cap, double t)
 {
 	hit->t = t;
 	hit->color = cy->color;
@@ -149,8 +277,7 @@ t_hit	check_cap(t_ray ray, t_cylinder *cy, int cap)
 		return (hit);
 	hit.t = t;
 	hit.color = cy->color;
-
-	set_valid_hit(&hit, cy, cap, t);
+	set_valid_cap_hit(&hit, cy, cap, t);
 	return (hit);
 }
 
