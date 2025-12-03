@@ -45,13 +45,6 @@ typedef struct s_side_vars
 	double	h_on_axis;
 }	t_side_vars;
 
-typedef struct s_disc_vars
-{
-	double	a;
-	double	b;
-	double	c;
-}	t_disc_vars;
-
 // D_perp^2 * t^2  +   2 * X_perp * D_perp * t + x_perp^2 - r^2;
 static void	calc_side_vars(t_side_vars *v, t_ray ray, t_cylinder *cy)
 {
@@ -71,32 +64,33 @@ static void	calc_side_vars(t_side_vars *v, t_ray ray, t_cylinder *cy)
 
 	v->discriminant = v->quad_b * v->quad_b - 4 * v->quad_a * v->quad_c;
 }
-//////////////////////////////////////////////////////////////////////////////////
-//OPTIMIZED GPT I wanna test the diff
-static void	calc_side_vars(t_side_vars *v, t_ray ray, t_cylinder *cy)
-{
-    // X = O - C
-    v->x_vec = vec_subtract(ray.origin, cy->center);
 
-    double d_dot_n = vec_dot(ray.dir, cy->axis);     // parallel component length of D
-    double x_dot_n = vec_dot(v->x_vec, cy->axis);     // parallel component length of X
+// ////////////////////////////////////////////////////////////////////////////
+// //OPTIMIZED GPT I wanna test the diff - 3.785 vs 3.855
+// static void	calc_side_vars(t_side_vars *v, t_ray ray, t_cylinder *cy)
+// {
+//     // X = O - C
+//     v->x_vec = vec_subtract(ray.origin, cy->center);
 
-    v->radius = cy->dia * 0.5;
+//     double d_dot_n = vec_dot(ray.dir, cy->axis);     // parallel component length of D
+//     double x_dot_n = vec_dot(v->x_vec, cy->axis);     // parallel component length of X
 
-    // ===== Quadratic coefficients =====
-    // A = |D|² - (D·N)²
-    v->quad_a = vec_dot(ray.dir, ray.dir) - d_dot_n * d_dot_n;
+//     v->radius = cy->dia * 0.5;
 
-    // B = 2 ( X·D - (X·N)(D·N) )
-    v->quad_b = 2.0 * (vec_dot(v->x_vec, ray.dir) - x_dot_n * d_dot_n);
+//     // ===== Quadratic coefficients =====
+//     // A = |D|² - (D·N)²
+//     v->quad_a = vec_dot(ray.dir, ray.dir) - d_dot_n * d_dot_n;
 
-    // C = |X|² - (X·N)² - r²
-    v->quad_c = vec_dot(v->x_vec, v->x_vec) - x_dot_n * x_dot_n - v->radius * v->radius;
+//     // B = 2 ( X·D - (X·N)(D·N) )
+//     v->quad_b = 2.0 * (vec_dot(v->x_vec, ray.dir) - x_dot_n * d_dot_n);
 
-    // Discriminant
-    v->discriminant = v->quad_b * v->quad_b - 4.0 * v->quad_a * v->quad_c;
-}
-///////////////////////////////////////////////////////////////////////////////////////
+//     // C = |X|² - (X·N)² - r²
+//     v->quad_c = vec_dot(v->x_vec, v->x_vec) - x_dot_n * x_dot_n - v->radius * v->radius;
+
+//     // Discriminant
+//     v->discriminant = v->quad_b * v->quad_b - 4.0 * v->quad_a * v->quad_c;
+// }
+// ///////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -129,8 +123,17 @@ static double	pick_root(double t0, double t1)
 		return (t0);
 	if (t1 > 0)
 		return (t1);
-	return -1;
+	return (-1);
 }
+
+static void	calc_axis_and_hit_vec(t_side_vars *v, t_hit hit, t_cylinder *cy)
+{
+	v->hit_vec = vec_subtract(hit.point, cy->center);
+	v->h_on_axis = vec_dot(v->hit_vec, cy->axis);
+	v->hit_para = vec_scale(cy->axis, v->h_on_axis);
+	v->hit_perp = vec_subtract(v->hit_vec, v->hit_para);
+}
+
 // D_perp^2 * t^2  +   2 * X_perp * D_perp * t + x_perp^2 - r^2;
 //a sphere with a component in the N direction ignored = infinite cyl
 t_hit	check_cylinder_side(t_ray ray, t_cylinder *cy)
@@ -145,61 +148,69 @@ t_hit	check_cylinder_side(t_ray ray, t_cylinder *cy)
 	if (v.discriminant < 0.0)
 		return (hit);
 	find_roots(&v, &t0, &t1);
-	double t = pick_root(t0, t1);
-
-
-}
-
-// D_perp^2 * t^2  +   2 * X_perp * D_perp * t + x_perp^2 - r^2;
-//a sphere with a component in the N direction ignored = infinite cyl
-t_hit	check_cylinder_side(t_ray ray, t_cylinder *cy)
-{
-	// cy->axis = vec_normalize(cy->axis);
-	t_hit	hit;
-	t_vec3	D_para = vec_scale(cy->axis, vec_dot(ray.dir, cy->axis));
-	t_vec3	X = vec_subtract(ray.origin, cy->center);
-	t_vec3	X_para = vec_scale(cy->axis, vec_dot(X, cy->axis));
-	t_vec3	D_perp = vec_subtract(ray.dir, D_para);
-	t_vec3	X_perp = vec_subtract(X, X_para);
-
-	double	r = cy->dia/2;
-
-	double	a = vec_dot(D_perp, D_perp);
-	double	b = vec_dot(X_perp, D_perp) * 2;
-	double	c = vec_dot(X_perp, X_perp) - pow(r, 2);
-	double	discriminant = b * b - (4 * a * c);
-
-	hit.t = -1.00;
-	if (discriminant < 0.0)
-		return (hit);
-	
-	double t0 = (-b - sqrt(discriminant)) / (2 * a);
-	double t1 = (-b + sqrt(discriminant)) / (2 * a);
-	double	t = -1.00;
-
-	if (t0 > 0)
-		t = t0;
-	else if (t0 < 0 && t1 > 0)
-		t = t1;
-	else
-		return (hit);
-
-	hit.t = t;
-	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
-	t_vec3	w = vec_subtract(hit.point, cy->center);
-	double h = vec_dot(w, cy->axis);
-	t_vec3	w_para = vec_scale(cy->axis ,h);
-	t_vec3	w_perp = vec_subtract(w, w_para);
-	
-	if (h < 0.0 || h > cy->height)
-	{
-		hit.t = -1.00;
-		return (hit);
-	}
-	hit.normal = vec_normalize(w_perp);
+	hit.t = pick_root(t0, t1);
+	hit.point = vec_add(ray.origin, vec_scale(ray.dir, hit.t));
+	calc_axis_and_hit_vec(&v, hit, cy);
+	if (v.h_on_axis < 0.0 || v.h_on_axis > cy->height)
+		return (hit.t = -1.00, hit);
+	hit.normal = vec_normalize(v.hit_perp);
 	hit.color = cy->color;
 	return (hit);
 }
+
+
+// // D_perp^2 * t^2  +   2 * X_perp * D_perp * t + x_perp^2 - r^2;
+// //a sphere with a component in the N direction ignored = infinite cyl
+// t_hit	check_cylinder_side(t_ray ray, t_cylinder *cy)
+// {
+// 	// cy->axis = vec_normalize(cy->axis);
+// 	t_hit	hit;
+// 	t_vec3	D_para = vec_scale(cy->axis, vec_dot(ray.dir, cy->axis));
+// 	t_vec3	X = vec_subtract(ray.origin, cy->center);
+// 	t_vec3	X_para = vec_scale(cy->axis, vec_dot(X, cy->axis));
+// 	t_vec3	D_perp = vec_subtract(ray.dir, D_para);
+// 	t_vec3	X_perp = vec_subtract(X, X_para);
+
+// 	double	r = cy->dia/2;
+
+// 	double	a = vec_dot(D_perp, D_perp);
+// 	double	b = vec_dot(X_perp, D_perp) * 2;
+// 	double	c = vec_dot(X_perp, X_perp) - pow(r, 2);
+// 	double	discriminant = b * b - (4 * a * c);
+
+// 	hit.t = -1.00;
+// 	if (discriminant < 0.0)
+// 		return (hit);
+
+// 	//PICK ROOT
+		
+// 	double t0 = (-b - sqrt(discriminant)) / (2 * a);
+// 	double t1 = (-b + sqrt(discriminant)) / (2 * a);
+// 	double	t = -1.00;
+
+// 	if (t0 > 0)
+// 		t = t0;
+// 	else if (t0 < 0 && t1 > 0)
+// 		t = t1;
+// 	else
+// 		return (hit);
+
+// 	hit.t = t;
+// 	hit.point = vec_add(ray.origin, vec_scale(ray.dir, t));
+// 	t_vec3	w = vec_subtract(hit.point, cy->center);
+// 	double h = vec_dot(w, cy->axis);
+// 	t_vec3	w_para = vec_scale(cy->axis ,h);
+// 	t_vec3	w_perp = vec_subtract(w, w_para);
+	
+// 	if (h < 0.0 || h > cy->height)
+// 	{
+// 		hit.t = -1.00;
+// 		return (hit);
+// 	}
+// 	hit.normal = vec_normalize(w_perp);
+// 	hit.color = cy->color;
+// 	return (hit);
+// }
 
 // t = (N.(S-O)) / (N.D) = a/b 
 t_hit	check_caps(t_ray ray, t_cylinder *cy)
