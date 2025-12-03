@@ -60,6 +60,11 @@ t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 	return (ray);
 }
 
+// typedef struct s_intersect_vars
+// {
+// 	double;
+// }	t_intersect_vars;
+
 t_hit	check_intersections(t_ray ray, t_rt *rt)
 {
 	t_hit		best;
@@ -72,7 +77,6 @@ t_hit	check_intersections(t_ray ray, t_rt *rt)
 	current = rt->scene.objects;
 	while (current)
 	{
-		hit.t = -1.0;
 		if (current->type == SPHERE)
 			hit = intersect_sphere(ray, (t_sphere *)current->data);
 		else if (current->type == PLANE)
@@ -109,7 +113,6 @@ t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
 	current = rt->scene.objects;
 	while (current)
 	{
-		hit.t = -1.0;
 		if (current->type == SPHERE)
 			hit = intersect_sphere(ray, (t_sphere *)current->data);
 		else if (current->type == PLANE)
