@@ -24,7 +24,7 @@ SRC_MINI_RT	:= src/main.c
 SRC_COMMON	:= src/parse/file_check.c src/parse/acl_parse.c src/parse/ft_atod.c \
 			   src/parse/objs_parse.c src/parse/parse_utils.c src/parse/linked_list_utils.c \
 			   src/utils/cleanup.c src/get_next_line.c src/get_next_line_utils.c  src/parse/parse_xyz_rgb.c \
-			   src/parse/debug_parse.c src/utils/math_utils.c src/math/vector_math.c \
+			   src/parse/debug_parse.c src/utils/math_utils.c src/math/vector_math.c src/math/vector_math_2.c \
 			   src/render/check_intersections.c src/render/colors.c src/render/render.c src/render/sphere.c \
 			   src/render/shadows.c src/render/multi_threading.c src/render/arr_rendering.c \
 			   src/render/cylinder.c src/render/plane.c \

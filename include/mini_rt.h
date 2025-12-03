@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/02 21:06:07 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/03 00:48:17 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,11 @@ t_hit		intersect_plane(t_ray ray, t_plane *plane);
 //cylinder.c
 t_hit		intersect_cylinder(t_ray ray, t_cylinder *cy);
 t_hit		check_caps(t_ray ray, t_cylinder *cy);
-t_hit		check_top_cap(t_ray ray, t_cylinder *cy);
-t_hit		check_base_cap(t_ray ray, t_cylinder *cy);
+// t_hit		check_top_cap(t_ray ray, t_cylinder *cy);
+t_hit		check_cap(t_ray ray, t_cylinder *cy, int cap);
+void		inside_check(t_hit *hit, t_ray ray);
+
+// t_hit		check_base_cap(t_ray ray, t_cylinder *cy);
 
 
 

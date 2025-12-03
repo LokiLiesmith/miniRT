@@ -173,6 +173,12 @@ typedef enum e_scale
 	SCALE_HEIGHT
 }	t_scale;
 
+typedef enum e_cap
+{
+	TOP_CAP,
+	BOT_CAP
+}	t_cap;
+
 typedef struct s_rt
 {
 	t_scene			scene;
