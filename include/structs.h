@@ -209,6 +209,9 @@ typedef struct s_rt
 	double			last_resize;
 	int				view_distance;
 	// t_gc	gc;			//gc-list? TODO import from minishell
+	// for testing without MLX
+	uint8_t		*headless_buffer;
+	bool		headless;
 
 }	t_rt;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/12/03 22:22:18 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/04 18:59:42 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,72 @@ static int	init_graphics(t_rt *rt)
 	return (0);
 }
 
+// real main:
+// int	main(int ac, char **av)
+// {
+// 	t_rt	rt;
+
+// 	if (init_rt(&rt) == -1)
+// 		exit_error(&rt, "Init_rt failed");
+// 	if (check_input(ac, av, &rt.scene) != 0)
+// 		exit_error(&rt, "Bad input");
+// 	build_object_arr(&rt.scene);
+// 	if (init_graphics(&rt) == -1)
+// 		exit_error(&rt, "graphics init failed");
+// 	render(&rt);
+// 	mlx_loop(rt.mlx);
+// 	return (exit_success(&rt));
+// }
+
+// HEADLESS: main for testing without MLX
 int	main(int ac, char **av)
 {
 	t_rt	rt;
 
+	if (ac > 2 && strcmp(av[2], "--headless") == 0)
+		rt.headless = true;
+	else
+		rt.headless = false;
+
+	printf("Headless mode: %s\n", rt.headless ? "YES" : "NO"); 
+		
 	if (init_rt(&rt) == -1)
 		exit_error(&rt, "Init_rt failed");
-	if (check_input(ac, av, &rt.scene) != 0)
-		exit_error(&rt, "Bad input");
+	if (ac > 2 && strcmp(av[2], "--headless") == 0)
+		rt.headless = true;
+	else
+		rt.headless = false;
+	check_input(ac, av, &rt.scene);
+		// exit_error(&rt, "Bad input");
 	build_object_arr(&rt.scene);
-	if (init_graphics(&rt) == -1)
-		exit_error(&rt, "graphics init failed");
+	
+	if (!rt.headless)
+	{
+		if (init_graphics(&rt) == -1)
+			exit_error(&rt, "graphics init failed");
+	}
+	else
+	{
+		printf("SKIPPING GRAPHICS INIT - HEADLESS MODE\n");  // ADD THIS
+		rt.headless_buffer = malloc(WIDTH * HEIGHT * 4);
+		if (!rt.headless_buffer)
+			exit_error(&rt, "malloc failed");
+		rt.img = NULL;
+		rt.mlx = NULL;  // ADD THIS - make sure MLX is NULL
+	}
+	
 	render(&rt);
-	mlx_loop(rt.mlx);
+	
+	if (!rt.headless)
+	{
+		printf("CALLING MLX_LOOP\n");
+		mlx_loop(rt.mlx);
+	}
+	else
+	{
+		printf("SKIPPING MLX_LOOP - Headless render complete\n");
+		free(rt.headless_buffer);
+	}
 	return (exit_success(&rt));
 }
 

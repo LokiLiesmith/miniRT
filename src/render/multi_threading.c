@@ -21,7 +21,9 @@ void	render_pixel(t_rt *rt, int px)
 	else
 		color = color_scale(rt->scene.ambient.color,
 				rt->scene.ambient.brightness);
-	set_pixel(rt->img, x, y, color);
+	// set_pixel(rt->img, x, y, color); // real one
+	// for testing without MLX
+	set_pixel(rt, x, y, color);
 }
 
 void	*routine(void *arg)

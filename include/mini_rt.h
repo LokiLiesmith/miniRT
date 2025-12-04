@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*   By: djanardh <djanardh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 01:12:19 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/04 18:59:01 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ uint32_t	color_scale(t_color color, double factor);
 
 //render.c
 void        st_render(t_rt *rt);
-void		set_pixel(mlx_image_t *img, int x, int y, uint32_t color);
+// void		set_pixel(mlx_image_t *img, int x, int y, uint32_t color); // this is the real one
+// for testing without MLX
+void	set_pixel_headless(uint8_t *buffer, int width, int x, int y, uint32_t color);
+void	set_pixel(t_rt *rt, int x, int y, uint32_t color);
 
 //sphere.c
 t_hit		intersect_sphere(t_ray ray, t_sphere *sphere);

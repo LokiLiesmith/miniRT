@@ -6,7 +6,7 @@
 /*   By: djanardh <djanardh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:53:18 by djanardh          #+#    #+#             */
-/*   Updated: 2025/12/02 18:55:04 by djanardh         ###   ########.fr       */
+/*   Updated: 2025/12/04 19:04:38 by djanardh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	check_input(int ac, char **av, t_scene *scene)
 	int		valid;
 	t_found	found;
 
-	if (ac != 2)
+	if (ac != 2 && ac != 3)
 		return (printf("Usage: './miniRT scene_file.rt'\n"), 1);
 	file_len = ft_strlen(av[1]);
 	if (file_len < 4)
@@ -138,5 +138,5 @@ int	check_input(int ac, char **av, t_scene *scene)
 	valid = 0;
 	if (parse_scene_file(av[1], scene, valid, &found) != 0)
 		return (1);
-	return (0);
+	return (printf("all gut w parsing\n"), 0);
 }

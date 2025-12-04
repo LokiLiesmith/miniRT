@@ -57,6 +57,13 @@ CC = cc
 
 # Define the flags for compilation
 CFLAGS = -Wall -Wextra -Werror
+# ifdef SAN
+#     SANFLAGS := -fsanitize=address, undefined
+#     CFLAGS := -Wall -Wextra -Werror -g -O1
+# else
+#     SANFLAGS :=
+#     CFLAGS := -Wall -Wextra -Werror
+# endif
 
 # Archiver command to create the static library libft (.a file)
 AR = ar rcs 
