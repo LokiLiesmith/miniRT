@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:36 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 01:53:34 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/04 02:10:36 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ uint32_t	rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	uint32_t	color;
 
-	color = r << 24 | g << 16 | b << 8 | a;
+	color = (uint32_t)r << 24 | (uint32_t)g << 16
+		| (uint32_t)b << 8 | (uint32_t)a;
 	return (color);
 }
 

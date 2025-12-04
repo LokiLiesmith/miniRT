@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:49:43 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 01:53:22 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/04 02:08:50 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ double calc_soft_shadow(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
 	return ((double)v.visible / (double)v.samples);
 }
 
-// // REFACTOR
+
 // double  calc_soft_shadow(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
 // {
 // 	unsigned int    samples = rt->samples;

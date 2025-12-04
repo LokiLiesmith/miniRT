@@ -1,23 +1,34 @@
 #include "mini_rt.h"
+
+
+typedef struct s_rot_vars
+{
+	double	c;
+	double	s;
+	double	dot;
+}	t_rot_vars;
+
 //rodrigues rotation around a random vector
 // split into perp and paralel and then recalc the fractions in the new plane
-// given by the cross product sin for vertical component, cos * perp for horizontal
+// given by the x_product sin for vertical component, cos * perp for horizontal
 // add all 3 vectors together and you have your new vector
-// REFACTOR
-t_vec3 vec_rot_around_axis(t_vec3 v, t_vec3 axis, double angle)
+// v_rot = v_para + (u x v)sin(angle) + cos(theta) * v_perp
+t_vec3	vec_rot_around_axis(t_vec3 v, t_vec3 axis, double angle)
 {
-	t_vec3	u = vec_normalize(axis);
-	double	c = cos(angle);
-	double	s = sin(angle);
-	double 	dot = vec_dot(v, u);
-	t_vec3	v_para;
-	t_vec3	v_perp;
-	t_vec3	v_rot;
-	// v_rot = v_para + (u x v)sin(angle) + cos(theta) * v_perp
-	v_para = vec_scale(u, dot);
-	v_perp = vec_subtract(v, v_para);	
-	v_rot = vec_add(v_para, vec_add(vec_scale(vec_cross(u, v), s),
-				vec_scale(v_perp, c)));
+	t_vec3		u;
+	t_vec3		v_para;
+	t_vec3		v_perp;
+	t_vec3		v_rot;
+	t_rot_vars	var;
+
+	u = vec_normalize(axis);
+	var.c = cos(angle);
+	var.s = sin(angle);
+	var.dot = vec_dot(v, u);
+	v_para = vec_scale(u, var.dot);
+	v_perp = vec_subtract(v, v_para);
+	v_rot = vec_add(v_para, vec_add(vec_scale(vec_cross(u, v), var.s),
+				vec_scale(v_perp, var.c)));
 	return (v_rot);
 }
 
