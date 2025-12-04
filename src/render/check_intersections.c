@@ -9,7 +9,6 @@ t_view	camera_orientation(t_rt *rt)
 	view.world_up.z = 0;
 
 	view.forward = vec_normalize(rt->scene.camera.dir);
-    // handle degenerate case: camera looking up or down
 	if (fabs(view.forward.y) > 0.999)
 		view.world_up = (t_vec3){1, 0, 0};
 	view.right = vec_normalize(vec_cross(view.world_up, view.forward));
@@ -34,7 +33,7 @@ t_view	rotate_disk_to_world_view(t_vec3 normal)
 				local_view.right));
 	return (local_view);
 }
-
+//REFACTOR
 //normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
 // 2x to stretch the new mapping so when I move -1 we have the interval set at [-1, 1];
 // double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
@@ -59,11 +58,6 @@ t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 	ray.origin = rt->scene.camera.pos;
 	return (ray);
 }
-
-// typedef struct s_intersect_vars
-// {
-// 	double;
-// }	t_intersect_vars;
 
 t_hit	check_intersections(t_ray ray, t_rt *rt)
 {

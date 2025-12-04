@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/03 20:10:17 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/04 01:12:19 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ double		pick_root(double t0, double t1);
 //shadows.c
 t_vec3 		random_in_unit_sphere(unsigned int seed);
 t_view		rotate_disk_to_world_view(t_vec3 normal);
+bool		is_backfacing(t_vec3 normal, t_vec3 point, t_vec3 light_pos);
+// void		sample_light(t_shadow_vars *v, t_rt *rt, unsigned int x, unsigned int y);
+
 
 // MLX
 //mlx_hooks.c

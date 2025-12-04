@@ -61,7 +61,7 @@ int	get_thread_count(void)
 		return (MAX_THREADS);
 	return (n);
 }
-
+// REFACTOR - add safetychecks for threads
 void	init_threads(t_rt *rt)
 {
 	int	i;
@@ -78,7 +78,7 @@ void	init_threads(t_rt *rt)
 		i++;
 	}
 }
-
+//RECFACTOR - add safetychecks for threads
 void	join_threads(t_rt *rt)
 {
 	int	i;

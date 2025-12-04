@@ -51,7 +51,8 @@ void	build_object_arr(t_scene *scene)
 	}
 }
 
-// TODO REFACTOR
+
+//REFACTOR
 t_hit	check_intersections_arr(t_ray ray, t_rt *rt)
 {
 	t_hit		best;

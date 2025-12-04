@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:27 by mrazem            #+#    #+#             */
-/*   Updated: 2025/11/24 20:57:49 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/03 21:38:30 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	set_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 	img->pixels[i + 3] = color & 0xFF;			//A
 }
 
+// REFACTOR
 void	st_render(t_rt *rt)
 {
 	int			x;

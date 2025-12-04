@@ -113,6 +113,7 @@ typedef struct s_light
 	t_vec3	pos;
 	double	brightness;
 	t_color	color;
+	double	light_radius;
 }	t_light;
 
 typedef struct s_scene

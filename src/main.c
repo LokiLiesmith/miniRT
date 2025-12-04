@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 20:12:25 by djanardh          #+#    #+#             */
-/*   Updated: 2025/12/02 21:03:10 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/03 22:22:18 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static int	init_rt(t_rt *rt)
 	rt->height = HEIGHT;
 	rt->resize_pending = false;
 	rt->view_distance = MAX_DISTANCE;
+	rt->scene.light.light_radius = 1;
 	return (0);
 }
 

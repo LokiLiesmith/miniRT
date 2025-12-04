@@ -3,6 +3,7 @@
 // split into perp and paralel and then recalc the fractions in the new plane
 // given by the cross product sin for vertical component, cos * perp for horizontal
 // add all 3 vectors together and you have your new vector
+// REFACTOR
 t_vec3 vec_rot_around_axis(t_vec3 v, t_vec3 axis, double angle)
 {
 	t_vec3	u = vec_normalize(axis);

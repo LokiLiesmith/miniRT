@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:36 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/01 17:18:00 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/04 01:53:34 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ uint32_t	normal_to_color(t_vec3 normal)
 	b = (uint8_t)((normal.z + 1.0) * 0.5 * 255);
 	return (rgba(r, g, b, 255));
 }
-
+// REFACTOR
 // uint32_t calculate_color(t_scene scene, t_hit hit, t_camera camera, t_light light)
 uint32_t calculate_color(t_rt *rt, t_hit hit, unsigned int x, unsigned int y)
 {
