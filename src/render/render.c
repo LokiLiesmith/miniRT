@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:27 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/03 21:38:30 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/04 19:10:17 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,39 @@ void	set_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 	img->pixels[i + 3] = color & 0xFF;			//A
 }
 
-// REFACTOR
+uint32_t	set_color(t_rt *rt, t_hit hit, int x, int y)
+{
+	uint32_t	color;
+
+	if (hit.t > 0)
+	{
+		color = calculate_color(rt, hit, x, y);
+		if (hit.object == rt->scene.selected)
+			color = highlight_color(int_to_color(color));
+	}
+	else
+		color = color_scale(rt->scene.ambient.color,
+				rt->scene.ambient.brightness);
+	return (color);
+}
+
 void	st_render(t_rt *rt)
 {
-	int			x;
-	int			y;
 	t_ray		ray;
 	uint32_t	color;
 	t_hit		hit;
+	int			x;
+	int			y;
 
 	y = 0;
-	while (y < HEIGHT)
+	while (y < rt->height)
 	{
 		x = 0;
-		while (x < WIDTH)
+		while (x < rt->width)
 		{
 			ray = generate_ray(rt, x, y, rt->view);
 			hit = check_intersections(ray, rt);
-			if (hit.t > 0)//actual hit
-			{
-				color = calculate_color(rt, hit, x, y);
-				// color = normal_to_color(hit.normal);
-				if (hit.object == rt->scene.selected)
-					color = highlight_color(int_to_color(color));
-			}
-			else
-				color = color_scale(rt->scene.ambient.color, rt->scene.ambient.brightness);
+			color = set_color(rt, hit, x, y);
 			set_pixel(rt->img, x, y, color);
 			x++;
 		}

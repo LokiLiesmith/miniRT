@@ -33,31 +33,69 @@ t_view	rotate_disk_to_world_view(t_vec3 normal)
 				local_view.right));
 	return (local_view);
 }
-//REFACTOR
+// //normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
+// // 2x to stretch the new mapping so when I move -1 we have the interval set at [-1, 1];
+// // double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
+// 	// double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);//same shit but *-1 cuz y starts at the top on screen
+// t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
+// {
+// 	t_ray	ray;
+// 	//remap rays based on AR and scale
+// 	double	scale = tan((rt->scene.camera.fov * 0.5) * (M_PI/180.0));
+// 	double	aspect_ratio = (double)rt->width / (double)rt->height;
+
+// 	//
+// 	double	u = (2.0 * ((x + 0.5) / (double)rt->width) - 1.0) * aspect_ratio * scale;
+// 	double	v = (1.0 - 2.0 * ((y + 0.5) / (double)rt->height)) * scale;
+
+// 	t_vec3 dir_cam = {u, v, 1.0};
+// 	// dir_cam = vec_normalize(dir_cam);//NOT NEEDED?
+// 	ray.dir = vec_add(
+// 		vec_add(vec_scale(view.right, dir_cam.x),
+// 				vec_scale(view.up, dir_cam.y)),
+// 		vec_scale(view.forward, dir_cam.z)
+// 	);
+// 	ray.dir = vec_normalize(ray.dir);
+// 	ray.origin = rt->scene.camera.pos;
+// 	return (ray);
+// }
+
+static t_ray	build_camera_ray(t_view view, t_rt *rt, double u, double v)
+{
+	t_vec3	img_plane_point;
+	t_ray	ray;
+
+	img_plane_point.x = u;
+	img_plane_point.y = v;
+	img_plane_point.z = 1.0;
+
+	ray.dir = vec_normalize(
+			vec_add(
+				vec_add(vec_scale(view.right, img_plane_point.x),
+					vec_scale(view.up, img_plane_point.y)),
+				vec_scale(view.forward, img_plane_point.z)));
+	ray.origin = rt->scene.camera.pos;
+	return (ray);
+}
+
 //normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
 // 2x to stretch the new mapping so when I move -1 we have the interval set at [-1, 1];
 // double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
 	// double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);//same shit but *-1 cuz y starts at the top on screen
 t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 {
-	t_ray	ray;
-	double	scale = tan((rt->scene.camera.fov * 0.5) * (M_PI/180.0));
-	double	aspect_ratio = (double)rt->width / (double)rt->height;
+	double	scale;
+	double	aspect_ratio;
+	double	u;
+	double	v;
 
-	double	u = (2.0 * ((x + 0.5) / (double)rt->width) - 1.0) * aspect_ratio * scale;
-	double	v = (1.0 - 2.0 * ((y + 0.5) / (double)rt->height)) * scale;
-
-	t_vec3 dir_cam = {u, v, 1.0};
-	// dir_cam = vec_normalize(dir_cam);//NOT NEEDED?
-	ray.dir = vec_add(
-		vec_add(vec_scale(view.right, dir_cam.x),
-				vec_scale(view.up, dir_cam.y)),
-		vec_scale(view.forward, dir_cam.z)
-	);
-	ray.dir = vec_normalize(ray.dir);
-	ray.origin = rt->scene.camera.pos;
-	return (ray);
+	scale = tan((rt->scene.camera.fov * 0.5) * (M_PI/180.0));
+	aspect_ratio = (double)rt->width / (double)rt->height;
+	u = (2.0 * ((x + 0.5) / (double)rt->width) - 1.0) * aspect_ratio * scale;
+	v = (1.0 - 2.0 * ((y + 0.5) / (double)rt->height)) * scale;
+	return (build_camera_ray(view, rt, u, v));
 }
+
 
 t_hit	check_intersections(t_ray ray, t_rt *rt)
 {

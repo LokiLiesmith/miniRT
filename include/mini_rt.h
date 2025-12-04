@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 01:12:19 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/04 19:07:50 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ uint32_t	color_scale(t_color color, double factor);
 
 //render.c
 void        st_render(t_rt *rt);
+// void        st_render(t_rt *rt, int x, int y);
 void		set_pixel(mlx_image_t *img, int x, int y, uint32_t color);
 
 //sphere.c
@@ -210,9 +211,10 @@ int		get_thread_count(void);
 void	*routine(void *arg);
 void	render_pixel(t_rt *rt, int px);
 
-void	render(t_rt *rt);
-void 	mt_render(t_rt *rt);
-double	get_time_ms(void);
+uint32_t	set_color(t_rt *rt, t_hit hit, int x, int y);
+void		render(t_rt *rt);
+void 		mt_render(t_rt *rt);
+double		get_time_ms(void);
 
 //RUBBER-BURNING SPEED?
 void	build_object_arr(t_scene *scene);

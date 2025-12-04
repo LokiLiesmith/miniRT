@@ -12,15 +12,7 @@ void	render_pixel(t_rt *rt, int px)
 	y = px / rt->width;
 	ray = generate_ray(rt, x, y, rt->view);
 	hit = check_intersections(ray, rt);
-	if (hit.t > 0)
-	{
-		color = calculate_color(rt, hit, x, y);
-		if (hit.object == rt->scene.selected)
-			color = highlight_color(int_to_color(color));
-	}
-	else
-		color = color_scale(rt->scene.ambient.color,
-				rt->scene.ambient.brightness);
+	color = set_color(rt, hit, x, y);
 	set_pixel(rt->img, x, y, color);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:49:43 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 02:08:50 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/04 18:31:30 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ bool	is_backfacing(t_vec3 normal, t_vec3 point, t_vec3 light_pos)
 	return (normal_dot_light <= 0.00);
 }
 
-static int shadow_ray_intersection(t_shadow_vars *v, t_rt *rt)
+static int	shadow_ray_intersection(t_shadow_vars *v, t_rt *rt)
 {
 	v->shadow_ray.origin = v->ray_origin;
 	v->shadow_ray.dir = vec_normalize(v->to_sample);
@@ -141,6 +141,7 @@ static void set_light_disc_vectors(t_shadow_vars *v, t_rt *rt, t_hit hit)
 
 static void init_shadow_vars(t_shadow_vars *v, t_rt *rt)
 {
+	ft_bzero(v, sizeof(t_shadow_vars));
 	v->samples = rt->samples;
 	v->i = 0;
 	v->light_radius = rt->scene.light.light_radius;
