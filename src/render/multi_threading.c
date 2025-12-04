@@ -61,35 +61,50 @@ int	get_thread_count(void)
 		return (MAX_THREADS);
 	return (n);
 }
-// REFACTOR - add safetychecks for threads
-void	init_threads(t_rt *rt)
-{
-	int	i;
 
-	atomic_store(&rt->a_px_current, 0);
-	rt->px_current = 0;
-	rt->thread_nr = get_thread_count();
-	rt->px_total = rt->height * rt->width;
-	rt->view = camera_orientation(rt);
-	i = 0;
-	while (i < rt->thread_nr)
-	{//TODO check if thread created == -1?
-		pthread_create(&rt->threads[i], NULL, &routine, rt);
-		i++;
-	}
-}
-//RECFACTOR - add safetychecks for threads
-void	join_threads(t_rt *rt)
+void init_threads(t_rt *rt)
 {
-	int	i;
+    int i;
+	int j;
 
-	i = 0;
-	while (i < rt->thread_nr)
-	{
-		pthread_join(rt->threads[i], NULL);
-		i++;
-	}
+    atomic_store(&rt->a_px_current, 0);
+    rt->px_current = 0;
+    rt->thread_nr = get_thread_count();
+    rt->px_total = rt->height * rt->width;
+    rt->view = camera_orientation(rt);
+
+    i = 0;
+    while (i < rt->thread_nr)
+    {
+        if (pthread_create(&rt->threads[i], NULL, &routine, rt) != 0)
+        {
+            j = 0;
+            while (j < i)
+            {
+                pthread_join(rt->threads[j], NULL);
+                j++;
+            }
+            exit_error(rt, "Failed to create thread");
+        }
+        i++;
+    }
 }
+
+void join_threads(t_rt *rt)
+{
+    int i;
+	
+	i = 0;
+    while (i < rt->thread_nr)
+    {
+        if (pthread_join(rt->threads[i], NULL) != 0)
+        {
+            exit_error(rt, "Failed to join thread");
+        }
+        i++;
+    }
+}
+
 
 void	mt_render(t_rt *rt)
 {
