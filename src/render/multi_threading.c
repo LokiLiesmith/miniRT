@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   multi_threading.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/04 21:08:46 by mrazem            #+#    #+#             */
+/*   Updated: 2025/12/04 21:09:05 by mrazem           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include	"mini_rt.h"
 
 void	render_pixel(t_rt *rt, int px)
@@ -54,47 +66,47 @@ int	get_thread_count(void)
 	return (n);
 }
 
-void init_threads(t_rt *rt)
+void	init_threads(t_rt *rt)
 {
-    int i;
-	int j;
+	int	i;
+	int	j;
 
-    atomic_store(&rt->a_px_current, 0);
-    rt->px_current = 0;
-    rt->thread_nr = get_thread_count();
-    rt->px_total = rt->height * rt->width;
-    rt->view = camera_orientation(rt);
+	atomic_store(&rt->a_px_current, 0);
+	rt->px_current = 0;
+	rt->thread_nr = get_thread_count();
+	rt->px_total = rt->height * rt->width;
+	rt->view = camera_orientation(rt);
 
-    i = 0;
-    while (i < rt->thread_nr)
-    {
-        if (pthread_create(&rt->threads[i], NULL, &routine, rt) != 0)
-        {
-            j = 0;
-            while (j < i)
-            {
-                pthread_join(rt->threads[j], NULL);
-                j++;
-            }
-            exit_error(rt, "Failed to create thread");
-        }
-        i++;
-    }
+	i = 0;
+	while (i < rt->thread_nr)
+	{
+		if (pthread_create(&rt->threads[i], NULL, &routine, rt) != 0)
+		{
+			j = 0;
+			while (j < i)
+			{
+				pthread_join(rt->threads[j], NULL);
+				j++;
+			}
+			exit_error(rt, "Failed to create thread");
+		}
+		i++;
+	}
 }
 
-void join_threads(t_rt *rt)
+void	join_threads(t_rt *rt)
 {
-    int i;
-	
+	int	i;
+
 	i = 0;
-    while (i < rt->thread_nr)
-    {
-        if (pthread_join(rt->threads[i], NULL) != 0)
-        {
-            exit_error(rt, "Failed to join thread");
-        }
-        i++;
-    }
+	while (i < rt->thread_nr)
+	{
+		if (pthread_join(rt->threads[i], NULL) != 0)
+		{
+			exit_error(rt, "Failed to join thread");
+		}
+		i++;
+	}
 }
 
 
