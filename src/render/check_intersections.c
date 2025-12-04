@@ -96,7 +96,6 @@ t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 	return (build_camera_ray(view, rt, u, v));
 }
 
-
 t_hit	check_intersections(t_ray ray, t_rt *rt)
 {
 	t_hit		best;
