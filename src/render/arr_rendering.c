@@ -1,55 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   arr_rendering.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/05 11:15:50 by mrazem            #+#    #+#             */
+/*   Updated: 2025/12/05 13:58:49 by mrazem           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini_rt.h"
-
-static void	object_arr_len(t_scene *scene)
-{
-	t_object	*current;
-
-	scene->obj_count = 0;
-	current = scene->objects;
-	while (current)
-	{
-		scene->obj_count++;
-		current = current->next;
-	}
-}
-
-static void	normalize_normal(t_object *obj)
-{
-	t_cylinder	*cy;
-	t_plane		*pl;
-
-	if (obj->type == CYLINDER)
-	{
-		cy = (t_cylinder *)obj->data;
-		cy->axis = vec_normalize(cy->axis);
-	}
-	else if (obj->type == PLANE)
-	{
-		pl = (t_plane *)obj->data;
-		pl->normal = vec_normalize(pl->normal);
-	}
-}
-
-void	build_object_arr(t_scene *scene)
-{
-	t_object	*current;
-	int			i;
-
-	object_arr_len(scene);
-	scene->object_arr = malloc(sizeof(t_object *) * scene->obj_count);
-	if (!scene->object_arr)
-		exit(1);
-	i = 0;
-	current = scene->objects;
-	while (i < scene->obj_count)
-	{
-		scene->object_arr[i] = current;
-		if (current->type == CYLINDER || current->type == PLANE)
-			normalize_normal(current);
-		current = current->next;
-		i++;
-	}
-}
 
 typedef struct s_intersection_vars
 {
@@ -80,7 +41,6 @@ t_hit	check_intersections_arr(t_ray ray, t_rt *rt)
 	{
 		v.obj = v.objects[v.i++];
 		v.hit.t = -1.00;
-
 		if (v.obj->type == SPHERE)
 			v.hit = intersect_sphere(ray, (t_sphere *)v.obj->data);
 		if (v.obj->type == PLANE)
@@ -100,7 +60,7 @@ t_hit	check_intersections_arr(t_ray ray, t_rt *rt)
 // t_hit	check_intersections_arr(t_ray ray, t_rt *rt)
 // {
 // 	t_intersection_vars v;
-
+//
 // 	t_hit		best;
 // 	t_hit		hit;
 // 	t_object	*obj;
@@ -108,18 +68,18 @@ t_hit	check_intersections_arr(t_ray ray, t_rt *rt)
 // 	int			i;
 // 	t_object	**objects;
 // 	int			count;
-
+//
 // 	i = 0;
 // 	best.t = -1.0;
 // 	closest_t = INFINITY;
 // 	objects = rt->scene.object_arr;
 // 	count = rt->scene.obj_count;
-
+//
 // 	while (i < count)
 // 	{
 // 		obj = objects[i++];
 // 		hit.t = -1.00;
-
+//
 // 		if (obj->type == SPHERE)
 // 			hit = intersect_sphere(ray, (t_sphere *)obj->data);
 // 		if (obj->type == PLANE)

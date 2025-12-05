@@ -23,15 +23,22 @@ SRC_MINI_RT	:= src/main.c
 # SRC_THREAD	:= src/threads/threads_test.c
 SRC_COMMON	:= src/parse/file_check.c src/parse/acl_parse.c src/parse/ft_atod.c \
 			   src/parse/objs_parse.c src/parse/parse_utils.c src/parse/linked_list_utils.c \
-			   src/utils/cleanup.c src/get_next_line.c src/get_next_line_utils.c  src/parse/parse_xyz_rgb.c \
-			   src/parse/debug_parse.c src/utils/math_utils.c src/math/vector_math.c src/math/vector_math_2.c \
-			   src/render/check_intersections.c src/render/colors.c src/render/render.c src/render/sphere.c \
-			   src/render/shadows.c src/render/multi_threading.c src/render/arr_rendering.c \
-			   src/render/cylinder.c src/render/plane.c \
-			   src/mlx/control_scheme.c src/mlx/mlx_hooks.c src/mlx/window_resize.c \
-			   src/render/vector_rotations.c \
-			   src/render/object_movement.c src/render/object_rotation.c src/render/object_scaling.c \
-			   src/main.c 
+			   src/render/colors.c src/render/colors_utils.c \
+			   src/render/render.c src/render/mt_render.c src/render/mt_render_utils.c \
+			   src/utils/cleanup.c src/utils/print_scene.c \
+			   src/get_next_line.c src/get_next_line_utils.c  src/parse/parse_xyz_rgb.c \
+			   src/math/vector_math.c src/math/vector_math_2.c \
+			   src/intersect/check_intersections.c src/intersect/sphere.c src/intersect/plane.c \
+			   src/intersect/cylinder.c src/intersect/cylinder_2.c src/intersect/intersect_utils.c \
+			   src/render/shadows.c src/render/shadows_2.c src/render/random.c \
+			   src/render/arr_rendering.c src/render/arr_rendering_utils.c \
+			   src/render/view_and_ray.c \
+			   src/mlx/mlx_hooks.c src/mlx/control_scheme.c src/mlx/selection_controls.c \
+			   src/mlx/mouse_hooks.c src/mlx/mouse_controls.c src/mlx/window_resize.c \
+			   src/mlx/vector_rotations.c \
+			   src/mlx/object_movement.c src/mlx/object_rotation.c src/mlx/object_scaling.c \
+			   src/main.c \
+# 			   src/parse/debug_parse.c 
 
 # SRC_RENDER	:= src/render/render_test.c src/render/fake_parsing.c
 
@@ -98,7 +105,6 @@ fclean: clean
 	@rm -rf $(MLX_DIR)/build
 
 re: fclean all
-
 
 .PHONY: all valgrind clean fclean re san libmlx
 miniRT valgrind clean fclean re san:

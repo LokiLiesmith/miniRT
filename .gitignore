@@ -59,4 +59,4 @@ dkms.conf
 /obj
 MLX42/
 src/render/cpp.code-workspace
-.vscode
+.vscode/

@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:12:59 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/03 21:26:51 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/05 11:24:49 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ static void	find_roots(t_sph_vars *v, double *t0, double *t1)
 {
 	double	a;
 	double	b;
-	// double	c;
 	double	sqrt_discriminant;
 
 	a = v->quad_a;
 	b = v->quad_b;
-	// c = v->quad_c;
 	sqrt_discriminant = sqrt(v->discriminant);
 	*t0 = (-b - sqrt_discriminant) / (2 * a);
 	*t1 = (-b + sqrt_discriminant) / (2 * a);
@@ -97,7 +95,9 @@ t_hit	intersect_sphere(t_ray ray, t_sphere *sphere)
 // 	double t1 = (-b + sqrt(discriminant)) / (2 * a);
 // 	double t = -1.0;
 
-// 	//logic for checkin if inside, when we start working with shadows - compare with epsilon cuz 0 isnt exactly 0 anymore (non exact double calculations)
+// 	//logic for checkin if inside, when we start working with shadows -
+//  compare with epsilon cuz 0 isnt exactly
+//  0 anymore (non exact double calculations)
 // 	if (t0 > 0)
 // 		t = t0;
 // 	else if (t0 < 0 && t1 > 0)

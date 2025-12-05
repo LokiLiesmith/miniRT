@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_intersections.c                              :+:      :+:    :+:   */
+/*   view_and_ray.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/04 22:57:32 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/05 02:21:42 by mrazem           ###   ########.fr       */
+/*   Created: 2025/12/05 13:37:41 by mrazem            #+#    #+#             */
+/*   Updated: 2025/12/05 15:23:31 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,6 @@ t_view	camera_orientation(t_rt *rt)
 	return (view);
 }
 
-t_view	rotate_disk_to_world_view(t_vec3 normal)
-{
-	t_view	view;
-	t_vec3	global_up;
-	t_vec3	right;
-
-	global_up = (t_vec3){0, 1, 0};
-	view.forward = vec_normalize(normal);
-	right = vec_cross(global_up, view.forward);
-	if (vec_len(right) < 1e-6)
-		right = (t_vec3){1, 0, 0};
-	view.right = vec_normalize(right);
-	view.up = vec_normalize(vec_cross(view.forward, view.right));
-	view.world_up = global_up;
-	return (view);
-}
-
 static t_ray	build_camera_ray(t_view view, t_rt *rt, double u, double v)
 {
 	t_ray	ray;
@@ -86,75 +69,9 @@ t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 	double	u;
 	double	v;
 
-	scale = tan((rt->scene.camera.fov * 0.5) * (M_PI/180.0));
+	scale = tan((rt->scene.camera.fov * 0.5) * (M_PI / 180.0));
 	aspect_ratio = (double)rt->width / (double)rt->height;
 	u = (2.0 * ((x + 0.5) / (double)rt->width) - 1.0) * aspect_ratio * scale;
 	v = (1.0 - 2.0 * ((y + 0.5) / (double)rt->height)) * scale;
 	return (build_camera_ray(view, rt, u, v));
-}
-
-t_hit	check_intersections(t_ray ray, t_rt *rt)
-{
-	t_hit		best;
-	t_hit		hit;
-	t_object	*current;
-	double		closest_t;
-
-	best.t = -1.0;
-	closest_t = INFINITY;
-	current = rt->scene.objects;
-	while (current)
-	{
-		if (current->type == SPHERE)
-			hit = intersect_sphere(ray, (t_sphere *)current->data);
-		else if (current->type == PLANE)
-			hit = intersect_plane(ray, (t_plane *)current->data);
-		else if (current->type == CYLINDER)
-			hit = intersect_cylinder(ray, (t_cylinder *)current->data);
-		if (hit.t > 0.0 && hit.t < closest_t)
-		{
-			closest_t = hit.t;
-			best = hit;
-			best.object = current;
-		}
-		current = current->next;
-	}
-	return (best);
-}
-
-static void	init_mouse_intersect(t_hit *best, double *closest_t, t_rt *rt)
-{
-	best->t = -1.0;
-	best->object = NULL;
-	*closest_t = INFINITY;
-	rt->scene.selected = NULL;
-}
-
-t_hit	check_mouse_intersect(t_ray ray, t_rt *rt)
-{
-	t_hit		best;
-	t_hit		hit;
-	t_object	*current;
-	double		closest_t;
-
-	init_mouse_intersect(&best, &closest_t, rt);
-	current = rt->scene.objects;
-	while (current)
-	{
-		if (current->type == SPHERE)
-			hit = intersect_sphere(ray, (t_sphere *)current->data);
-		else if (current->type == PLANE)
-			hit = intersect_plane(ray, (t_plane *)current->data);
-		else if (current->type == CYLINDER)
-			hit = intersect_cylinder(ray, (t_cylinder *)current->data);
-		if (hit.t > 0.0 && hit.t < closest_t)
-		{
-			closest_t = hit.t;
-			best = hit;
-			best.object = current;
-		}
-		current = current->next;
-	}
-	rt->scene.selected = best.object;
-	return (best);
 }

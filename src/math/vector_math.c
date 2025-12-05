@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 22:33:44 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/02 22:33:45 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/05 11:24:10 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,5 @@ t_vec3	vec_scale(t_vec3 v, double scale)
 	res.x = v.x * scale;
 	res.y = v.y * scale;
 	res.z = v.z * scale;
-
 	return (res);
 }

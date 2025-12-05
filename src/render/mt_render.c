@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   multi_threading.c                                  :+:      :+:    :+:   */
+/*   mt_render.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 21:08:46 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 21:09:05 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/05 11:54:33 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,6 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-int	get_thread_count(void)
-{
-	int	n;
-
-	n = sysconf(_SC_NPROCESSORS_ONLN);
-	if (n < 1)
-		return (1);
-	if (n > MAX_THREADS)
-		return (MAX_THREADS);
-	return (n);
-}
-
 void	init_threads(t_rt *rt)
 {
 	int	i;
@@ -76,7 +64,6 @@ void	init_threads(t_rt *rt)
 	rt->thread_nr = get_thread_count();
 	rt->px_total = rt->height * rt->width;
 	rt->view = camera_orientation(rt);
-
 	i = 0;
 	while (i < rt->thread_nr)
 	{
@@ -107,33 +94,4 @@ void	join_threads(t_rt *rt)
 		}
 		i++;
 	}
-}
-
-
-void	mt_render(t_rt *rt)
-{
-	init_threads(rt);
-	join_threads(rt);
-}
-
-double	get_time_ms(void)
-{
-	struct timespec	ts;
-
-	clock_gettime(CLOCK_MONOTONIC, &ts);
-	return ((ts.tv_sec * 1000.0) + (ts.tv_nsec / 1e6));
-}
-
-void	render(t_rt *rt)
-{
-	double	start;
-	double	end;
-
-	start = get_time_ms();
-	if (rt->multi_thread == true)
-		mt_render(rt);
-	else
-		st_render(rt);
-	end = get_time_ms();
-	printf("Render time: %.3f ms\n", end - start);
 }

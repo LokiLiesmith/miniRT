@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 22:33:31 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/02 22:33:32 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/05 11:15:22 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ t_vec3	vec_cross(t_vec3 a, t_vec3 b)
 	res.x = a.y * b.z - a.z * b.y;
 	res.y = a.z * b.x - a.x * b.z;
 	res.z = a.x * b.y - a.y * b.x;
-
 	return (res);
 }
 

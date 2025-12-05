@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 21:09:55 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 21:09:56 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/05 12:37:26 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,20 @@ void	rotate_object(t_rt *rt, t_object *selected, t_rot_dir r_dir)
 		rotate_plane(rt, (t_plane *)obj->data, r_dir, angle);
 	else
 		printf("Not a valid object.\n");
+}
+
+void	rotate_selection(mlx_key_data_t keydata, t_rt *rt)
+{
+	if (keydata.key == MLX_KEY_A && keydata.action == MLX_PRESS)
+		rotate_object(rt, rt->scene.selected, Y_CCW);
+	if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
+		rotate_object(rt, rt->scene.selected, Y_CW);
+	if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
+		rotate_object(rt, rt->scene.selected, X_CCW);
+	if (keydata.key == MLX_KEY_S && keydata.action == MLX_PRESS)
+		rotate_object(rt, rt->scene.selected, X_CW);
+	if (keydata.key == MLX_KEY_Q && keydata.action == MLX_PRESS)
+		rotate_object(rt, rt->scene.selected, Z_CCW);
+	if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)
+		rotate_object(rt, rt->scene.selected, Z_CW);
 }

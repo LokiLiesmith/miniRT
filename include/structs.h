@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structs.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/05 11:42:06 by mrazem            #+#    #+#             */
+/*   Updated: 2025/12/05 16:19:50 by mrazem           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCTS_H
-#define STRUCTS_H
+# define STRUCTS_H
 
 # include "MLX42/MLX42.h"
 
@@ -12,7 +24,7 @@
 # include <stdatomic.h>
 
 ///////////////////////////////////////////////////////////////////////////////
-//								MATH_THINGS									//
+//								MATH_STRUCTRES								//
 typedef struct s_vec3
 {
 	double	x;
@@ -37,9 +49,9 @@ typedef struct s_object	t_object;
 
 typedef struct s_hit
 {
-	double		t;//distance from ray origin
-	t_vec3		point;//hit point vector
-	t_vec3		normal;//normal at hitpoint
+	double		t;
+	t_vec3		point;
+	t_vec3		normal;
 	t_color		color;
 	t_object	*object;
 }	t_hit;
@@ -88,7 +100,7 @@ typedef struct s_cylinder
 typedef struct s_object
 {
 	t_objtype		type;
-	void			*data; // points to the structs above
+	void			*data;
 	struct s_object	*next;
 }	t_object;
 
@@ -103,10 +115,11 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-	double	fov;//in degrees 70.00
+	double	fov;
 	t_vec3	pos;
 	t_vec3	dir;
 }	t_camera;
+//FOV in degrees, 70.00
 
 typedef struct s_light
 {
@@ -121,9 +134,8 @@ typedef struct s_scene
 	t_ambient		ambient;
 	t_camera		camera;
 	t_light			light;
-	t_object		*objects; // linked list of all the objects
+	t_object		*objects;
 	t_object		*selected;
-	//RUBBER-BURNING SPEED?
 	t_object		**object_arr;
 	int				obj_count;
 }					t_scene;
@@ -188,7 +200,6 @@ typedef struct s_rt
 	unsigned int	samples;
 	unsigned int	prev_samples;
 	t_view			view;
-	//MULTITHREADING TINGS
 	int				thread_nr;
 	pthread_t		threads[MAX_THREADS];
 	pthread_mutex_t	px_lock;
@@ -202,14 +213,11 @@ typedef struct s_rt
 	t_scale			scale;
 	int32_t			prev_mouse_x;
 	int32_t			prev_mouse_y;
-	//RESIZING
 	int32_t			height;
 	int32_t			width;
 	bool			resize_pending;
 	double			last_resize;
 	int				view_distance;
-	// t_gc	gc;			//gc-list? TODO import from minishell
-
 }	t_rt;
 
 typedef struct s_mouse_data
@@ -225,6 +233,5 @@ typedef enum e_drag_type
 	PAN_DRAG,
 	ROTATE_DRAG
 }	t_drag_type;
-
 
 #endif

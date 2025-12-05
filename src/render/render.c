@@ -6,24 +6,24 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:27 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 19:10:17 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/05 11:51:31 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
+//pixel = RRGGBBAA
 void	set_pixel(mlx_image_t *img, int x, int y, uint32_t color)
 {
 	int	i;
 
 	i = (y * img->width + x) * 4;
 	if (x < 0 || x >= (int)img->width || y < 0 || y >= (int)img->height)
-		return ;//so we dont go out of bounds
-	//pixel = RRGGBBAA
-	img->pixels[i + 0] = (color >> 24) & 0xFF;	//R
-	img->pixels[i + 1] = (color >> 16) & 0xFF;	//G
-	img->pixels[i + 2] = (color >> 8) & 0xFF;	//B
-	img->pixels[i + 3] = color & 0xFF;			//A
+		return ;
+	img->pixels[i + 0] = (color >> 24) & 0xFF;
+	img->pixels[i + 1] = (color >> 16) & 0xFF;
+	img->pixels[i + 2] = (color >> 8) & 0xFF;
+	img->pixels[i + 3] = color & 0xFF;
 }
 
 uint32_t	set_color(t_rt *rt, t_hit hit, int x, int y)
@@ -64,4 +64,18 @@ void	st_render(t_rt *rt)
 		}
 		y++;
 	}
+}
+
+void	render(t_rt *rt)
+{
+	double	start;
+	double	end;
+
+	start = get_time_ms();
+	if (rt->multi_thread == true)
+		mt_render(rt);
+	else
+		st_render(rt);
+	end = get_time_ms();
+	printf("Render time: %.3f ms\n", end - start);
 }
