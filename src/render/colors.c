@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 18:37:36 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 20:30:28 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/05 02:26:55 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	build_shading_vectors(t_shade_vars *v, t_hit hit, t_rt *rt)
 
 void	calc_light_components(t_shade_vars *v, t_rt *rt)
 {
-	// rt->scene.ambient.brightness = 0.0;//darkside of the plane
 	v->ambient = rt->scene.ambient.brightness;
 	v->diffuse = rt->scene.light.brightness * fmax(0.0, vec_dot(v->normal,
 				v->to_light));

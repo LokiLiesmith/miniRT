@@ -58,20 +58,20 @@ static void	set_mode(mlx_key_data_t keydata, t_rt *rt)
 	if (keydata.key == MLX_KEY_G)
 	{
 		rt->mode = MODE_MOVE;
-		printf("MODE_MOVE\n");
+		printf("MOVE\n");
 		return ;
 	}
 	if (keydata.key == MLX_KEY_S)
 	{
 		rt->mode = MODE_SCALE;
 		rt->scale = SCALE_RADIUS;
-		printf("MODE_SCALE\n");
+		printf("SCALE\n");
 		return ;
 	}
 	if (keydata.key == MLX_KEY_R)
 	{
 		rt->mode = MODE_ROTATE;
-		printf("MODE_ROTATE\n");
+		printf("ROTATE\n");
 		return ;
 	}
 }

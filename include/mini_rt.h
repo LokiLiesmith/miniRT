@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:36:17 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 19:07:50 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/04 23:29:16 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,8 +188,6 @@ int			exit_success(t_rt *rt);
 int			exit_error(t_rt *rt, char *msg);
 void		free_all(t_rt *rt);
 
-
-
 /// PRINTS
 void		print_ambient(t_ambient *ambient);
 void		print_color(const char *name, t_color color);
@@ -221,8 +219,6 @@ void	build_object_arr(t_scene *scene);
 void	free_object_arr(t_scene *scene);
 t_hit	check_intersections_arr(t_ray ray, t_rt *rt);
 void	render_pixel_arr(t_rt *rt, int px);
-
-
 
 //FAKE LIST
 void		fake_parsing(t_rt *rt);

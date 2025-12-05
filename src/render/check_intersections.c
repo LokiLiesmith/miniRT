@@ -1,87 +1,84 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_intersections.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/04 22:57:32 by mrazem            #+#    #+#             */
+/*   Updated: 2025/12/05 02:21:42 by mrazem           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini_rt.h"
 
 t_view	camera_orientation(t_rt *rt)
 {
 	t_view	view;
+	t_vec3	global_up;
+	t_vec3	right_candidate;
+	double	len_prev_right;
+	double	len_candidate;
 
-	view.world_up.x = 0;
-	view.world_up.y = 1;
-	view.world_up.z = 0;
-
+	global_up = (t_vec3){0, 1, 0};
 	view.forward = vec_normalize(rt->scene.camera.dir);
-	if (fabs(view.forward.y) > 0.999)
-		view.world_up = (t_vec3){1, 0, 0};
-	view.right = vec_normalize(vec_cross(view.world_up, view.forward));
+	right_candidate = vec_cross(global_up, view.forward);
+	len_candidate = vec_len(right_candidate);
+	if (len_candidate < 1e-6)
+	{
+		right_candidate = (t_vec3){1, 0, 0};
+		len_candidate = 1.0;
+	}
+	len_prev_right = vec_len(rt->view.right);
+	if (len_prev_right > 1e-6)
+	{
+		if (vec_dot(right_candidate, rt->view.right) < 0.0)
+			right_candidate = vec_scale(right_candidate, -1.0);
+	}
+	view.right = vec_scale(right_candidate, 1.0 / len_candidate);
 	view.up = vec_normalize(vec_cross(view.forward, view.right));
+	view.world_up = global_up;
 	return (view);
 }
 
 t_view	rotate_disk_to_world_view(t_vec3 normal)
 {
-	t_view	local_view;
+	t_view	view;
+	t_vec3	global_up;
+	t_vec3	right;
 
-	local_view.world_up.x = 0;
-	local_view.world_up.y = 1;
-	local_view.world_up.z = 0;
-
-	local_view.forward = vec_normalize(normal);
-	if (fabs(local_view.forward.y) > 0.999)
-		local_view.world_up = (t_vec3){1, 0, 0};
-	local_view.right = vec_normalize(vec_cross(local_view.world_up,
-				local_view.forward));
-	local_view.up = vec_normalize(vec_cross(local_view.forward,
-				local_view.right));
-	return (local_view);
+	global_up = (t_vec3){0, 1, 0};
+	view.forward = vec_normalize(normal);
+	right = vec_cross(global_up, view.forward);
+	if (vec_len(right) < 1e-6)
+		right = (t_vec3){1, 0, 0};
+	view.right = vec_normalize(right);
+	view.up = vec_normalize(vec_cross(view.forward, view.right));
+	view.world_up = global_up;
+	return (view);
 }
-// //normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
-// // 2x to stretch the new mapping so when I move -1 we have the interval set at [-1, 1];
-// // double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
-// 	// double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);//same shit but *-1 cuz y starts at the top on screen
-// t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
-// {
-// 	t_ray	ray;
-// 	//remap rays based on AR and scale
-// 	double	scale = tan((rt->scene.camera.fov * 0.5) * (M_PI/180.0));
-// 	double	aspect_ratio = (double)rt->width / (double)rt->height;
-
-// 	//
-// 	double	u = (2.0 * ((x + 0.5) / (double)rt->width) - 1.0) * aspect_ratio * scale;
-// 	double	v = (1.0 - 2.0 * ((y + 0.5) / (double)rt->height)) * scale;
-
-// 	t_vec3 dir_cam = {u, v, 1.0};
-// 	// dir_cam = vec_normalize(dir_cam);//NOT NEEDED?
-// 	ray.dir = vec_add(
-// 		vec_add(vec_scale(view.right, dir_cam.x),
-// 				vec_scale(view.up, dir_cam.y)),
-// 		vec_scale(view.forward, dir_cam.z)
-// 	);
-// 	ray.dir = vec_normalize(ray.dir);
-// 	ray.origin = rt->scene.camera.pos;
-// 	return (ray);
-// }
 
 static t_ray	build_camera_ray(t_view view, t_rt *rt, double u, double v)
 {
-	t_vec3	img_plane_point;
 	t_ray	ray;
-
-	img_plane_point.x = u;
-	img_plane_point.y = v;
-	img_plane_point.z = 1.0;
 
 	ray.dir = vec_normalize(
 			vec_add(
-				vec_add(vec_scale(view.right, img_plane_point.x),
-					vec_scale(view.up, img_plane_point.y)),
-				vec_scale(view.forward, img_plane_point.z)));
+				vec_add(
+					vec_scale(view.right, u),
+					vec_scale(view.up, v)),
+				view.forward));
 	ray.origin = rt->scene.camera.pos;
 	return (ray);
 }
 
-//normalize to [0,1] by dividing with Maximum, +0.5 to move to the middle of the screen
-// 2x to stretch the new mapping so when I move -1 we have the interval set at [-1, 1];
+//normalize to [0,1] by dividing with Maximum,
+// +0.5 to move to the middle of the screen
+// 2x to stretch the new mapping so when
+// I move -1 we have the interval set at [-1, 1];
 // double u = 2.00 * ((x + 0.5) / (double)WIDTH) - 1.00;
-	// double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);//same shit but *-1 cuz y starts at the top on screen
+// double v = 1.00 - 2.00 * ((y + 0.5) / (double)HEIGHT);
+//same shit but *-1 cuz y starts at the top on screen
 t_ray	generate_ray(t_rt *rt, int x, int y, t_view view)
 {
 	double	scale;

@@ -6,7 +6,7 @@
 /*   By: mrazem <mrazem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 21:49:43 by mrazem            #+#    #+#             */
-/*   Updated: 2025/12/04 18:31:30 by mrazem           ###   ########.fr       */
+/*   Updated: 2025/12/05 02:36:18 by mrazem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ static int	shadow_ray_intersection(t_shadow_vars *v, t_rt *rt)
 	return (0);
 }
 
-static void	sample_light(t_shadow_vars *v, t_rt *rt, unsigned int x, unsigned int y)
+static void	sample_light(t_shadow_vars *v, t_rt *rt, unsigned int x,
+		unsigned int y)
 {
 	v->seed = build_seed(x, y, v->i);
 	v->sample = random_on_unit_disk(v->seed);
