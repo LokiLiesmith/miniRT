@@ -30,12 +30,12 @@ static void	find_roots(t_sph_vars *v, double *t0, double *t1)
 {
 	double	a;
 	double	b;
-	double	c;
+	// double	c;
 	double	sqrt_discriminant;
 
 	a = v->quad_a;
 	b = v->quad_b;
-	c = v->quad_c;
+	// c = v->quad_c;
 	sqrt_discriminant = sqrt(v->discriminant);
 	*t0 = (-b - sqrt_discriminant) / (2 * a);
 	*t1 = (-b + sqrt_discriminant) / (2 * a);
