@@ -1,0 +1,69 @@
+{
+   iris_dri_races
+   Helgrind:Race
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/dri/iris_dri.so
+}
+
+{
+   mesa_glx_races
+   Helgrind:Race
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/libGLX_mesa.so*
+}
+
+{
+   glx_races
+   Helgrind:Race
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/libGLX.so*
+}
+
+{
+   glfw_races
+   Helgrind:Race
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/libglfw.so*
+}
+
+{
+   dl_open_close_lock_order
+   Helgrind:LockOrder
+   fun:_dl_open
+}
+
+{
+   dl_close_lock_order
+   Helgrind:LockOrder
+   fun:_dl_close*
+}
+
+{
+   glx_dlopen_lock_order
+   Helgrind:LockOrder
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/libGLX.so*
+   ...
+   fun:dlopen*
+}
+
+{
+   glx_dlclose_lock_order
+   Helgrind:LockOrder
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/libGLX.so*
+   ...
+   fun:dlclose*
+}
+
+{
+   pthread_barrier_race
+   Helgrind:Race
+   fun:pthread_barrier_wait*
+}
+
+{
+   glibc_loader_races
+   Helgrind:Race
+   obj:/*/ld-linux-x86-64.so*
+}
